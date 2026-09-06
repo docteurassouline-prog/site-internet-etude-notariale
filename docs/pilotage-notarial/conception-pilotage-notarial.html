@@ -1,0 +1,787 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Conception Pilotage Notarial</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f6f5f1; --surface:#fdfdfb; --surface-2:#f0efe9;
+  --ink:#171a21; --ink-2:#4b5058; --muted:#83868e;
+  --line:#e4e2da; --line-soft:#edece5;
+  --marine:#101f3c; --marine-2:#1c2d52; --on-marine:#f4f2ec; --on-marine-dim:#aeb6c9;
+  --gold:#8a6428; --gold-bright:#a97e3f; --gold-wash:#f3ecdd;
+  --chip:#eef0f4;
+  --ok:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --ok-text:#006300; --crit-text:#a52f2f;
+  --code-bg:#f0efe9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101114; --surface:#17181c; --surface-2:#1d1e24;
+    --ink:#f2f1ec; --ink-2:#b9bac2; --muted:#8a8d94;
+    --line:#2a2b31; --line-soft:#232429;
+    --marine:#101f3c; --marine-2:#1c2d52; --on-marine:#f4f2ec; --on-marine-dim:#aeb6c9;
+    --gold:#c9a35f; --gold-bright:#c9a35f; --gold-wash:#2a2417;
+    --chip:#232733;
+    --ok:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+    --ok-text:#4cc24c; --crit-text:#e07a7a;
+    --code-bg:#1d1e24;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101114; --surface:#17181c; --surface-2:#1d1e24;
+  --ink:#f2f1ec; --ink-2:#b9bac2; --muted:#8a8d94;
+  --line:#2a2b31; --line-soft:#232429;
+  --marine:#101f3c; --marine-2:#1c2d52; --on-marine:#f4f2ec; --on-marine-dim:#aeb6c9;
+  --gold:#c9a35f; --gold-bright:#c9a35f; --gold-wash:#2a2417;
+  --chip:#232733;
+  --ok:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --ok-text:#4cc24c; --crit-text:#e07a7a;
+  --code-bg:#1d1e24;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 16px/1.65 "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.masthead{
+  background:var(--marine); color:var(--on-marine);
+  padding:2.6rem 1.5rem 2.2rem;
+}
+.masthead-in{max-width:1100px; margin:0 auto; display:flex; gap:1.4rem; align-items:center; flex-wrap:wrap}
+.masthead img{height:64px; width:auto}
+.masthead .kicker{
+  font:600 .72rem/1 "Public Sans", sans-serif; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold-bright); margin:0 0 .5rem;
+}
+.masthead h1{
+  font:600 clamp(1.7rem,3.5vw,2.4rem)/1.15 "Spectral", Georgia, serif;
+  margin:0; text-wrap:balance;
+}
+.masthead .sub{color:var(--on-marine-dim); margin:.55rem 0 0; max-width:62ch; font-size:.95rem}
+.meta-band{
+  background:var(--marine-2); color:var(--on-marine-dim);
+  font-size:.8rem; padding:.55rem 1.5rem;
+}
+.meta-band-in{max-width:1100px;margin:0 auto; display:flex; gap:1.6rem; flex-wrap:wrap}
+.meta-band b{color:var(--on-marine); font-weight:600}
+.layout{max-width:1100px; margin:0 auto; display:grid; grid-template-columns:230px minmax(0,1fr); gap:2.6rem; padding:2.2rem 1.5rem 4rem}
+@media (max-width:900px){ .layout{grid-template-columns:minmax(0,1fr)} nav.toc{position:static; max-height:none; border-right:none; border-bottom:1px solid var(--line); padding-bottom:1rem} }
+nav.toc{
+  position:sticky; top:1rem; align-self:start; max-height:calc(100vh - 2rem); overflow:auto;
+  font-size:.83rem; padding-right:1rem; border-right:1px solid var(--line);
+}
+nav.toc .toc-t{font:600 .7rem/1 "Public Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin:0 0 .7rem}
+nav.toc a{display:flex; gap:.55em; color:var(--ink-2); text-decoration:none; padding:.28rem 0; border-radius:4px}
+nav.toc a:hover{color:var(--gold)}
+nav.toc a .n{font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--muted); min-width:1.5em; padding-top:.15em}
+nav.toc a.annex .n{color:var(--gold)}
+main{min-width:0}
+section{margin:0 0 3.4rem}
+.eyebrow{
+  font:600 .7rem/1 "Public Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--gold); margin:0 0 .45rem;
+}
+h2{font:600 1.65rem/1.2 "Spectral", Georgia, serif; margin:0 0 1rem; text-wrap:balance; scroll-margin-top:1rem}
+h3{font:600 1.12rem/1.3 "Spectral", Georgia, serif; margin:2rem 0 .6rem}
+h4{font:600 .95rem/1.35 "Public Sans", sans-serif; margin:1.5rem 0 .4rem}
+p{margin:.65rem 0; max-width:72ch}
+section > ul, section > ol{max-width:72ch}
+li{margin:.3rem 0}
+strong{font-weight:600}
+a{color:var(--gold)}
+.lede{font-size:1.02rem; color:var(--ink-2)}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:1.1rem 1.3rem; margin:1.1rem 0;
+}
+.note{
+  background:var(--gold-wash); border:1px solid var(--line); border-left:3px solid var(--gold-bright);
+  border-radius:6px; padding:.8rem 1.1rem; margin:1.1rem 0; font-size:.92rem; max-width:none;
+}
+.note p{max-width:none}
+.tbl-wrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:.86rem}
+caption{text-align:left; font:600 .78rem/1.3 "Public Sans",sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:.7rem .9rem .35rem}
+th{
+  text-align:left; font-weight:600; font-size:.78rem; letter-spacing:.03em;
+  color:var(--ink-2); background:var(--surface-2);
+  padding:.55rem .8rem; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+td{padding:.55rem .8rem; border-bottom:1px solid var(--line-soft); vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num, th.num{text-align:right; font-variant-numeric:tabular-nums}
+.mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.85em}
+.chip{
+  display:inline-block; background:var(--chip); border-radius:999px; padding:.1rem .6rem;
+  font-size:.74rem; font-weight:600; color:var(--ink-2); white-space:nowrap;
+}
+.chip.gold{background:var(--gold-wash); color:var(--gold)}
+.tag{display:inline-block; font-size:.72rem; font-weight:600; border-radius:4px; padding:.08rem .45rem; white-space:nowrap}
+.tag.auto{background:var(--chip); color:var(--ink-2)}
+.tag.humain{background:var(--gold-wash); color:var(--gold)}
+.tag.must{background:var(--gold-wash); color:var(--gold)}
+.tag.should{background:var(--chip); color:var(--ink-2)}
+.tag.could{background:none; border:1px solid var(--line); color:var(--muted)}
+.status{display:inline-flex; align-items:center; gap:.4em; font-size:.8rem; font-weight:600; white-space:nowrap}
+.status .dot{width:9px; height:9px; border-radius:50%; flex:none}
+.s-ok .dot{background:var(--ok)} .s-ok{color:var(--ok-text)}
+.s-warn .dot{background:var(--warn)} .s-warn{color:var(--ink-2)}
+.s-crit .dot{background:var(--crit)} .s-crit{color:var(--crit-text)}
+figure{margin:1.4rem 0; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:1.2rem; overflow-x:auto}
+figure svg{max-width:100%; height:auto; display:block; margin:0 auto; color:var(--ink)}
+figcaption{font-size:.82rem; color:var(--muted); margin-top:.8rem; max-width:72ch}
+.risk-sev{font-weight:600; white-space:nowrap}
+footer.doc-foot{border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; padding:1.6rem 1.5rem 2.4rem}
+footer.doc-foot .in{max-width:1100px; margin:0 auto}
+kbd{font-family:"IBM Plex Mono",monospace; font-size:.8em; background:var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:.05em .4em}
+</style>
+
+<header class="masthead">
+  <div class="masthead-in">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABgCAYAAACdSWXJAAAz4UlEQVR42tW9aZQdx3Um+N2IzLfVXoXCWthBACTAFeAiigtASdQuW7RQtDUzksWW5FafOe729Li7j9szAHtxt8fdx+dM93QPbWtIWl4oQLJalERJpEWA+4aFWIl9B2rf69V7LzMj7vyIyMjIR1q2REqWIfGg8KrqvcwbN+797ne/Gwn8AvxhZsm8U27fvl289++9U5r3Z/n3eY/B37OBQ+zZwUSUeK/R0NDUys7OyvZoblI3GjNCNaoohoAGEEU1VKszgNZobWtBW0sF9bkqapFEe8+ipNy5IJibnt7d0TX/cSBgon7lGx3YxkSkf973Sj9nwxKwg0APMwGcvj4+Pn3v+eMvoiXUN/T09mxvzI2HXe1BeylUoDAARzMAAcQAJzG0agBgCBGAggCsE1BQAlragXqM6nQNWodjUWHBy1F9+j+HlVVBa89qVS7THnMd6X0z/byMTj+v0HD06FG5cePGKH1t716uLFt45vfHr75ZXNq36EsSU1BT51GdGkW91sD01EQ8M12lajXiUhAhDAIoKkEWy2gpF8EQiGJGvT4HkUwDcQ2TVVB7e4WL5dawq7sDnR1ldM5fAdGzGij0Ip6tP9Zou+XxNmtwAOAjRwrYsCEmIv4Ha+jUg4ke1vbfHYMn991VbAn/69z4W+HC7sIS3ZjExVNH1cDlAT5/aZTOX50V565M4+zQHI3MMFqLAn/yhw9h1bI2xFGCICyANACVQKsEql6DDIHTFyfx5R3fxcBIDat6JVYtbuP5XQVevaiir13ZjeUrF/Oy9TeHk0n7XOeSG0Zqc/qvkuJ1f9zeTm+Za9sugB38szL4z8zQvHdvSJs3xwAQM388qI/fcfHMGx/qbYturw4fR2NmAm8deis+cHwQRy7WwqMX53B5XGGqLpCggLBQQK1B+OxHVuHxf38fhGZwVAeSBlSiwEqBmZEoRjEk/F+PvYJ/+8RVyEILtIrBKkZACSphguXdhOuXFXHL6tb4po3LwnXXrUXP8vWYiruTrmXX/8e5yb7/3tJLVwGAd+6U1J/F9V/oZLhz5zZJmzfHzNw1OXRpy+TZ55+Y18OFluoBHHztiDp7YVR875WL2HsuDsfqAWYaEkztKBRClNskBAkwEToqCr+2tQ9BUsfcVBWSGMwarDV0opBoDSEFrgxW8f3XhlEod6FUCKBZgzVDaY2aUjg4HOHAlRq+f3g87HtunG9b9Rbuv30vX7NqkeyqzP5uUfY+NDV04sl6ce1/pk46vXv37mDLli3qvfRuem9Dxe5AiK0JMzB44dw/0/GlL/aUZjZcPPYCj1+5lDzz/Cn50okZcfCywnC1iKBQQhiECIMQQhAYBAJAJBAlGh/c3I2v/97diGcmoRIFYS+XtYJSCkmsUCyFeOKpg/gXj14CivMgwNBMILDNtgyAobVGFEdI4gg6qWHdAo07rmnBB29sj29/301h15J16Fi9BVcuz/T3rb99l7mfvSGR2ZW/MB7tX9TAhcOPLOgY/vLo2f3Y/9xr+uW9F+n7+8bC184rNNCCMCyhvb0IQRJkLAswAyRAYAgAggQ+dNtiSN1AQ2kQEbRS0FoDSkMzgwiYnp7F918fwpxqQbsQUNr8PhM5T2JmEBGKoVlY5gpOTzRw8uU57D5yJfzEW1P6w7ed5BtuvSwKvdd+fW7sxP9GlbW/RkTnf2FCBzOLXbt2EdHmePjc6Y/Ojb/xYIc+9vnje3bX9+87WfiLH10Vr55nzCQVlIpltIchmAlCCAAEsgZhWGMDiJnQ1yPxgVvmQTcigASgbNjUGgqMJFEoFgKcuTyJfWcTlEqd5v3Abp+mRgYAIgIDIAQgwSiXBJQOcanawJ88XxcvHD+NB06M4YPvO61vvS+5Y2b26rOcJL83OjHx9d7e3hlmFu8GCgbv0siSiNQAc8v02OW/mh3cd39PYQyvPbVbfef586XvHqji3EQB5VIFbaUSiAgEghAEzQxh3NmYWQgDcAmI6zF+9UMrsHp5KxozNRBraGgws/FOBqQwReTOHx7HaDVEuUXYUEHp/80mIfMaMwOCIZjA0GAICCFQKQXQuohDQ3O4+NQkjl44Qr82Mq4233n7yo6e1j8O0XUAoH3ADjAz/bRxO3gXRg6IKKnVeKUcO/bJeObM/TPnX+AfvrBX/8XuIfnyeQKLdnS0lUAkzI2lhk0NAWNsnVYRxFCKMb8zxAfe1+cgHJgBBjQDIAHWCoVQ4vi5Aew5MgsR9oKgnWE5NSy8sGT93fwtYDAiARAQIkBbpRVzcRHfODBDlyeuyF8deo4/PD1R79v0sZeGLx95kui6B5n3SGbWP41nB+/Ck5PBGq+aGT60uye8uOytN74T/eCZg+GfvjAtT40VUKm0ohAUTMQlMlUdsrhJJAC2W5uzpJXEGrdt7MWNywqoT1UBImjNYKVtWCAozWgtFrHvxCQuTJVRrBTMIrh0moUMMJnPNxdgFgHamp3ApAEIMBPCEJCiA69cqOHK1CiNTr5e/uTkDK+9/f5tl09UiWjrNgbIhnz+mRraxio1Ps7L5PSxPbXxV5a+undP9N3nThUefW4WE1Er2lsrAEkwhPVmuFgMFy3IGjetrQFmQqUk8LmPLUcp0JipKoA10o3ADLDWkFLg6vA4nnr1KpjKJlGytobUNkRZG6fXncZvOLc3xocAWJvkyQQShEqlgiuzAf7w+1MYGNtPX1JxdP3d8jPjFw88gaU3fRbYI5i3/ESeHfykRj569GjAzCvimfNPz40eWHrspaeTx588VnjyCCGiLrS2FgFYooxE5mM+kGQCa+0BTAJII0qATes7cOvaDtSrVRABSmuQZjATtDZoo1SUePnAebx4ZBrF9hXQWlnDkV0wEzJcMrRoBmRDijZXpW0AM6GMsp3HhFKR0Ii78eevT6NUOlH4An07Xvt+PHjuaL2wauPWBziNRH9Hv/6JacmNGzdGQxcP/jAZf2P5/h9+Q33te8eDb7xJiEUnSsUSwBKAMBvTuiLbxJRuZ2YNZo3MKsYYrBQ+dscCdBUTRLH9JQhoCFuEKGsojT0HxjAneiBNhLdezGajUNMaWkzNnOaC1NXN5xPDuxYCkQQoQBiEUEE7Hn0xwle/fSI8+dJ3o/mF05+eGjn3BJiJn90dGJrhPfToI0d2Fogo2vfcXz4oZ99ccuDlp+KvP30q3LmfIEodKARFGwvhLjjdnuQM7Qc2stDZxM9GzFjTV8GHbu1BEsfQWlkPNmYiABoEQQInL4zgjdM1lIpd0BaJAIDO3tn82xpQpyHKFTA2aBFn0BIW0YAMAjKRCIGUiNGGx16aBPPRwhcDGW/c2vvg9ERLsfMDH/y0VkkAIHlPPJp5p9y4sT86e+S1z69eXHri0sEXxNe+dTD4+l4FKrQbI9vkkroUp9uW0ySUhmUG69TVCKwZzIBWCe6/fQGu6WvFXLUGQBs/5ASstf05hpSMJ589jjOjhEIgXYJzHsyM9GORrrmLzxnUM9cncjuNSAAi+75JKxKhEIioHX/+ag1P/vXx8Mxr31LJ8Gu/fPDc2CoiSv4uDYu/1aN3794dCHFfMjg48j910qnHLr3xrP7h7jflNw8CkehAOSyYGJjbswSwtjE6jZNwcZGhIZB5qtLAvI4iPnX3IsTVKkASWmlAK7uVgSRRCAKBsfEp/OhYhJhaUCKGZoBYg0EGPpKN/xnj7MICp2HK7o80f7ALGalf2J+3IUkzoRAGmIs78NgLs+huPUifKpaj5Rt6nq3X+aPF4r7TGzZsoP4fQ0aJv43mHBnZI5gZycT+3xo7+ax+bs8+9fgLVUzrdhQLRZBjIJozA7kCAzBerLUBVwQYlKANdq41NG6/tgPrFhVQrzfAMIlPKQ3FysA7BqQk7Ds2jFODGqVCEawM1oKrLuEW2sFoG4PZT8iUxWsmmCqVzPW5RXH7BCAhAZIohAEuTJbw6J4J8eprB6g0tW/5wIndDxBtjletWiV+ao/etWuX6O9/OBq+cPjPg5lXb3711Rf56y9NhqdHK2hvK9ukIcyNkC1zLdDkdBsj7+gA29iYJe1KEOMzWxejtcCYqikAhp0ziYqg2YTA6ck5fOeFi5iJy6iUYXgPh8AN9POrTbCHqVM6hVxqtN/XWeWYVpM2zGm7SAS7MyFQLhdxaCDBrhfGwqWLnlXLbi7/u6uXL1xe3Lf88bRS/ok82nZFeHzo8h+34uJnj7/6NL753BX56sUCWloqAAUgEiDKIHHqwZwGZUqjCLuaxDgSuXK7Vk/wvhvm466NnZidmjU8s0rMzWsNrRSU0pAEHD83ihdOxQjDsonbyAoe4nSbp9eB7FrAYM0uTJjrIbBdcO3c3/ynkaI+sgWOoWfB5mZlWMaPTig89eJZJKNHWc6c+FcW+fDfhEL+RkPv2bODHn74YV2bOn791NU31ev7zvLTxxiaWhAEYS7xuKIj9Vrj1tbDU/xq+AovJ9msTrj7+na0BzGiRmTLZwMBldaI4xgqiZEohRcOj2GkVkYoKSsm08/0wXrqnZR9nX1wVo6nRZSDezY+E7MfZezPwnl1GEhMxxV850BdvvHGmzoZ2rdm9PKprzFzCYB4J2O/o6F55065pXeb2P3N//oZPXZ09Ws/2o0nXpoRI9USysXQ4GQSJtmlsc57b/KKhQxUsUMOKU6IEoW+eQF+6c5ezFVrICktFWo9iEwsl1Lg6uAYdr85DimLDs2wlwtgFwcWS7vuL2XloWbtMYZZ6Z/RALaYsp6cFrPGo83vCcvblAoFHB8p4HtvjMkLx16TpcaZ/3k2wmoAvGMH/nZD8/btgvr71YvndcvNm6/fNXXlrXkvHx4Rx0ZKVCyXrZHJZfF0pVOWzG03h+xs3HYflWEvFWv88t196JvfiihW0EpDJQo6iU0HJU6gWUAK4LWjQzh6FZBhaIoXZxd2SIH9XJw6gGX9MkrJs6nFnJQuFvkbI8XfyL+p3T5EBJYlPHWwgUOnRnngyNN65vKhR4hIb9myQ/ytyXDXhg3EzDQ+cOrfTJ1+Fa+/flg9eaAhY9GBijBJQaTxzRqSyBWzJt5xhkDYwjr2djXZDN/eInHXjV2Iq5NIVAKCsL+vXTlNYMzMzOHpfeOoowUtthBJeWfW8EIUQ7NwCdehOWtBY0sNYsqKFEsVEKhpBWAhKzzox446YBBCKTEelfD9faN03cpTem3f4Q1T41Mf7+ju+F5zYhTNXZL+/n7VqNb+RYu+8r8OnNkfv3BkWp6ZLKNcKLrS2pTQJgaTM6zbq8a70o2dwlZjEUNMCkK1HuO+mzpw+5oi5mpxVppr5ZKg1hqCNI6eGcWblzTCsGCSmls0syhp9DT20e5r9ipUeDbMV4Xpe7y9w5feB9vvm6rRY6pAkLKI186BXjl4kdX4ifbGzIXPM3MbsId+fOhgliOX9lV07aI+dfwC9l5ghGEFQkhjZBdnyfEG7BKFh0PZeLe2F8qWUCYBJBroag3xwNZlkATEjQTQgFIKrE0RkiQKSjOUUth9YBAj1SIKUtita/52mIJ1ZhwH0zLjs4vD6dbP0BFpbUIRc1OBzrmEmRJVWXgiMAsEUmC0VsTr5zjY/+oLSaExtA3AUqKtCTOLt4UOZhYgSsC8sKWsfnPv977FT79ZDU6OBmhpCTOsZvEnCWNozRm6SHEqHDcBW85wrm0VJxpr+1px4/ICJkfGwCShkgSKNaQwCVFpRhhKXLo8gt3HGiDZnhFD5EEXYgvPdC53ZChCv40y9b4JJsplLhf0vF1APnwF25BiQxcEZFDCmxdncWlkjgaO/bWuc8s6Zn4L2PFOHr0DYBZXzx3657XBw52XBqdw6CqIZNmS9PYmyNyc+1C79RwC0Clc8rO7jxKMB/7K+7vQVVRQGmBOoKx3xnECbbkNSQqvnZjE+bEAhTCwBs7eL2UHhRCuEGEIH8DZ5EY2hJFrBHCa1EG2HiCvEcHpj3lezQ7758K5BgIpcGVG4uDZKg1eOC7mZkf+GxEx6GF+B0M/zESkSrLx61NDZ3Di7DidGxcoFw2cYtIZR88ZjHMsnL0I8kMimzCQMQwajUhj3ZISPrllOaqzc0gUI1GWNFIaWpsChQgYG5/BnoMTUNKQ+9BNocHSrToNZ0wggawkp2yHuRzg8Rg+8cReZkkdVrsYTl71lRVbacFGBCgU8co5LS5fHUrC2mAXM/+O3V2BM7SJJdspjmsfnLp8UJ9567jec7xOMSqQwqIGnXIB3lLaran9itCuhGst2ZtLa4pEJXjfDb1oTSYxV4+gVArrjCdrzUg0gznB4VPD2HeREYahTcDGiNphbEu9pp+vFZi1S2XkJa0MdaevaC9lu9uxyd7vopuf1C7h5inXNMxIIXB1JsTF4ZquDp0onti/Zz4R8dGju0Tm0UePBkQP6yunD366Rcz0njpzNTk7USQppMPNlHLN6Q2QsB+TZmKR3XAaXuBRmMRIFNDTJvHRm1sMVlYaTGz+ZjYkktZgnSBOEjx7ZBqTURmS/FKYm6hN/z+DglJjsLeb4PB99h5Zt5wdgGawC33w0Al5/cd00dMijUGQRJiuC5we5vDMiTdVq5jsZ+abN2zoj5lZmHLx2DHFzEuCxpU1V88e1RfGIaejAIEMXNwir8TN4RamzIM4I2WEa8KaGAgQlNK45/ou3Li6DdPTs1BaQScqMzAbWAcQLg9NY/85ZSCd47Qzkh95n/LK+nz8cpVrM/XPHtbzvJ28/zXLuTLKl5ooVxs+OMTJQabBoVFGbXRRrRa3pXISIwrq71eDg9N9ixd233/+9El1ahiynoQIHKfAXqltL9pld85QJ6UlbbbN/e1bLEp8/H3zUZ+ZQJJYCGjjq1YMrU3Bwazw/MEhXJgQbrHhaTYc+8NwPHiK3gQJhzI8NId8b8fTe1itCWXVjd2NbMOS93IaCpsgZGrpMJQ4OQyMzADDl0/y4MlXypYGhcCOHUxEEI2L9144/oYemY7FuRGNsFCEnzEcA5cjxX2vyfAngy2vkG4sRj3WuH55BTesKKA2W3fx2HESDCilwawwNV3Djw430NAlSPI65zkyiPJebA2vPYzvPL4Jv5kkZvkatyvS2JyRSr56LytgPJt4+0AzEAhguiExOBvKgfPHqdTa+hgzE/X3K0EPP6y11tTS2vrvxi6fEldGIzE4G6AgRVaeWmLcGFZY7KqzooAYDprbizeQ1iRKs68SfPSO+WgVEeZqkYnJSYIkTqC0RpIk0JoRSOCNt0ZxYUKiWAwz1MJwecKFUJHKvNjhWkBnlWuu6CCPatHOQ5zGxL1pmg/gWGhn4hRliKYQmnbRQdAIcHWKkdRnMDZwrpBKAhy8G79yYrw2M4GLozFqquj1S9jdA/tRkZpaFsi2qB/fBIBGlGBNXyvuvraEqYlp63w2ZGgFrRQSW0XOVet4/eQ0phoFSCGamDVuLmPzNJH3T2q2BJAX1uQwRz7xUNN7sactYAivieHnjRQCCgxOMkQY4tS+p5N0PscZenbskpyZmsGVCQZZlaeJw6ZE1TZ8ABkHmXqO1qYt5UglyozDlvi594Z2dJcVqrW6IZVsVam10Q2pxEi/Tl2awu6ThCAsGNhI3LSFverPwbHMDUy3xyaspgVhV+RkxnNcR47StXHakyWw/RmRSs7SRWHKekWWZBudZZqdraqFPaX2qYnhh3xD09TwGdQbMYZnbI/MJop01cir6tIk6HMDmr3GXBPcbi0T7ruxE9XpCUAIx2UkiYZWGkmsoBlQSYzXz8yiGoWQIutFstcPY2boXIWcL8eZyOOZLaPo8eTMTTuBPTTRhKb8jnqG4Tn/6eQVOvYzZuoCk7OJDjgpTQxe+LgzNBHpaPwc12NGNQ7MqrHHwJF5Q8oxWnnxmSDrBU7fxhBkkuDdG9uxaoFAtRoZJb5SDiJpELStBIdGp/HqiSqUKNprMFYioly4IC8MZNAzq/CIsgDGWtsKEhkudnwM5wVUnP4s21jPrnlAbkfn6V7Hy9sXQykwMcc4NzALHVWhk7lJZ+jhy+d+f/mqVd1XhyaTucj1R3zda64BC0p1EpRBDv9GbLJRmlAuAB9932LouUnEFjNrzQ4eaqWhtJEM7DtdxdHBEMUwgHb4LGPo/AZqDvK9A/njX5MrRbyamz09iN9b8+Q1mTgypR8oz/9nEJactwkCFAtEXIaQhKnxsYCZDUQ4/9bLS5MokpEOWCN0kInzDRHvksgJx1Oin8kPJObDG5HCmsUVrO2uYWpq1iVJlYYNbbkH0piZi/H62QgJlUBeojJOlts7jq9ICXnf6K6K9eJ2Pl4jZ+wMMXhoItWjpPpAnYlqXGcd2e5x8kl7nbECJuqEqFHHhRMHIiIyoCyIpxpRrYZaDEQKrpsAnZWrOi0ubAUHF6cpY7w8sWYaTj5xazvaixpRpK1g3whXFJvIr7SGAHBhcAZHBxiFMLQzKKmBvKKHMtEN7DVqzVBWk5f+O6eNBnJMH7vq0esXgnP8iLYhhHyZhBf7fWbNB0VpgaaYMDbHwfDgFbVq3YYHmHmrAIB58+eRUgpDY7NoxFYbwXkQxK754zN3yH2g329LEo2VC0u496ZuTE5OQ4aBuWDt9QytlECpBLuPTGFkNkAgJXwukogzj+aM+MkKFvb0ipwnkXx7p7GcmzqHnBVNrjfAXizijJAC5XVCRPT2cSsrzGwkgubm6tze1tENoEekXhZFDczWFJLEg+gpme95t0FD7Kop12WmTG8niFCLNTZd04JCYxxRlGRowShSoLVGosyiXhqaxb7zDLgOdxpWNDwZP7I06y297U6DkCO+sjYVoLX9TZ0VIM6ArlmQ7gpt18LjcDzug3PCvkyVnoUj855W/wOlEgYQCwCozkxDqRhs9cyCPO4iJfg9gN68qnkKBkgUo7uscf+NLRDQtiWlwSoNF2a7m5vQOHi+iqtT0rSqGF43JlvIDNRlHy6I3ShFvtwg23D1GkNO0puVluSgqd9doab+ImdvmUuYHuzzcb5bbMtq2k8VABBFkYVN5LwETlPXzNEKr6vsiQdTxRABtXqELZv7sL6vhNHRaceVaLDxLq+hOzlTx+unI9S5CEFZtzyXfNknkjin68vBO48UggfeXJfFyyfwivf0IzXrPLOR2sRTYfkdPUoXWnM+nNqUrZVCkiReh0WGgCAQVG5rmlXxq332kkgqL0iVUuaitdIoFgu4ZZnGzPhQjkyPY+26KWkX5dTVORy5CpTCIIdu2IdT5FV07yxfyw0DGTvqrOBBBhXJ7ynmOt5oag/5IamZ0xBN15LjZMEAQml2XJKorDlbqLQioRAFqSGaOMZUt5HLBGlh4KRg6XyfGY9Yv5hw2+oC5qarEFIiUcouDkGSQKS07doovHyyjjlVRDGgLO6DARb55JMuKJqloRo+w5LtZDuXkna9rSKVvH6cuTfOErkPaZv5k3QhCZlWjzPmj1zVBhAr9HaECAsBFAQ7jy4UWpBoYF5biGJIjgJ1BbhuUgClOmQvwzvugDUeuGcxyqKBJFEWfgFapaPC5qalJFwZreHIZQ0hjZaPvBsmX6Do0ZPUrBxydH0eGLi+IfuCy3wUpnT1yIuylCepfJLM3oGDgUQehPRIYUnA/LYwXrx0RXDl/JmvA3hKAEC9FqkoSrBmWQ/aKtKWyGblOOWMXbs909SZD7NfC4PBF3UFWLeIMDM9aw2rnHxAKUYca6Nj0xoHzs3hykyAMJB2hrBpW75tPC5NZMLrAVCO1M9VatlMh9MDkqfRcK0rZg8ystfAtTUEPK6WyZ/vyn2dOrqAgkhmEQQBglJrjYgiAQCV7iVdxXIbygVCUWiPhOGc4+Q8wTUrsxWNogT3bmzHkrYY09UYWhsYR1ZKpu1FC0kYm43x0qkIGgXnh2x3hEu2uYkUdovqE++u/+fQkEd/+lVcTpor8uJSEl5wEI6JTv2fPDGk5jy96pf1BEaiFNpbQqxY3IbxySqiWJELHV0Llz9WrVbnAC1LocoRXGnTMw0Z7H9AJlGCUowFnSE+cFM7qnN1EJmqTzMciQQChPXAk1eqODcuUQyl18XWDkoSURM3TK4fSE3ezHZqNlVRZV0Q/TaM6/cQs+lDdlUnbFkt7M4R/qy6BxXd+xH7UngopdHbUcSyxR2oxhLrb7mr5Azd3dv35IWLl2bbWlvEgs6CYczS/nsTx0VOfCIsNW08LVIa1y2rYHF7gonxaRAJr52VGUFpDZXEeONMAw1V8Oud/Nw2a0cEmQaInQHU2usRemU/tIVbmWHylbjHgxA1bdP8SQhsBUHUJFnKN26tjDdVlrqwJdBSBAtWwZkz5yYWLl37276uI+hdfTtrFaGjpOwgjV9uw3Wy3xb6OWu337ehjLhWBUMgSWKnoxN2QF4lGlIApwdqOHAJkDLMuIJUNZRrj6Rz48J9shCUY+Qol5jhSHyQX8nnm8ROJO9RB+nAkc/+pxMB/now5cdFsvSbQcOetgCApkVrbklaWlou+8S/Wr/pg11JFGFpT8GxbwS/KFFgVq7LkMYsQYxapHHjijJuXlPG9EzVNQJSr9KcdpaNJx24GGOiXkAoPa2xTosP4WCUr3P2h3zSwiLlxMkNYTZrUIQdqfD10Tof9tKkn5ZrXl/SR1SZI4ic1CELN3AqqYXtjLm5OaxYd4tOhY5uDCBh/qvO3kVY1JZwSIkzCtk2jl8waG/LamYIKNxzXQtkY9LxGqmaVFmJV6IYUgCT1QiHLyUgGbgOjul7CtcB4ZwyxI5re1ojkW/apaWujb1256XciFfK55r1HroQHt7O6jovP1BTcwB423hGmrcCCVy7WEJziN6l6zrTNxW7du0SRMRnD+37vUrnYr24Q+vlHRESFrlCifkdqiDSiBOFxT1F3HZNAROTs2b0QLNj6Yx2w5L90Dh0rorjg0AhELmeKnGz3ExnhuJmIYuvfyMnVSNbgBBxbiw6HWtOi51sdqVpSguZ0JH8uZymeycvuWqnMAWUFuitaFzTV9Gy3IGx0ZHfljLg7du3C7Ft2zYAwH39/3hxa+9K0VYh3HvjPESNyKkwqUnDwen8NYBEC9y1tohWqqIRK3vMAxxRw9rIdJkZ1XqMl04lIFHM9eyQH2LLdRrYY29yRThRnqb0dSXu9/Xb6UzydNzIhjfzUNxWgLpZvJJyIj5qsYsigEassWltFwpocLFjCVo6572stcKGDRtIANA7d26TpZaO/RcvXf1+UGqTfV1KtZelIYDsOFi+7W9uQmlCTyvhI5s7UZ2rQwhp9BAp78FG/6G04VAGJmNcmhSQMgBrytgxTwaZFUXNE9zk3s8NHuVUR5yrUNHM/TdJvbi5IvBIqnQnkj30KuuT5tthOWUPgIAUbr22C9PTk2iZt1rfcvvWVgDYtm0bBBHxqlX/UhDRyNKN9x0utM6nnlJDd7dKJMpr+3iFQxrXapHGLWta0V2JUI8Se4iJhqZsgFJr2xjVCi+daGBk1kjNdFMUytSoHmfIeR0GmkZ+3KLkhngs3ic0UT7ctHHI09r5Q6d5BRTRO/x+buaO7Jg1o6e9gIXlatw1f2UQU/GPALy095FHQiJSAQBs2rTJnrqIlpcuvpJ0Dp7F6q4EF8dDBGlvjrNVFWTmtwuBxh2rAyT1KqJEQ3qKoGxUQaAQAiMzCd68BBQKBa+SI4/vpuwlf+aP8p0TRx2lsdWNIOer2KyxTBnPnPXAbBxPvydsExaZ2L5JA57qetOzn5rFYolirFtSQmehjlguwd1bf7lBRAkzh/iN33Byg9iu5O/IzmU1lmH4S7d36kqgsmKF8jOEjVjhltVtuGtDBeMTcw4zw1Kl2laFUgDVmsKT+6sYqgZWOOlNkDs4ZaBTxrDlyfx898STe7n3IG8n+6U6++HbFlhe974pEaaFkT9nQU7pTy5BU+4UMkZAwD3rilpKGUZB98XO7vnbTZ9XxDml0naAiGhaB5U/aHBRLe4EX9dXQKwp7Tt7ujSCkIQ71xYxOz2DKLHSbq0RpUM+2rBYA2NV/LenR/HcSbIS3KxJmnXMZS50OJ0E+Y6fIQbyOxkkbAGSn1FJ5cLNk1uksw4y+QUZ/CKGHXeRlfCUw9bpZ0pixIqxYp7E+67vwvBkTV172/2CiKb8JOoMvcO+cOf9n/3LG+/+jJyeGOTNqwKoOHaDQam5Ewa6WwjXL2ZMTEw7viFl6BQzKkWJsdkYj75QxeGBIsqlsmsvpfRkVgpz5pXpkGgK8ZyxhSfrElls5XyJ3AzDcgUMI9dTfIcOQtab9IaNQKYtRZxlKqdvEQTFhHtuXoB4ZpCXX3eX7F6w5p+Yt9tO7zT+xjt37pQA6qWela8UO5cEd11D6sZlARqxdjcmiRElGv13dmJBB9CI7TFqiTG0IAFixokrs/h/fzSDU6MltLS0mEKCs+2dRQar3bPVJxHn57WRnlLj8yHez5AJRMKqPAUBklJFUuqVBgkJn9a1SirzvVSyZboiUmSzKcKMmYKs/ICIIYQJJ4IAzRIL2iTuXS90PQZVulfuWbhkyUu83Zze+7bxNzuZL4jo8tjghcda5626WY0dlvff3C6PXJ22bSAg1sD8jhA3rChiembCEkVZuygINI5cmMOfvjiHibgF5XLJHuYns4lYdzwbwM7LKadlZs3pOGHWMyTKafxd+c0AhHQzJ2mnQsBHH7YtZ2lbovSwwkyz5zqIOt9RYW/qwThM5p21RoT/5b4+LOrkpKpXF1Ze//7niGicjxwpEFH0jiPKRBTv3r096Fm04o/2/fXX/+XRZw6vuG4R6772RFydDRAKjTghrJwn0CGrmJiMEEgJZadZAwkcu9zAn7/awFTSgpZKCZrN95NGYvl6yuS4yPcCyVqVOGW7AGH1ecIrJNLTDwT5ONqSScJKHvw4zl6IEgSGsntF5+a7mcnrC1rje0gqzQ1CkNsRxc4C7trQyoMDF2jNPb/cWLxi/T7Lb6gfOwu+Z4shd2+44+P/fOz83m+NnXmeH7p/Pv7DN0cACtBSSPDr9/VCiqrTZ5iLVPjrg5P44VFGTVdQLpfRiAmSGMvnt+DOjZ1Y1B1CyCKEEDCHuphpXEGEIJAIAiMXNjdCEFJCSgkSBCkFpEzJLg2SIcIwgCSCDCo2CioQlLlHnViq1eBFQwOY15k1iBPoJILWiTOwUzspS6JpX8JhixcVQwhACnMdkhjFaIBbF18XLr3ujk8S0Xd37twm+/t3/XhD78AOxnaIoFJ5Zv7qzfsGTr120019mm5YVhCvnIlx9/oKFrcrDA5MQwgBDUJLAdhzrIbvHGLEVEEgy2AtsGlNK+65qRe3rg7RXVFQUQSQPZ/fxlbAnJ3UPNSequ1lEJiDX60qVCmGFBKCJFBPJWZZKjTMnjC6Ea28llU2vkEi7conuQEktlrtJNFOXmaQizbNC49FLBRDaJVgydL5+vz5RCxcdO2+hUuu2bN3795w06ZNSbOE6W2GtrE6IKIqM/8Xrg4+dmj3n8X/6L7F4uilYdywtIC5mWloCAREiBsRfnC0hv/xpsJcXMaS+W24fkUL7rq+EzevLCLUcxgduoLzjQYCM7RoEpYQ9kBYkXWSLK0qhDChQgAyMCPL/uA7SDpBYia3hUuqbmabKKd7TitJs2immkuPzwTb02vsAd/a109bhkpQNgMTqwjt7RUcP3Zerd304WTThx/6L0Q0a453fvtBse94plIaqwE8EbQvvSWo9Pzmom6hf/fBBWJpR4QkAgqFANAKf/XGNJ45orG8bz4+vLYFv7J1GdppGvHcGCYHEtRqdQSFAEEowRqQQkISQ0hpGTVAejOLPocuhXCchnAnjqX9WeG0z2lyMhUrZ9WdTrslZDs+7MaoYcOVUrGrD4zk1raykIlwNGsEUkBrDSmMcxSLhHJJqEpbdzhv9R3HyuWWJ/bufeRvPNibftwJYda7i69874+rrz7538U9W26lsZExDA2NYWx8Bt98o4qLMyX82tYVuG5lC/paI9SqNYyPjkNbTCyEdMWBlPY4YxhPdawvCVcUMRhCmFMDslMXrURYG1wb2K45aW2P1cyOqmB7FhMRQaWDQZyRXAQ7AWwHf9Lkl1a22rbb0soWVkUb2CZFEEowa3T3tGPgyqC65vYHce+D//uvEtE3ftwZ03/jKWFExLx3bwhAX3PLR/4VVS//wYvPfrsxv7enWJudwktnEmxcuwgPf2AV4qkRzM4M4dJ4AwSj04B92IHWynhT+tyUVH6rtfUec8SwYceFw7lKKxsjCYKkOd5YmC0ex8ocVW/lEEIII3Bng3Fhz6ozzQeyTs/2/A+yjQuda75qZa7H9SE1ZyPZJKAsnVBvRFi0uBfVmenGuhveX1x128d+m4i+sXfv3pCI4p/ugMFNm9SuXbto27Zt3+bb+7947viBdY3qRLL2ps1B1+JxtIcKU1cvo1ozc4NCEoDA6c2MzMzCUm3EjVKaE2KU3dZCAKQZJKQ9O4MBoawYnKx0zHZ6lPl9TuNrSmUqbWfAzZhGelymmWHiTJ+SznSLtMpUORl/qv1mzggrIUwylFIiURrlkkSjUddU6CquubP/xKKV1337yJGdhQ0bNiU/9bl3RKS3b98u+vv7TzHzPas3f+rVEy/+xcqxwUEdz9XEcFw3K88MIRhJxG4AKD1zND2pEQBEkh7+xAiE8OhOmxyFaRoIwS6OJonypAdZsaKZzYy4HfAnd+CJ9WTbQmM7jUD2cxLr1UJkCxEn2lK8meBewwzxg83PggnFAOjbdC2PXB3mpRvveWvR2ju3EtHQ9u3bxcaN/T/2iOO/00mxzLsDoq3JD771l0uDiYM/PHdo9+p5vV1y9/6r8tiFGVRKoTs/LtF2FJIzPbWy8Y89fQh5RzU46lKKbJszu5MLyJ5GRum296s2q04lSe4AV2HhG1RW+aSLpXQqcdMASRuP4TWT2TUZUoav3lAoUYR/um0D4pmB+p0fe6i04b4vfywslb7PfKRAlD0x6ac+m9R49taEjxwp0MaNlwYun/+WEPidq8efb9x4y3Vy14G3MDKVIJTWs9JDGtLDRZg8naJ3XLbXPGVrcV/9nJ0Fwt7P2uPSPO/NdVA8Hll756E26SacLNkchy/9TqQ3umAKJ60JLQXGP/3MDZjXVo06r9lSmr/+3q8GxeLLJodt+Ds9PuQneg4LM0sSgTp+8MXHTz7/+OcwfSaelgvDf/0nJzA0lSAMCIn28S75g12GYPfZOjT35LxzNXIzgfbAk3QLkNecdrKI7L3Im+/2jvhv0mlS/pQDT0BgDtgCtBZoDRV+94s349ru6ZiCnnD9B770tSVrbvkcfsI/P+lB3Zqf/d3g2pvu/vwtH/nSV4P21WFbdCX6j19ej2XzyogSaU55pBCgEKDAKEWF+ZogQRSARAAgBFNoN1UAkgWQMD9L9ndJBIAwfxOFAEJABGAEZsSaAjAkGAE4/ZolFAtolmAy3zMFTgAICdhrYATmb5KwfIA9BjSAEBKxkuguA//6Czdgfc9MJGRHuOZ9D351yTWbP7d37yOhfzDVe+7RTQukzxx+6dETz3/t16l6Oq61XhP+H48cw8mBGkqhsKeDZRwzezqI/CBo2rUwv5MydUzZGSHp7EnzAYFp/aWbvDiHv51CxZb7nDUL0tDknngBgpBAFCss6gzxW59eihuWqhiiK5x//ccfu+7OT31hOyAezoZxf2YenYYQ3rv3kfCam+79wrotn3s0Ka8My7Wz0X/40mrct6EdiZaWpcv01IKEdypA1r7yuQgXbpwY3m93iawZSrYrI6SBkNTEYDuZmHfieSrvsic15KdwzXsIyag3NDYubcF/+q1bsX5hLarH5XDZrQ88uuGuB76w95FHwh1vm2X+2Xo0AGDnNsj+XVAnDr74Jyee+8t/VB85lCxctUb8xbNTYueeAcwlQCHInrOSDcwLR5lmz2TJa+Oc4N0frvcIoOxJQcgOYrFHPfgjb764MTeH4o9kCLP74kaMT9yxEL/x6ZW6MXxGl7tWBAs3fPirG9//qS+m9/rT2updGZqZCXv2SLrvA8nk8KX/7+wb3/rCsZe+gUWL5ukzU13i/951Gieu1FAqS1tCc16k0jS69jbRDDJIR/D7hilU5OxkSX9ELnuKgt09Ii8Bs3x4yhhGsUZnReDXP74Kn7y1VU8MXhE9S2/G2rs/+2jP0g0P8Y+eCfAunwb3rh7hZLkQtf3/vDvo7O17aHZ6cnZ2Tn9s4Ogzq1d3DMZ/8JX1weNPD9DTrwxijgXCgJzA0Ecj7gSFdNSZ/QF/cgd/Z/OYlDuyx4/R5D29KMPP3NRoML3IOGGEBNx1bTs+/4m1vKa3kYxcHQg7+jad2fDhrzzV3rXgN7dvv+ddG/lde3Q+jGyT/bt2KWZefObN3c+cfmXndbPDJ3nJypV06CLwZ89cwZunp5AwQUo7Hpaey5+1PD3MrTOPJS/BefJxSvGyf4hUSh5R+uAzzhg/2ypLEjOPvnJhBQ9sWYJP3DEPsyMXWZYW0MLrth5b/v7PfKiF6Oo7Efh/74Y2u908ao+Z589NjX7jhe88csfoiefChb0VVejuo937x8R3X5nA8YvTiBgIhWH0XBup+dACFzIod7yOf+DJ2+N22gdENrdoOZGECUhiLOptw0c3d+PTH1qtw9nLPD4+KVsX3RTf9KGHXu1euOIzRDT8Xj7L8D03tI3bjipk5o+MXjj8vdd+8LioDR1G97yOuI4WOj/dFvyPHx7H/nMNzDUiEBFkEEKQziS1XgJznqzNs61SUtXsCXJn/QuXCM3vMxNUnECDUQpDbOwL8ZGt67GxD7ygtZHMjI2HqrgEG+/t1/NW3vrxcrn8A8Ceof3ww+/p05V/ds+ctecnM/OqM2eOydHTbzwRVi/fMnzhEIrFRLXMW0pHL8xh76ma2H9sHBeuTmGibhurghBIUwIL8o6ES0tC4U5JhjuGx+4KDUacECQYlSDBkoUd2LC6G3esCfiOmxaC6hM8eGVIzFu6AfNWbr648Jp7d7X19P4/RHTuxz0M4RfW0L6x7dc9AP7ZU3/2n3q6CrWvjF0+gnIQo6Wnlxu6pK+MRHL/uRpOXZjBleE5DIzVEMUKNQWoxGo+hFUfucIGrvsSCKClCFRKBaxb2oI1y1pw64ZFenGXVmEygbhWD+fqMTrnr0fXqjur19625Q9F0PqHRDTefK3/4AydQsAdO8yDGbK+oL75zKHnf39i4OTay0dfXt5RijA7NxVXilIgqHC5d7mcjEqYGJ/BgUMX0FIqUDUOcHaojompCEolkBLoaS9h3bJ2lMOYE9a4Yd0CFCjCvEqsajOjCMJyIFCALM1HXJw/fe1t9020di//01Jr558R0UmrJvqZPqb652boHOYGgv5+0rt2QQECEAKT46NfGTj5yq+URPSB4YsnEc2NYuDUAbS3CHQvXIJ6nCAsijgsVqgeJ1yv1pE0IpCUKFUqVAwFJ7OTYZQoMAtEsUKh0ouFy9ZheGJuAIXOnVse+EoBwGNE8vW0ej5y5Ehhw8/hwes/d0PnoODOnbK/v1/z9u1EDz+smTkE8P44hjp/+g1BcfRH0ezYvMun9upSsdDTVinQ7MSQlXnZBwCThIICyRIaXOHWju6xYqVTdM5fOXrh9MEv3fNLv0EALhHRWf9+bQVJ7+b5sf9gDP1OTQX/tbBYRlSfC2GeqvYxAP0zE8OJZg6kFBCQqVguqbR1BQB2AngKQBCEpVglDfdee/c+Em7a9GUAUD9v4/7C/WFmYmbJzJKN0PJd7xj7fuIX5R7/fzpHeXnMzphsAAAAAElFTkSuQmCC" alt="Étude Thomas Levy">
+    <div>
+      <p class="kicker">Étude Thomas Levy · Notaire · Paris 16<sup>e</sup></p>
+      <h1>Pilotage Notarial — dossier de conception</h1>
+      <p class="sub">Système d'exploitation central de l'étude notariale : du premier contact du client à la clôture comptable et à l'archivage du dossier. Douze livrables, dans l'ordre du cahier des charges, et le prototype fonctionnel en annexe.</p>
+    </div>
+  </div>
+</header>
+<div class="meta-band">
+  <div class="meta-band-in">
+    <span>Version <b>1.0</b></span>
+    <span>22 août 2026</span>
+    <span>Statut <b>document de travail</b></span>
+    <span>Exemples et données : <b>entièrement fictifs</b></span>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="toc" aria-label="Sommaire">
+  <p class="toc-t">Livrables</p>
+  <a href="#l1"><span class="n">1</span>Cartographie des utilisateurs et parcours</a>
+  <a href="#l2"><span class="n">2</span>Modèle de données</a>
+  <a href="#l3"><span class="n">3</span>Workflows BPMN</a>
+  <a href="#l4"><span class="n">4</span>Matrice des rôles et permissions</a>
+  <a href="#l5"><span class="n">5</span>Écrans principaux</a>
+  <a href="#l6"><span class="n">6</span>Architecture technique</a>
+  <a href="#l7"><span class="n">7</span>Intégrations</a>
+  <a href="#l8"><span class="n">8</span>Automatisations et validations humaines</a>
+  <a href="#l9"><span class="n">9</span>Registre des risques</a>
+  <a href="#l10"><span class="n">10</span>Backlog priorisé</a>
+  <a href="#l11"><span class="n">11</span>Plan du MVP sur six mois</a>
+  <a href="#l12"><span class="n">12</span>Critères d'acceptation et indicateurs</a>
+  <a href="#annexe" class="annex"><span class="n">A</span>Prototype et scénario de démonstration</a>
+</nav>
+<main>
+
+<section id="intro">
+  <p class="eyebrow">Objet du document</p>
+  <p class="lede">Pilotage Notarial est conçu comme une <strong>couche d'orchestration souveraine</strong> au-dessus des outils existants de l'étude : il structure le dossier, automatise ce qui peut l'être sans risque, et place une validation humaine identifiée et tracée devant tout ce qui engage le notaire — rédaction, décision juridique, transmission officielle, signature, mouvement financier, clôture.</p>
+  <div class="note"><p><strong>Trois invariants gouvernent toute la conception.</strong> 1&nbsp;: l'outil prépare, l'humain décide — aucune action juridique ou financière n'est exécutée par l'IA. 2&nbsp;: aucune donnée n'est inventée — chaque information extraite garde un lien vers son document source, sa page, son emplacement, et un score de confiance. 3&nbsp;: tout est tracé — journal d'audit non modifiable, visible des seuls rôles habilités.</p></div>
+</section>
+<section id="l1">
+  <p class="eyebrow">Livrable 1</p>
+  <h2>Cartographie des utilisateurs et parcours</h2>
+  <div class="note"><p><strong>Équipe actuelle de l'étude</strong> (répertoires publics) : Me Thomas Lévy, notaire (direction) ; Me Hélène Rouaud et Me Julie Azzoulai, notaires salariées ; Véronique Michel et Mylène Abensour, notaires assistantes ; Dan Knafo, notaire stagiaire. Les douze rôles ci-dessous sont des <em>profils fonctionnels</em>, pas des postes : dans une étude de cette taille, une même personne en cumule plusieurs — une notaire salariée couvre « notaire salarié » et « clerc rédacteur », une notaire assistante couvre « assistant », « formaliste » et une partie de la collecte. Le système d'habilitations doit permettre ce cumul sur un seul compte, sans doublon.</p></div>
+  <p>Douze rôles interagissent avec le système. Le tableau fixe, pour chacun, sa mission dans l'étude, ce que l'outil lui apporte au quotidien et son écran d'entrée — la page d'accueil est différente selon le rôle.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rôle</th><th>Mission</th><th>Ce que l'outil lui apporte</th><th>Écran d'entrée</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Notaire associé</strong></td><td>Responsabilité juridique et direction de l'office</td><td>File des validations en attente, dossiers à risque, pilotage de l'activité et du chiffre d'affaires</td><td>Tableau de bord + centre de validations</td></tr>
+      <tr><td><strong>Notaire salarié</strong></td><td>Contrôle juridique et réception des actes</td><td>Mêmes validations sur son portefeuille, préparation de signature</td><td>Centre de validations</td></tr>
+      <tr><td><strong>Clerc rédacteur</strong></td><td>Constitution et rédaction des dossiers</td><td>Checklist dynamique, données extraites sourcées, préremplissage des projets, file d'anomalies</td><td>Mes dossiers (kanban)</td></tr>
+      <tr><td><strong>Formaliste</strong></td><td>Formalités préalables et postérieures</td><td>File des formalités par échéance, préparation des dépôts, suivi des retours SPF</td><td>File des formalités</td></tr>
+      <tr><td><strong>Comptable taxateur</strong></td><td>Provisions, taxation, comptabilité dossier</td><td>Rapprochement des fonds, préparation de la taxation, contrôle des écarts, états de clôture</td><td>Comptabilité de l'étude</td></tr>
+      <tr><td><strong>Négociateur immobilier</strong></td><td>Négociation et avant-contrat</td><td>Pipeline des mandats, fiches biens, passage de relais vers le dossier de vente</td><td>Pipeline négociation</td></tr>
+      <tr><td><strong>Assistant</strong></td><td>Accueil, prise de rendez-vous, ouverture</td><td>Qualification guidée des demandes, contrôle conflits/doublons, création de dossier assistée</td><td>Nouveaux contacts</td></tr>
+      <tr><td><strong>Responsable conformité</strong></td><td>LCB-FT et vigilance</td><td>File des alertes confidentielles, classification des risques, justification documentaire des contrôles</td><td>Espace conformité (cloisonné)</td></tr>
+      <tr><td><strong>DPO / RSSI</strong></td><td>Protection des données et sécurité</td><td>Registre des traitements, journal d'audit, alertes d'accès anormaux, gestion des habilitations sensibles</td><td>Console gouvernance</td></tr>
+      <tr><td><strong>Administrateur de l'office</strong></td><td>Paramétrage et comptes</td><td>Gestion des utilisateurs, rôles, modèles de dossiers, scénarios de relance</td><td>Administration</td></tr>
+      <tr><td><strong>Client</strong></td><td>Partie au dossier</td><td>Questionnaire, dépôt de pièces, avancement autorisé, rendez-vous, messagerie sécurisée, signatures permises</td><td>Portail client (web et mobile)</td></tr>
+      <tr><td><strong>Confrère / intervenant extérieur</strong></td><td>Notaire participant, agence, syndic, banque…</td><td>Accès restreint au périmètre partagé : pièces à fournir, checklist commune, échanges tracés</td><td>Espace intervenant</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Parcours type — l'étude</h3>
+  <p>Le parcours interne suit les vingt états du workflow (livrable 3). La responsabilité principale glisse d'un rôle à l'autre&nbsp;: l'assistant qualifie et ouvre (états 1–5), le clerc constitue et rédige (6–14) avec le responsable conformité en appui (7), le notaire contrôle et signe (13–16), le formaliste dépose et suit (10, 17), le comptable taxateur solde (11, 18), le notaire clôture (19–20). À chaque transition, le système crée les tâches du rôle suivant — personne n'a besoin de « penser à prévenir ».</p>
+
+  <h3>Parcours type — le client vendeur</h3>
+  <ol>
+    <li><strong>Invitation.</strong> Courriel + SMS avec lien d'activation du portail, identité vérifiée à la première connexion.</li>
+    <li><strong>Questionnaire dynamique.</strong> Situation matrimoniale, bien, copropriété, occupation — les réponses conditionnent la liste de pièces.</li>
+    <li><strong>Dépôt des pièces.</strong> Téléversement ou photo depuis le téléphone ; chaque pièce est classée et analysée, la liste des manquants se met à jour en temps réel.</li>
+    <li><strong>Relances contextuelles.</strong> Uniquement sur les pièces réellement manquantes, suspendues dès réception, plafonnées.</li>
+    <li><strong>Suivi et rendez-vous.</strong> Avancement au niveau de détail autorisé, prise de rendez-vous, consultation du projet quand l'étude le décide.</li>
+    <li><strong>Signature et fonds.</strong> Informations financières vérifiées, signature des documents que ce canal permet juridiquement.</li>
+  </ol>
+  <p>Le portail ne montre jamais les notes internes, les analyses confidentielles, les éléments LCB-FT, ni les informations d'une autre partie sans autorisation.</p>
+
+  <h3>Parcours type — le notaire</h3>
+  <p>Le notaire ne « navigue » pas dans l'outil : l'outil vient à lui. Sa page d'accueil est une file de décisions — validations de projets, arbitrages d'anomalies qualifiés « décision juridique requise », contrôles LCB-FT à trancher, signatures à préparer — chacune présentée avec ses pièces sources et l'historique de ce qui a déjà été vérifié. Une validation se donne en un geste, mais elle est nominative, horodatée et inscrite au journal d'audit.</p>
+</section>
+
+<section id="l2">
+  <p class="eyebrow">Livrable 2</p>
+  <h2>Modèle de données</h2>
+  <p>Le dossier est la source de vérité de l'étude ; tout le reste s'y rattache. Trois choix structurent le modèle&nbsp;: chaque <strong>donnée extraite</strong> est un objet à part entière (valeur + document source + page + zone + score de confiance + statut de validation), jamais un simple champ écrasé ; les <strong>documents sont versionnés</strong> et jamais supprimés pendant la vie du dossier ; le <strong>journal d'audit est en écriture seule</strong>, hors de portée applicative.</p>
+  <figure>
+    <svg viewBox="0 0 980 620" role="img" aria-label="Modèle de données : le dossier au centre, relié aux parties, aux biens, aux documents et extractions, au workflow et aux objets financiers">
+      <defs><marker id="mA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <style>
+        .ent{fill:none;stroke:currentColor;stroke-width:1.2;rx:6}
+        .hub{stroke-width:2}
+        .et{font:600 12.5px "Public Sans",sans-serif;fill:currentColor}
+        .ea{font:400 10.5px "IBM Plex Mono",monospace;fill:currentColor;opacity:.62}
+        .lk{stroke:currentColor;stroke-width:1;fill:none;opacity:.55}
+        .ll{font:500 10px "Public Sans",sans-serif;fill:currentColor;opacity:.75}
+        .grp{font:600 10px "Public Sans",sans-serif;fill:#a97e3f;letter-spacing:.14em}
+      </style>
+      <!-- groupe personnes -->
+      <text class="grp" x="40" y="30">PERSONNES</text>
+      <rect class="ent" x="40" y="42" width="170" height="64" rx="6"/>
+      <text class="et" x="52" y="62">Personne</text>
+      <text class="ea" x="52" y="78">identité · état civil</text>
+      <text class="ea" x="52" y="92">préférences contact</text>
+      <rect class="ent" x="40" y="130" width="170" height="50" rx="6"/>
+      <text class="et" x="52" y="150">Bénéficiaire effectif</text>
+      <text class="ea" x="52" y="166">chaîne de détention</text>
+      <rect class="ent" x="40" y="204" width="170" height="50" rx="6"/>
+      <text class="et" x="52" y="224">Intervenant extérieur</text>
+      <text class="ea" x="52" y="240">syndic · agence · banque</text>
+      <!-- partie (association) -->
+      <rect class="ent" x="270" y="80" width="160" height="64" rx="6"/>
+      <text class="et" x="282" y="100">Partie</text>
+      <text class="ea" x="282" y="116">qualité juridique</text>
+      <text class="ea" x="282" y="130">vendeur · acquéreur…</text>
+      <!-- hub dossier -->
+      <rect class="ent hub" x="430" y="250" width="180" height="96" rx="8"/>
+      <text class="et" x="444" y="274" style="font-size:15px">Dossier</text>
+      <text class="ea" x="444" y="292">type · état · référence</text>
+      <text class="ea" x="444" y="306">responsables · risque</text>
+      <text class="ea" x="444" y="320">échéances clés</text>
+      <!-- type dossier -->
+      <rect class="ent" x="430" y="120" width="180" height="78" rx="6"/>
+      <text class="et" x="444" y="140">Type de dossier</text>
+      <text class="ea" x="444" y="156">questionnaire · pièces</text>
+      <text class="ea" x="444" y="170">modèles · délais</text>
+      <text class="ea" x="444" y="184">règles d'escalade</text>
+      <!-- biens -->
+      <text class="grp" x="270" y="30">ACTIFS</text>
+      <rect class="ent" x="270" y="380" width="160" height="64" rx="6"/>
+      <text class="et" x="282" y="400">Bien / actif</text>
+      <text class="ea" x="282" y="416">cadastre · lots · société</text>
+      <text class="ea" x="282" y="430">servitudes · hypothèques</text>
+      <!-- documents -->
+      <text class="grp" x="680" y="30">DOCUMENTS</text>
+      <rect class="ent" x="680" y="42" width="180" height="64" rx="6"/>
+      <text class="et" x="692" y="62">Document</text>
+      <text class="ea" x="692" y="78">nature · versions · statut</text>
+      <text class="ea" x="692" y="92">validité · empreinte</text>
+      <rect class="ent" x="680" y="130" width="180" height="78" rx="6"/>
+      <text class="et" x="692" y="150">Donnée extraite</text>
+      <text class="ea" x="692" y="166">valeur · page · zone</text>
+      <text class="ea" x="692" y="180">score de confiance</text>
+      <text class="ea" x="692" y="194">statut de validation</text>
+      <rect class="ent" x="680" y="232" width="180" height="50" rx="6"/>
+      <text class="et" x="692" y="252">Anomalie</text>
+      <text class="ea" x="692" y="268">contradiction · manquant</text>
+      <!-- workflow -->
+      <text class="grp" x="680" y="330">ACTIVITÉ</text>
+      <rect class="ent" x="680" y="342" width="180" height="50" rx="6"/>
+      <text class="et" x="692" y="362">Tâche</text>
+      <text class="ea" x="692" y="378">responsable · échéance</text>
+      <rect class="ent" x="680" y="408" width="180" height="50" rx="6"/>
+      <text class="et" x="692" y="428">Échéance / condition</text>
+      <text class="ea" x="692" y="444">suspensive · alertes</text>
+      <rect class="ent" x="680" y="474" width="180" height="50" rx="6"/>
+      <text class="et" x="692" y="494">Communication</text>
+      <text class="ea" x="692" y="510">relances · messagerie</text>
+      <rect class="ent" x="680" y="540" width="180" height="50" rx="6"/>
+      <text class="et" x="692" y="560">Validation</text>
+      <text class="ea" x="692" y="576">qui · quoi · quand</text>
+      <!-- finance + conformité -->
+      <text class="grp" x="180" y="330">FINANCES & CONFORMITÉ</text>
+      <rect class="ent" x="180" y="474" width="180" height="50" rx="6"/>
+      <text class="et" x="192" y="494">Objet financier</text>
+      <text class="ea" x="192" y="510">provision · débours · taxe</text>
+      <rect class="ent" x="180" y="540" width="180" height="50" rx="6"/>
+      <text class="et" x="192" y="560">Contrôle LCB-FT</text>
+      <text class="ea" x="192" y="576">confidentiel · cloisonné</text>
+      <rect class="ent" x="430" y="540" width="180" height="50" rx="6"/>
+      <text class="et" x="442" y="560">Journal d'audit</text>
+      <text class="ea" x="442" y="576">append-only · horodaté</text>
+      <!-- formalité -->
+      <rect class="ent" x="430" y="408" width="180" height="50" rx="6"/>
+      <text class="et" x="442" y="428">Formalité</text>
+      <text class="ea" x="442" y="444">préalable · postérieure</text>
+      <!-- liens -->
+      <path class="lk" d="M210 96 h60" marker-end="url(#mA)"/><text class="ll" x="218" y="90">est</text>
+      <path class="lk" d="M350 144 v70 q0 12 12 16 l68 22" marker-end="url(#mA)"/><text class="ll" x="368" y="230">comparaît dans</text>
+      <path class="lk" d="M210 155 q120 10 225 116" marker-end="url(#mA)"/><text class="ll" x="300" y="182">déclaré pour</text>
+      <path class="lk" d="M210 229 q130 20 222 66" marker-end="url(#mA)"/><text class="ll" x="292" y="272">intervient dans</text>
+      <path class="lk" d="M520 198 v52" marker-end="url(#mA)"/><text class="ll" x="528" y="228">configure</text>
+      <path class="lk" d="M430 300 h-70 l-30 84" marker-end="url(#mA)"/><text class="ll" x="352" y="352">porte sur</text>
+      <path class="lk" d="M610 282 h70 v-190" marker-end="url(#mA)"/><text class="ll" x="626" y="276">contient</text>
+      <path class="lk" d="M770 106 v24" marker-end="url(#mA)"/><text class="ll" x="778" y="124">produit</text>
+      <path class="lk" d="M770 208 v24" marker-end="url(#mA)"/><text class="ll" x="778" y="226">révèle</text>
+      <path class="lk" d="M610 320 l70 34" marker-end="url(#mA)"/><text class="ll" x="622" y="342">déclenche</text>
+      <path class="lk" d="M610 335 l70 90" marker-end="url(#mA)"/><text class="ll" x="608" y="404">suit</text>
+      <path class="lk" d="M610 346 q40 90 70 140" marker-end="url(#mA)"/><text class="ll" x="596" y="470">échange</text>
+      <path class="lk" d="M610 346 q30 140 70 210" marker-end="url(#mA)"/><text class="ll" x="586" y="530">exige</text>
+      <path class="lk" d="M520 346 v62" marker-end="url(#mA)"/><text class="ll" x="528" y="382">génère</text>
+      <path class="lk" d="M430 330 l-70 150" marker-end="url(#mA)"/><text class="ll" x="336" y="452">appelle</text>
+      <path class="lk" d="M430 340 l-70 210" marker-end="url(#mA)"/><text class="ll" x="300" y="536">vérifie</text>
+      <path class="lk" d="M520 346 q-6 120 0 194" marker-end="url(#mA)"/><text class="ll" x="430" y="512">journalise tout</text>
+    </svg>
+    <figcaption>Le dossier relie les personnes (via l'objet Partie qui porte la qualité juridique), les biens, les documents et leurs données extraites, l'activité (tâches, échéances, communications, validations, formalités) et les objets financiers. Le contrôle LCB-FT et le journal d'audit sont volontairement excentrés : cloisonnés, à visibilité restreinte.</figcaption>
+  </figure>
+  <div class="tbl-wrap"><table>
+    <caption>Entités principales — règles de gestion notables</caption>
+    <thead><tr><th>Entité</th><th>Contenu clé</th><th>Règles de gestion</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dossier</strong></td><td>Type, état (1–20), référence, responsables, niveau de risque, échéances clés</td><td>Source de vérité ; changement d'état uniquement par le moteur de workflow ; historique complet des transitions</td></tr>
+      <tr><td><strong>Partie</strong></td><td>Lien personne ↔ dossier + qualité juridique (vendeur, acquéreur, donateur…), régime matrimonial, capacité</td><td>Une personne peut être partie à plusieurs dossiers sous des qualités différentes ; le contrôle conflits s'appuie sur ce graphe</td></tr>
+      <tr><td><strong>Document</strong></td><td>Nature, rubrique, versions, période de validité, empreinte d'intégrité</td><td>Versionné, jamais écrasé ; une pièce expirée redevient « manquante » ; aperçu immédiat</td></tr>
+      <tr><td><strong>Donnée extraite</strong></td><td>Champ cible, valeur, document + page + zone source, score de confiance, statut</td><td>Sous le seuil de confiance : jamais auto-validée. Contradictoire : file de contrôle humain. Absente du document : n'existe pas</td></tr>
+      <tr><td><strong>Échéance / condition</strong></td><td>Nature (condition suspensive, validité de pièce, délai légal), terme, alertes, responsable</td><td>Alertes progressives vert → orange → rouge ; escalade automatique au responsable puis au notaire</td></tr>
+      <tr><td><strong>Validation</strong></td><td>Objet validé, auteur, rôle, horodatage, portée</td><td>Nominative et infalsifiable ; requise pour franchir les états sensibles ; visible dans la timeline</td></tr>
+      <tr><td><strong>Contrôle LCB-FT</strong></td><td>Vérifications, classification du risque, mesures de vigilance, justification documentaire</td><td>Cloisonné aux rôles habilités ; jamais exposé au portail ; aucune déclaration automatique</td></tr>
+      <tr><td><strong>Objet financier</strong></td><td>Estimation de frais, provision, débours, taxation, écarts, restitutions</td><td>Séparation stricte préparation / validation ; aucune exécution de virement dans le système</td></tr>
+      <tr><td><strong>Journal d'audit</strong></td><td>Toute consultation, modification, téléchargement, export, validation</td><td>Append-only, horodaté, non modifiable, consultable par DPO/RSSI et notaires</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<section id="l3">
+  <p class="eyebrow">Livrable 3</p>
+  <h2>Workflows BPMN</h2>
+  <p>Le workflow principal compte vingt états, regroupés en cinq phases. Chaque changement d'état déclenche automatiquement les tâches, demandes de documents, contrôles, courriers, rappels et validations correspondants — c'est le mécanisme qui supprime les oublis. Les états marqués d'un losange or ne peuvent être franchis sans validation humaine nominative.</p>
+  <figure>
+    <svg viewBox="0 0 980 470" role="img" aria-label="Workflow principal en vingt états regroupés en cinq phases, de Nouveau contact à Archivage">
+      <defs><marker id="mB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <style>
+        .ph{fill:none;stroke:currentColor;stroke-width:1;opacity:.28;rx:10}
+        .pt{font:600 10.5px "Public Sans",sans-serif;fill:currentColor;opacity:.65;letter-spacing:.12em}
+        .st{fill:none;stroke:currentColor;stroke-width:1.2;rx:6}
+        .sn{font:500 10px "IBM Plex Mono",monospace;fill:currentColor;opacity:.55}
+        .sl{font:500 11.5px "Public Sans",sans-serif;fill:currentColor}
+        .fl{stroke:currentColor;stroke-width:1.4;fill:none}
+        .vh{fill:#a97e3f}
+        .lg{font:400 10.5px "Public Sans",sans-serif;fill:currentColor;opacity:.75}
+      </style>
+      <!-- phases -->
+      <rect class="ph" x="12" y="26" width="180" height="256" rx="10"/><text class="pt" x="22" y="16">1 · ENTRÉE EN RELATION</text>
+      <rect class="ph" x="208" y="26" width="180" height="212" rx="10"/><text class="pt" x="218" y="16">2 · CONSTITUTION</text>
+      <rect class="ph" x="404" y="26" width="180" height="124" rx="10"/><text class="pt" x="414" y="16">3 · PRÉPARATION</text>
+      <rect class="ph" x="600" y="26" width="180" height="256" rx="10"/><text class="pt" x="610" y="16">4 · ACTE</text>
+      <rect class="ph" x="796" y="26" width="180" height="212" rx="10"/><text class="pt" x="806" y="16">5 · DÉNOUEMENT</text>
+      <!-- états ph1 -->
+      <rect class="st" x="24" y="40" width="156" height="34"/><text class="sn" x="34" y="61">01</text><text class="sl" x="56" y="61">Nouveau contact</text>
+      <rect class="st" x="24" y="88" width="156" height="34"/><text class="sn" x="34" y="109">02</text><text class="sl" x="56" y="109">Qualification</text>
+      <rect class="st" x="24" y="136" width="156" height="34"/><text class="sn" x="34" y="157">03</text><text class="sl" x="56" y="157">Conflits & doublons</text>
+      <rect class="st" x="24" y="184" width="156" height="34"/><text class="sn" x="34" y="205">04</text><text class="sl" x="56" y="205">Création du dossier</text>
+      <rect class="st" x="24" y="232" width="156" height="34"/><text class="sn" x="34" y="253">05</text><text class="sl" x="56" y="253">Lettre de mission</text><circle class="vh" cx="170" cy="238" r="4"/>
+      <path class="fl" d="M102 74 v14" marker-end="url(#mB)"/><path class="fl" d="M102 122 v14" marker-end="url(#mB)"/><path class="fl" d="M102 170 v14" marker-end="url(#mB)"/><path class="fl" d="M102 218 v14" marker-end="url(#mB)"/>
+      <!-- ph2 -->
+      <rect class="st" x="220" y="40" width="156" height="34"/><text class="sn" x="230" y="61">06</text><text class="sl" x="252" y="61">Identification parties</text>
+      <rect class="st" x="220" y="88" width="156" height="34"/><text class="sn" x="230" y="109">07</text><text class="sl" x="252" y="109">Contrôles LCB-FT</text><circle class="vh" cx="366" cy="94" r="4"/>
+      <rect class="st" x="220" y="136" width="156" height="34"/><text class="sn" x="230" y="157">08</text><text class="sl" x="252" y="157">Collecte des pièces</text>
+      <rect class="st" x="220" y="184" width="156" height="34"/><text class="sn" x="230" y="205">09</text><text class="sl" x="252" y="205">Analyse documentaire</text>
+      <path class="fl" d="M298 74 v14" marker-end="url(#mB)"/><path class="fl" d="M298 122 v14" marker-end="url(#mB)"/><path class="fl" d="M298 170 v14" marker-end="url(#mB)"/>
+      <!-- boucle collecte/analyse -->
+      <path class="fl" d="M376 201 q22 0 22 -20 t-22 -20" marker-end="url(#mB)" opacity=".55"/>
+      <!-- ph3 -->
+      <rect class="st" x="416" y="40" width="156" height="34"/><text class="sn" x="426" y="61">10</text><text class="sl" x="448" y="61">Formalités préalables</text>
+      <rect class="st" x="416" y="88" width="156" height="34"/><text class="sn" x="426" y="109">11</text><text class="sl" x="448" y="109">Préparation financière</text>
+      <path class="fl" d="M494 74 v14" marker-end="url(#mB)"/>
+      <!-- ph4 -->
+      <rect class="st" x="612" y="40" width="156" height="34"/><text class="sn" x="622" y="61">12</text><text class="sl" x="644" y="61">Rédaction du projet</text>
+      <rect class="st" x="612" y="88" width="156" height="34"/><text class="sn" x="622" y="109">13</text><text class="sl" x="644" y="109">Contrôle juridique</text><circle class="vh" cx="758" cy="94" r="4"/>
+      <rect class="st" x="612" y="136" width="156" height="34"/><text class="sn" x="622" y="157">14</text><text class="sl" x="644" y="157">Envoi aux parties</text><circle class="vh" cx="758" cy="142" r="4"/>
+      <rect class="st" x="612" y="184" width="156" height="34"/><text class="sn" x="622" y="205">15</text><text class="sl" x="644" y="205">Préparation signature</text>
+      <rect class="st" x="612" y="232" width="156" height="34"/><text class="sn" x="622" y="253">16</text><text class="sl" x="644" y="253">Signature</text><circle class="vh" cx="758" cy="238" r="4"/>
+      <path class="fl" d="M690 74 v14" marker-end="url(#mB)"/><path class="fl" d="M690 122 v14" marker-end="url(#mB)"/><path class="fl" d="M690 170 v14" marker-end="url(#mB)"/><path class="fl" d="M690 218 v14" marker-end="url(#mB)"/>
+      <!-- retour contrôle → rédaction -->
+      <path class="fl" d="M768 105 q26 0 26 -22 t-26 -22" marker-end="url(#mB)" opacity=".55"/>
+      <!-- ph5 -->
+      <rect class="st" x="808" y="40" width="156" height="34"/><text class="sn" x="818" y="61">17</text><text class="sl" x="840" y="61">Formalités postérieures</text>
+      <rect class="st" x="808" y="88" width="156" height="34"/><text class="sn" x="818" y="109">18</text><text class="sl" x="840" y="109">Solde comptable</text><circle class="vh" cx="954" cy="94" r="4"/>
+      <rect class="st" x="808" y="136" width="156" height="34"/><text class="sn" x="818" y="157">19</text><text class="sl" x="840" y="157">Clôture</text><circle class="vh" cx="954" cy="142" r="4"/>
+      <rect class="st" x="808" y="184" width="156" height="34"/><text class="sn" x="818" y="205">20</text><text class="sl" x="840" y="205">Archivage</text>
+      <path class="fl" d="M886 74 v14" marker-end="url(#mB)"/><path class="fl" d="M886 122 v14" marker-end="url(#mB)"/><path class="fl" d="M886 170 v14" marker-end="url(#mB)"/>
+      <!-- liens inter-phases -->
+      <path class="fl" d="M180 249 q30 0 34 -100 t6 -92" fill="none" opacity="0" />
+      <path class="fl" d="M180 249 h14 q12 0 12 -12 v-168 q0 -12 12 -12 h2" marker-end="url(#mB)"/>
+      <path class="fl" d="M376 249 h14 q12 0 12 -12 v-168 q0 -12 12 -12 h2" fill="none" opacity="0"/>
+      <path class="fl" d="M376 201 h16 q12 0 12 -12 v-120 q0 -12 12 -12 h0" marker-end="url(#mB)"/>
+      <path class="fl" d="M572 105 h16 q12 0 12 -12 v-24 q0 -12 12 -12 h0" marker-end="url(#mB)"/>
+      <path class="fl" d="M768 249 h16 q12 0 12 -12 v-168 q0 -12 12 -12 h0" marker-end="url(#mB)"/>
+      <!-- légende -->
+      <circle class="vh" cx="24" cy="330" r="4"/><text class="lg" x="36" y="334">validation humaine nominative requise pour franchir l'état</text>
+      <path class="fl" d="M24 356 h28" marker-end="url(#mB)" opacity=".55"/><text class="lg" x="64" y="360">boucle de reprise (analyse → collecte si pièce non conforme ; contrôle → rédaction si réserves)</text>
+      <text class="lg" x="24" y="392">Passages bloquants : 07 → 08 exige l'identification vérifiée · 12 exige les pièces obligatoires analysées · 15 exige projet validé et envoyé ·</text>
+      <text class="lg" x="24" y="410">16 exige contrôles LCB-FT conclus et fonds rapprochés · 19 exige formalités terminées et solde à zéro.</text>
+      <text class="lg" x="24" y="446" style="opacity:.55">Modélisation BPMN exécutable (moteur de workflow) — représentation simplifiée pour lecture.</text>
+    </svg>
+    <figcaption>Workflow principal : vingt états, cinq phases, boucles de reprise et points de validation humaine. La version exécutable (BPMN 2.0) reprend ces états comme <em>user tasks</em> et <em>service tasks</em> avec les mêmes conditions de passage.</figcaption>
+  </figure>
+
+  <h3>Déclenchements par état</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>État</th><th>À l'entrée, le système déclenche</th><th>Pour en sortir, il faut</th><th>Responsable</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">01</td><td>Fiche contact, accusé de réception, proposition de créneau</td><td>Demande rattachée à un type de dossier</td><td>Assistant</td></tr>
+      <tr><td class="mono">02</td><td>Questionnaire de qualification, estimation d'honoraires indicative</td><td>Type de dossier et urgence qualifiés</td><td>Assistant</td></tr>
+      <tr><td class="mono">03</td><td>Recherche automatique de conflits d'intérêts et de doublons sur le graphe des parties</td><td>Levée de doute humaine si correspondance détectée</td><td>Notaire</td></tr>
+      <tr><td class="mono">04</td><td>Création du dossier type, checklist des pièces, équipe assignée, échéancier initial</td><td>Dossier créé et responsables notifiés</td><td>Assistant / clerc</td></tr>
+      <tr><td class="mono">05</td><td>Lettre de mission et consentements (RGPD, communications) générés et envoyés</td><td><span class="tag humain">validation</span> signature de la lettre de mission</td><td>Notaire</td></tr>
+      <tr><td class="mono">06</td><td>Invitations portail, demande des justificatifs d'identité, vérification de validité</td><td>Identité de chaque partie vérifiée, état civil complet</td><td>Clerc</td></tr>
+      <tr><td class="mono">07</td><td>Recherche bénéficiaires effectifs, criblage PPE / gel des avoirs, questionnaire origine des fonds</td><td><span class="tag humain">validation</span> classification du risque arrêtée par le responsable conformité</td><td>Resp. conformité</td></tr>
+      <tr><td class="mono">08</td><td>Demandes de pièces contextualisées, scénarios de relance armés, sous-processus ci-dessous</td><td>Pièces obligatoires reçues ou dérogation motivée</td><td>Clerc</td></tr>
+      <tr><td class="mono">09</td><td>OCR, classification, extraction sourcée, comparaisons croisées, file d'anomalies</td><td>Anomalies bloquantes arbitrées, données clés validées</td><td>Clerc</td></tr>
+      <tr><td class="mono">10</td><td>Préparation des réquisitions et demandes (urbanisme, syndic, état hypothécaire, purge des préemptions)</td><td>Retours reçus ou délais purgés — transmission validée par le formaliste</td><td>Formaliste</td></tr>
+      <tr><td class="mono">11</td><td>Estimation des frais, appel de provision, suivi du financement et des conditions suspensives</td><td>Provision reçue et rapprochée, plan de financement cohérent</td><td>Comptable taxateur</td></tr>
+      <tr><td class="mono">12</td><td>Préremplissage du projet depuis les données validées, signalement des variables manquantes</td><td>Projet complet, sans variable vide ni incohérence bloquante</td><td>Clerc rédacteur</td></tr>
+      <tr><td class="mono">13</td><td>Rapport de cohérence (comparants, désignation, prix, financement, annexes) soumis au notaire</td><td><span class="tag humain">validation</span> visa juridique du notaire</td><td>Notaire</td></tr>
+      <tr><td class="mono">14</td><td>Préparation de l'envoi aux parties et intervenants, notification portail</td><td><span class="tag humain">validation</span> envoi approuvé, accusés de lecture suivis</td><td>Notaire / clerc</td></tr>
+      <tr><td class="mono">15</td><td>Convocations, pouvoirs éventuels, pièces du jour J, trame de séance, vérifications finales</td><td>Rendez-vous confirmé, fonds attendus rapprochés</td><td>Clerc / comptable</td></tr>
+      <tr><td class="mono">16</td><td>Dossier de signature assemblé, lecture des vérifications ultimes</td><td><span class="tag humain">validation</span> réception de l'acte par le notaire — hors système</td><td>Notaire</td></tr>
+      <tr><td class="mono">17</td><td>Préparation des formalités postérieures (enregistrement, publicité foncière), suivi des retours</td><td>Formalités accomplies et justifiées — dépôts validés par le formaliste</td><td>Formaliste</td></tr>
+      <tr><td class="mono">18</td><td>Taxation préparée, contrôle des écarts, état de restitution des trop-perçus</td><td><span class="tag humain">validation</span> taxe arrêtée par le comptable taxateur</td><td>Comptable taxateur</td></tr>
+      <tr><td class="mono">19</td><td>Checklist de clôture : formalités terminées, solde nul, pièces archivables</td><td><span class="tag humain">validation</span> clôture prononcée par le notaire</td><td>Notaire</td></tr>
+      <tr><td class="mono">20</td><td>Constitution du dossier final, politique de conservation appliquée, accès gelé en lecture</td><td>Archivage confirmé, traçabilité complète</td><td>Système + notaire</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Sous-processus : collecte d'une pièce</h3>
+  <figure>
+    <svg viewBox="0 0 960 230" role="img" aria-label="Sous-processus de collecte d'une pièce : demande, réception, analyse, relances plafonnées, escalade humaine">
+      <defs><marker id="mC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <style>
+        .b{fill:none;stroke:currentColor;stroke-width:1.2;rx:6}
+        .g{fill:none;stroke:currentColor;stroke-width:1.2}
+        .t{font:500 11.5px "Public Sans",sans-serif;fill:currentColor}
+        .s{font:400 10px "Public Sans",sans-serif;fill:currentColor;opacity:.62}
+        .f{stroke:currentColor;stroke-width:1.3;fill:none}
+        .fy{font:500 10px "Public Sans",sans-serif;fill:currentColor;opacity:.75}
+        .hum{fill:#a97e3f}
+      </style>
+      <rect class="b" x="14" y="52" width="130" height="44"/><text class="t" x="26" y="71">Pièce attendue</text><text class="s" x="26" y="86">checklist du type</text>
+      <rect class="b" x="180" y="52" width="140" height="44"/><text class="t" x="192" y="71">Demande envoyée</text><text class="s" x="192" y="86">portail · courriel · SMS</text>
+      <path class="g" d="M392 74 l30 -22 l30 22 l-30 22 z"/><text class="t" x="405" y="70" style="font-size:10px">reçue ?</text>
+      <rect class="b" x="500" y="52" width="150" height="44"/><text class="t" x="512" y="71">Analyse IA</text><text class="s" x="512" y="86">nature · validité · données</text>
+      <path class="g" d="M712 74 l32 -22 l32 22 l-32 22 z"/><text class="t" x="722" y="70" style="font-size:10px">conforme ?</text>
+      <rect class="b" x="812" y="30" width="134" height="40"/><text class="t" x="824" y="48">Pièce cochée</text><text class="s" x="824" y="62">versée au dossier</text>
+      <rect class="b" x="812" y="120" width="134" height="44"/><text class="t" x="824" y="139">Anomalie créée</text><text class="s" x="824" y="154">file de contrôle humain</text>
+      <rect class="b" x="360" y="150" width="150" height="44"/><text class="t" x="372" y="169">Relance n+1</text><text class="s" x="372" y="184">plafonnée · contextuelle</text>
+      <rect class="b" x="150" y="150" width="160" height="44"/><text class="t" x="162" y="169">Escalade humaine</text><text class="s" x="162" y="184">tâche au collaborateur</text><circle class="hum" cx="298" cy="158" r="4"/>
+      <path class="f" d="M144 74 h30" marker-end="url(#mC)"/>
+      <path class="f" d="M320 74 h66" marker-end="url(#mC)"/>
+      <path class="f" d="M452 74 h42" marker-end="url(#mC)"/><text class="fy" x="458" y="68">oui</text>
+      <path class="f" d="M650 74 h56" marker-end="url(#mC)"/>
+      <path class="f" d="M776 66 l32 -10" marker-end="url(#mC)"/><text class="fy" x="778" y="52">oui</text>
+      <path class="f" d="M776 82 l32 48" marker-end="url(#mC)"/><text class="fy" x="782" y="118">non</text>
+      <path class="f" d="M422 96 v54 h12" fill="none" opacity="0"/>
+      <path class="f" d="M422 96 v54" marker-end="url(#mC)"/><text class="fy" x="428" y="128">non, délai écoulé</text>
+      <path class="f" d="M360 172 h-44" marker-end="url(#mC)"/><text class="fy" x="352" y="188" text-anchor="end" style="opacity:.6">plafond atteint</text>
+      <path class="f" d="M400 150 q-30 -44 -84 -54" marker-end="url(#mC)"/>
+      <text class="s" x="14" y="220">Toute réponse détectée suspend la séquence de relances. Les communications juridiquement sensibles passent par une validation humaine avant envoi.</text>
+    </svg>
+    <figcaption>Boucle de collecte d'une pièce : relances automatiques plafonnées, suspension à la première réponse, escalade vers le collaborateur quand le blocage persiste, et bascule en file de contrôle humain dès qu'une pièce reçue n'est pas conforme.</figcaption>
+  </figure>
+
+  <h3>Sous-processus : condition suspensive</h3>
+  <p>Chaque condition suspensive porte un terme, un responsable et une grille d'alerte fixe&nbsp;: <span class="status s-ok"><span class="dot"></span>vert</span> au-delà de 30 jours du terme, <span class="status s-warn"><span class="dot"></span>orange</span> à J-30 (relance de la partie concernée, tâche au clerc), <span class="status s-crit"><span class="dot"></span>rouge</span> à J-14 (escalade au notaire, décision requise&nbsp;: proroger, constater la levée, ou tirer les conséquences de la défaillance). La constatation de la levée ou de la défaillance est toujours une décision juridique humaine ; le système fournit le compte à rebours, les justificatifs reçus et la trace des relances.</p>
+</section>
+<section id="l4">
+  <p class="eyebrow">Livrable 4</p>
+  <h2>Matrice des rôles et permissions</h2>
+  <p>Les droits se lisent par rôle et par domaine. Deux règles transverses s'ajoutent à la matrice&nbsp;: les droits s'appliquent <strong>par office, par équipe et par dossier</strong> (un collaborateur ne voit que son périmètre), et les <strong>dossiers sensibles</strong> peuvent être cloisonnés à une liste nominative, quel que soit le rôle. Toute action de validation, transmission ou signature est nominative et journalisée.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rôle</th><th>Lecture</th><th>Modification</th><th>Validation</th><th>Transmission</th><th>Signature</th><th>Administration</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Notaire associé</strong></td><td>Tous dossiers de l'office, journal d'audit, conformité</td><td>Tout dossier</td><td>Toutes validations : juridique, envoi, clôture, mouvements financiers</td><td>Envois officiels et projets</td><td>Actes et lettres de mission</td><td>Délégations, dossiers sensibles, modèles</td></tr>
+      <tr><td><strong>Notaire salarié</strong></td><td>Son portefeuille + partages</td><td>Ses dossiers</td><td>Juridique et envoi sur son portefeuille</td><td>Sur son portefeuille</td><td>Actes reçus par lui</td><td>—</td></tr>
+      <tr><td><strong>Clerc rédacteur</strong></td><td>Ses dossiers + équipe</td><td>Dossier, pièces, projets d'acte</td><td>Données extraites (sous seuil de sensibilité), pièces conformes</td><td>Demandes de pièces, courriers préparés validés</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Formaliste</strong></td><td>Dossiers en formalités</td><td>Volet formalités</td><td>Conformité d'un dépôt</td><td>Dépôts aux services de publicité foncière et administrations <em>(sous réserve des agréments)</em></td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Comptable taxateur</strong></td><td>Volet financier de tous dossiers</td><td>Provisions, débours, taxation</td><td>Taxation, rapprochements, états de clôture</td><td>Appels de provision validés</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Négociateur immobilier</strong></td><td>Mandats et dossiers liés (périmètre restreint)</td><td>Fiches biens, avant-contrat préparatoire</td><td>—</td><td>Communications commerciales validées</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Assistant</strong></td><td>Contacts, agenda, dossiers de son équipe</td><td>Fiche contact, création de dossier, rendez-vous</td><td>—</td><td>Courriers d'accueil types</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Responsable conformité</strong></td><td>Tous dossiers + espace LCB-FT cloisonné</td><td>Dossiers de contrôle, classification des risques</td><td>Mesures de vigilance, levées d'alerte</td><td>— <em>(les déclarations externes se font hors système)</em></td><td>—</td><td>Paramètres de vigilance</td></tr>
+      <tr><td><strong>DPO / RSSI</strong></td><td>Journal d'audit, registre des traitements, habilitations</td><td>Registre, politiques de conservation</td><td>Purges et exports de données</td><td>—</td><td>—</td><td>Sécurité, habilitations sensibles</td></tr>
+      <tr><td><strong>Administrateur office</strong></td><td>Paramétrage (pas le contenu des dossiers sensibles)</td><td>Comptes, équipes, modèles, scénarios</td><td>—</td><td>—</td><td>—</td><td>Utilisateurs, rôles, types de dossiers</td></tr>
+      <tr><td><strong>Client</strong></td><td>Son dossier, au niveau de détail autorisé</td><td>Ses réponses, ses dépôts de pièces</td><td>Approbation des projets qui lui sont soumis</td><td>Ses propres pièces uniquement</td><td>Documents que ce canal permet juridiquement</td><td>—</td></tr>
+      <tr><td><strong>Confrère / intervenant</strong></td><td>Périmètre partagé explicitement</td><td>Dépôt de pièces attendues de lui</td><td>—</td><td>Ses propres pièces</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p><strong>Ce que personne ne peut faire, quel que soit le rôle&nbsp;:</strong> modifier le journal d'audit, supprimer une version de document d'un dossier ouvert, exécuter un virement depuis le système, valider automatiquement une donnée sous le seuil de confiance, altérer une minute électronique conservée dans le cadre institutionnel, ou exposer un élément LCB-FT au portail client.</p></div>
+</section>
+
+<section id="l5">
+  <p class="eyebrow">Livrable 5</p>
+  <h2>Écrans principaux</h2>
+  <p>Seize écrans couvrent le produit. Les maquettes vivantes sont dans le prototype (annexe A)&nbsp;: chaque écran marqué <span class="chip gold">prototype</span> y est manipulable avec les données fictives du scénario de démonstration ; les autres sont spécifiés ici et marqués indisponibles dans le prototype.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Écran</th><th>Rôles</th><th>Contenu et comportement</th><th>État</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1 · Accueil par rôle</strong></td><td>Tous</td><td>File de travail du jour propre au rôle : décisions pour le notaire, dossiers et anomalies pour le clerc, formalités pour le formaliste</td><td><span class="chip gold">prototype</span> (vue clerc et notaire)</td></tr>
+      <tr><td><strong>2 · Tableau de bord de l'étude</strong></td><td>Notaires, direction</td><td>Dossiers par état, blocages et causes, pièces manquantes, conditions suspensives, signatures, fonds, inactivité, charge, délais, chiffre d'affaires — signalétique vert/orange/rouge, filtres par notaire, collaborateur, type, risque, urgence</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>3 · Liste des dossiers</strong></td><td>Étude</td><td>Table filtrable + vue Kanban par état + vue calendrier des échéances ; recherche globale</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>4 · Dossier — synthèse</strong></td><td>Étude</td><td>Fiche d'identité du dossier : parties, bien, jalons, alertes, prochaines actions, équipe</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>5 · Dossier — checklist des pièces</strong></td><td>Clerc, assistant</td><td>Pièces par partie et par rubrique, statuts, validités, demandes et relances associées</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>6 · Espace documentaire</strong></td><td>Étude</td><td>GED du dossier : aperçu immédiat, versions, données extraites surlignées à leur emplacement source, score de confiance</td><td><span class="chip gold">prototype</span> (aperçu simplifié)</td></tr>
+      <tr><td><strong>7 · File de contrôle humain</strong></td><td>Clerc, notaire</td><td>Anomalies et contradictions à arbitrer, avec pièces en regard et proposition motivée de l'IA</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>8 · Communications et relances</strong></td><td>Clerc, assistant</td><td>Historique par canal, scénarios actifs, plafonds, suspension, escalades ; brouillons sensibles en attente de validation</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>9 · Échéances et conditions suspensives</strong></td><td>Étude</td><td>Compte à rebours, grille vert/orange/rouge, responsables, décisions requises</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>10 · Rédaction du projet</strong></td><td>Clerc, notaire</td><td>Éditeur adossé aux modèles approuvés : variables sourcées, manquantes en évidence, comparaison de versions, finalisation bloquée tant que les contrôles obligatoires ne sont pas terminés</td><td><span class="chip gold">prototype</span> (préremplissage et blocages)</td></tr>
+      <tr><td><strong>11 · Espace conformité LCB-FT</strong></td><td>Resp. conformité, notaires</td><td>Files de vigilance, classification des risques, justification documentaire, alertes confidentielles — cloisonné</td><td><span class="chip gold">prototype</span> (lecture)</td></tr>
+      <tr><td><strong>12 · Comptabilité du dossier</strong></td><td>Comptable taxateur</td><td>Estimation, provisions, fonds rapprochés, débours, taxation préparée, écarts, restitutions</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>13 · Préparation de la signature</strong></td><td>Clerc, notaire</td><td>Conditions de signature, pièces du jour J, convocations, vérifications finales</td><td><span class="chip gold">prototype</span></td></tr>
+      <tr><td><strong>14 · Portail client</strong></td><td>Client</td><td>Questionnaire, dépôt et photo de pièces, manquants, avancement autorisé, rendez-vous, messagerie, validations et signatures permises</td><td><span class="chip gold">prototype</span> (aperçu fidèle du cloisonnement)</td></tr>
+      <tr><td><strong>15 · Administration</strong></td><td>Admin, DPO/RSSI</td><td>Utilisateurs, rôles, modèles de dossiers et d'actes, scénarios de relance, politiques de conservation</td><td>Spécifié — indisponible dans le prototype</td></tr>
+      <tr><td><strong>16 · Journal d'audit</strong></td><td>DPO/RSSI, notaires</td><td>Recherche dans les événements, exports de preuve, alertes d'accès anormaux</td><td><span class="chip gold">prototype</span> (extrait)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Principes d'interface communs&nbsp;: recherche globale accessible partout (<kbd>/</kbd>), timeline complète dans chaque dossier, raccourcis clavier pour les utilisateurs intensifs (<kbd>g</kbd> puis une lettre pour naviguer), conformité RGAA (contrastes, navigation clavier, lecteurs d'écran), fonctionnement responsive ordinateur, tablette et mobile. L'assistant IA est intégré au dossier — il connaît l'état, les pièces et les échéances de ce dossier précis — et n'est pas un chatbot généraliste.</p>
+</section>
+<section id="l6">
+  <p class="eyebrow">Livrable 6</p>
+  <h2>Architecture technique</h2>
+  <p>Architecture modulaire, API-first et orientée événements. Le bus d'événements est la colonne vertébrale&nbsp;: chaque transition d'état publie un événement, que consomment les services concernés — c'est ce qui matérialise « tout changement d'état déclenche les actions correspondantes » sans couplage entre modules. Les deux passerelles (IA et intégrations notariales) isolent le cœur du système de toute dépendance externe.</p>
+  <figure>
+    <svg viewBox="0 0 980 560" role="img" aria-label="Architecture en couches : clients, passerelle API, services métier autour d'un bus d'événements, passerelles IA et intégrations, socle de données">
+      <defs><marker id="mD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <style>
+        .cz{fill:none;stroke:currentColor;stroke-width:1;opacity:.28;rx:10}
+        .zt{font:600 10.5px "Public Sans",sans-serif;fill:currentColor;opacity:.65;letter-spacing:.12em}
+        .sv{fill:none;stroke:currentColor;stroke-width:1.2;rx:6}
+        .svt{font:500 11px "Public Sans",sans-serif;fill:currentColor}
+        .svs{font:400 9.5px "Public Sans",sans-serif;fill:currentColor;opacity:.6}
+        .bus{stroke:#a97e3f;stroke-width:2.4;fill:none}
+        .bust{font:600 10.5px "Public Sans",sans-serif;fill:#a97e3f;letter-spacing:.1em}
+        .fl2{stroke:currentColor;stroke-width:1.2;fill:none;opacity:.6}
+        .lg2{font:400 10.5px "Public Sans",sans-serif;fill:currentColor;opacity:.7}
+      </style>
+      <!-- clients -->
+      <text class="zt" x="20" y="18">CLIENTS</text>
+      <rect class="sv" x="20" y="28" width="200" height="40"/><text class="svt" x="32" y="46">Application de l'étude</text><text class="svs" x="32" y="60">web · responsive · raccourcis</text>
+      <rect class="sv" x="240" y="28" width="180" height="40"/><text class="svt" x="252" y="46">Portail client</text><text class="svs" x="252" y="60">web et mobile</text>
+      <rect class="sv" x="440" y="28" width="200" height="40"/><text class="svt" x="452" y="46">Espace intervenants</text><text class="svs" x="452" y="60">confrères · syndics · agences</text>
+      <rect class="sv" x="660" y="28" width="150" height="40"/><text class="svt" x="672" y="46">API publique</text><text class="svs" x="672" y="60">partenaires autorisés</text>
+      <!-- gateway -->
+      <rect class="sv" x="20" y="100" width="790" height="36"/><text class="svt" x="32" y="122">Passerelle API — authentification MFA/SSO · habilitations · quotas · journalisation des accès</text>
+      <path class="fl2" d="M120 68 v32" marker-end="url(#mD)"/><path class="fl2" d="M330 68 v32" marker-end="url(#mD)"/><path class="fl2" d="M540 68 v32" marker-end="url(#mD)"/><path class="fl2" d="M735 68 v32" marker-end="url(#mD)"/>
+      <!-- services -->
+      <text class="zt" x="20" y="170">SERVICES MÉTIER</text>
+      <rect class="cz" x="14" y="178" width="802" height="212" rx="10"/>
+      <rect class="sv" x="28" y="192" width="150" height="38"/><text class="svt" x="38" y="209">Identité & habilitations</text><text class="svs" x="38" y="222">rôles · équipes · dossiers</text>
+      <rect class="sv" x="190" y="192" width="150" height="38"/><text class="svt" x="200" y="209">Clients & parties</text><text class="svs" x="200" y="222">graphe des personnes</text>
+      <rect class="sv" x="352" y="192" width="150" height="38"/><text class="svt" x="362" y="209">Dossiers</text><text class="svs" x="362" y="222">source de vérité</text>
+      <rect class="sv" x="514" y="192" width="150" height="38"/><text class="svt" x="524" y="209">Moteur workflow</text><text class="svs" x="524" y="222">BPMN · états · règles</text>
+      <rect class="sv" x="676" y="192" width="128" height="38"/><text class="svt" x="686" y="209">GED</text><text class="svs" x="686" y="222">versions · aperçus</text>
+      <rect class="sv" x="28" y="246" width="150" height="38"/><text class="svt" x="38" y="263">OCR & extraction</text><text class="svs" x="38" y="276">classification · confiance</text>
+      <rect class="sv" x="190" y="246" width="150" height="38"/><text class="svt" x="200" y="263">Conformité</text><text class="svs" x="200" y="276">LCB-FT · cloisonné</text>
+      <rect class="sv" x="352" y="246" width="150" height="38"/><text class="svt" x="362" y="263">Communications</text><text class="svs" x="362" y="276">courriel · SMS · relances</text>
+      <rect class="sv" x="514" y="246" width="150" height="38"/><text class="svt" x="524" y="263">Rédaction</text><text class="svs" x="524" y="276">modèles · clauses · versions</text>
+      <rect class="sv" x="676" y="246" width="128" height="38"/><text class="svt" x="686" y="263">Comptabilité</text><text class="svs" x="686" y="276">passerelle · taxation</text>
+      <rect class="sv" x="28" y="300" width="150" height="38"/><text class="svt" x="38" y="317">Portail (backend)</text><text class="svs" x="38" y="330">vue filtrée du dossier</text>
+      <rect class="sv" x="190" y="300" width="150" height="38"/><text class="svt" x="200" y="317">Journalisation & audit</text><text class="svs" x="200" y="330">append-only · preuve</text>
+      <rect class="sv" x="352" y="300" width="150" height="38"/><text class="svt" x="362" y="317">Pilotage</text><text class="svs" x="362" y="330">entrepôt pseudonymisé</text>
+      <rect class="sv" x="514" y="300" width="150" height="38"/><text class="svt" x="524" y="317">Passerelle IA</text><text class="svs" x="524" y="330">indépendante des modèles</text>
+      <rect class="sv" x="676" y="300" width="128" height="38"/><text class="svt" x="686" y="317">Passerelle intégr.</text><text class="svs" x="686" y="330">connecteurs notariaux</text>
+      <!-- bus -->
+      <path class="bus" d="M28 366 h776"/><text class="bust" x="30" y="382">BUS D'ÉVÉNEMENTS — dossier.état-changé · pièce.reçue · anomalie.détectée · échéance.J-14 · validation.donnée…</text>
+      <path class="fl2" d="M103 338 v24" opacity=".45"/><path class="fl2" d="M265 338 v24" opacity=".45"/><path class="fl2" d="M427 338 v24" opacity=".45"/><path class="fl2" d="M589 338 v24" opacity=".45"/><path class="fl2" d="M740 338 v24" opacity=".45"/>
+      <!-- externes -->
+      <rect class="sv" x="840" y="192" width="126" height="64"/><text class="svt" x="850" y="210">Fournisseurs IA</text><text class="svs" x="850" y="224">interchangeables</text><text class="svs" x="850" y="238">aucune donnée</text><text class="svs" x="850" y="250">d'entraînement</text>
+      <path class="fl2" d="M664 316 h60 q14 0 16 -14 l6 -36 q2 -14 16 -14 h78" fill="none" opacity="0"/>
+      <path class="fl2" d="M664 319 q100 4 176 -70" marker-end="url(#mD)"/>
+      <rect class="sv" x="840" y="286" width="126" height="64"/><text class="svt" x="850" y="304">Écosystème notarial</text><text class="svs" x="850" y="318">Télé@ctes · MICEN…</text><text class="svs" x="850" y="332">sous réserve</text><text class="svs" x="850" y="344">d'agréments</text>
+      <path class="fl2" d="M804 319 h36" marker-end="url(#mD)"/>
+      <!-- socle -->
+      <text class="zt" x="20" y="424">SOCLE — hébergement France / UE · option SecNumCloud</text>
+      <rect class="cz" x="14" y="432" width="952" height="80" rx="10"/>
+      <rect class="sv" x="28" y="448" width="168" height="48"/><text class="svt" x="38" y="466">Base relationnelle</text><text class="svs" x="38" y="480">transactionnelle · chiffrée</text>
+      <rect class="sv" x="212" y="448" width="168" height="48"/><text class="svt" x="222" y="466">Stockage objet</text><text class="svs" x="222" y="480">versionné · immuable</text>
+      <rect class="sv" x="396" y="448" width="168" height="48"/><text class="svt" x="406" y="466">Recherche sécurisée</text><text class="svs" x="406" y="480">index par habilitation</text>
+      <rect class="sv" x="580" y="448" width="168" height="48"/><text class="svt" x="590" y="466">File de messages</text><text class="svs" x="590" y="480">événements · reprises</text>
+      <rect class="sv" x="764" y="448" width="188" height="48"/><text class="svt" x="774" y="466">Observabilité & sauvegardes</text><text class="svs" x="774" y="480">chiffrées · immuables · testées</text>
+      <text class="lg2" x="20" y="540">Chiffrement au repos et en transit, clés gérées séparément (KMS/HSM) · MFA + SSO professionnel · détection des accès anormaux · PCA/PRA testés · tests d'intrusion réguliers.</text>
+    </svg>
+    <figcaption>Quinze services autour d'un bus d'événements. La passerelle IA est le seul chemin vers les modèles — interchangeables, sans conservation ni entraînement sur les données de l'étude, débrayables dossier par dossier. La passerelle d'intégrations est le seul chemin vers l'écosystème notarial.</figcaption>
+  </figure>
+  <h3>Choix structurants</h3>
+  <ul>
+    <li><strong>Souveraineté d'abord.</strong> Hébergement en France ou dans l'Union européenne, architecture compatible avec une qualification SecNumCloud pour les études qui l'exigent. Localisation précise des données et des sous-traitants documentée (livrable 9 et registre RGPD).</li>
+    <li><strong>Passerelle IA indépendante des fournisseurs.</strong> Contrat d'interface unique (analyse, extraction, rédaction, résumé) ; chaque appel est journalisé avec le contexte transmis ; bascule de fournisseur sans toucher au métier ; désactivation totale de l'IA possible par dossier.</li>
+    <li><strong>Audit par construction.</strong> Le service de journalisation reçoit tous les événements et écrit dans un magasin append-only à empreintes chaînées ; aucune API de modification n'existe.</li>
+    <li><strong>Pilotage sans exposition.</strong> L'entrepôt de pilotage est alimenté par des événements pseudonymisés — les tableaux de bord de délais et de charge ne contiennent pas de données nominatives des clients.</li>
+    <li><strong>Multi-office par conception.</strong> Cloisonnement par office au niveau du service d'identité, permettant le fonctionnement multi-office sans mélange de données.</li>
+  </ul>
+</section>
+
+<section id="l7">
+  <p class="eyebrow">Livrable 7</p>
+  <h2>Intégrations</h2>
+  <p>Le produit est d'abord une couche d'orchestration compatible avec l'existant de l'étude. Aucune connexion institutionnelle n'est présentée comme disponible sans validation technique, contractuelle et réglementaire préalable — le statut ci-dessous est donc, pour toutes, « à instruire » tant que ces validations ne sont pas acquises. Dans l'interface, un connecteur non validé apparaît « sous réserve d'agrément », jamais comme un service actif.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Système</th><th>Usage visé</th><th>Sens</th><th>Prérequis</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Genapi, Kivia, Fiducial Signature</strong></td><td>Coexistence avec le logiciel de rédaction en place : reprise des dossiers, synchronisation des données de base</td><td>Bidirectionnel</td><td>Accords éditeurs, formats d'échange, autorisations de l'étude</td></tr>
+      <tr><td><strong>MICEN</strong></td><td>Consultation liée aux minutes électroniques — aucune écriture ni altération</td><td>Lecture</td><td>Cadre institutionnel, clé REAL, conventions</td></tr>
+      <tr><td><strong>Télé@ctes</strong></td><td>Préparation et suivi des formalités de publicité foncière</td><td>Émission préparée, validée humainement</td><td>Agrément, raccordement, tests</td></tr>
+      <tr><td><strong>Clé REAL</strong></td><td>Authentification forte du notaire pour les actes et téléprocédures de la profession</td><td>Authentification</td><td>Intégration au poste de travail, conventions ADSN</td></tr>
+      <tr><td><strong>FCDDV</strong></td><td>Interrogation du fichier central des dispositions de dernières volontés (successions)</td><td>Requête</td><td>Conventions, périmètre successions (V2)</td></tr>
+      <tr><td><strong>COMEDEC</strong></td><td>Vérification dématérialisée des données d'état civil</td><td>Requête</td><td>Convention, raccordement</td></tr>
+      <tr><td><strong>Services de publicité foncière</strong></td><td>États hypothécaires, copies de documents, suivi des dépôts</td><td>Requête / suivi</td><td>Canaux officiels, agréments</td></tr>
+      <tr><td><strong>Bases cadastrales et immobilières autorisées</strong></td><td>Références cadastrales, plans, valeurs de comparaison licites</td><td>Lecture</td><td>Licences d'accès</td></tr>
+      <tr><td><strong>RNE / INPI</strong></td><td>Extraits et actes des sociétés parties aux dossiers</td><td>Lecture</td><td>API INPI, conditions d'usage</td></tr>
+      <tr><td><strong>Outils comptables et bancaires de l'étude</strong></td><td>Rapprochement des fonds reçus, préparation des états — jamais d'exécution de virement</td><td>Lecture relevés / export écritures</td><td>Accords banque et éditeur comptable</td></tr>
+      <tr><td><strong>Visioconférence et identification à distance agréées</strong></td><td>Comparution à distance et vérification d'identité selon les règles de la profession</td><td>Intégration de session</td><td>Solutions agréées uniquement</td></tr>
+      <tr><td><strong>Microsoft 365 / Google Workspace</strong></td><td>Courriel, agenda, contacts — rattachement automatique des échanges au dossier</td><td>Bidirectionnel</td><td>Consentement de l'étude, OAuth, DPA</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="l8">
+  <p class="eyebrow">Livrable 8</p>
+  <h2>Matrice des automatisations et validations humaines</h2>
+  <p>Ligne à ligne&nbsp;: ce que le système fait seul, ce qu'il prépare, et la validation humaine qui conditionne tout effet juridique, financier ou officiel. <span class="tag auto">automatique</span> signifie « exécuté et journalisé, corrigeable a posteriori » ; <span class="tag humain">validation humaine</span> signifie « aucun effet tant qu'une personne habilitée n'a pas validé nominativement ».</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Opération</th><th>Part automatique</th><th>Part humaine</th><th>Qui valide</th></tr></thead>
+    <tbody>
+      <tr><td>Classement d'un document entrant</td><td><span class="tag auto">automatique</span> nature, rubrique, version, score affiché</td><td>Reclassement possible ; obligatoire sous le seuil de confiance</td><td>Clerc</td></tr>
+      <tr><td>Extraction de données</td><td><span class="tag auto">automatique</span> proposition sourcée (document, page, zone)</td><td><span class="tag humain">validation</span> intégration au dossier des champs sensibles ; jamais d'auto-validation sous le seuil</td><td>Clerc</td></tr>
+      <tr><td>Détection d'anomalies et contradictions</td><td><span class="tag auto">automatique</span> détection, motivation, mise en file</td><td><span class="tag humain">validation</span> arbitrage ; « décision juridique requise » remonte au notaire</td><td>Clerc / notaire</td></tr>
+      <tr><td>Contrôle conflits et doublons</td><td><span class="tag auto">automatique</span> rapprochement sur le graphe des parties</td><td><span class="tag humain">validation</span> levée de doute et décision de poursuivre</td><td>Notaire</td></tr>
+      <tr><td>Criblage LCB-FT (PPE, gel des avoirs)</td><td><span class="tag auto">automatique</span> interrogation des listes, alerte confidentielle</td><td><span class="tag humain">validation</span> qualification, mesures de vigilance, décision — la déclaration de soupçon est exclusivement humaine, hors système, jamais révélée au client</td><td>Resp. conformité / notaire</td></tr>
+      <tr><td>Relances de pièces standard</td><td><span class="tag auto">automatique</span> envoi contextualisé, plafonné, suspendu à la réponse</td><td>Escalade traitée par le collaborateur</td><td>— (contenu type approuvé en amont)</td></tr>
+      <tr><td>Communications juridiquement sensibles</td><td>Brouillon préparé, pièces jointes proposées</td><td><span class="tag humain">validation</span> relecture et envoi</td><td>Clerc habilité / notaire</td></tr>
+      <tr><td>Préremplissage d'un projet d'acte</td><td><span class="tag auto">automatique</span> depuis les seules données validées, origine affichée par variable</td><td><span class="tag humain">validation</span> rédaction, arbitrage des clauses, visa final — finalisation bloquée si un contrôle obligatoire manque</td><td>Clerc rédacteur puis notaire</td></tr>
+      <tr><td>Envoi du projet aux parties</td><td>Préparation de l'envoi et du suivi des accusés</td><td><span class="tag humain">validation</span> approbation de l'envoi</td><td>Notaire</td></tr>
+      <tr><td>Dépôt d'une formalité (Télé@ctes…)</td><td>Constitution du dossier de dépôt, contrôles de complétude</td><td><span class="tag humain">validation</span> transmission officielle</td><td>Formaliste habilité</td></tr>
+      <tr><td>Taxation et frais</td><td><span class="tag auto">automatique</span> calcul préparatoire, contrôle des écarts</td><td><span class="tag humain">validation</span> taxe arrêtée</td><td>Comptable taxateur</td></tr>
+      <tr><td>Mouvements financiers</td><td>Rapprochements et états préparés</td><td><span class="tag humain">validation</span> toute exécution — hors système, jamais par l'IA</td><td>Comptable + notaire</td></tr>
+      <tr><td>Suivi des échéances</td><td><span class="tag auto">automatique</span> alertes progressives, escalades</td><td><span class="tag humain">validation</span> toute conséquence juridique (prorogation, défaillance)</td><td>Notaire</td></tr>
+      <tr><td>Clôture et archivage</td><td>Checklist de clôture, contrôles de solde et de complétude</td><td><span class="tag humain">validation</span> clôture prononcée</td><td>Notaire</td></tr>
+      <tr><td>Réponses de l'assistant IA</td><td><span class="tag auto">automatique</span> réponse sourcée, score affiché, faits distingués des suggestions</td><td>Toute suite donnée reste une action humaine ; chaque automatisation est annulable et corrigeable</td><td>Utilisateur habilité</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<section id="l9">
+  <p class="eyebrow">Livrable 9</p>
+  <h2>Registre des risques juridiques, cyber et IA</h2>
+  <p>Gravité et probabilité sont cotées sur trois niveaux ; la criticité résulte du couple. Chaque risque a un propriétaire et des mesures inscrites dans la conception elle-même — la meilleure mitigation est celle que l'architecture rend structurelle.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Réf.</th><th>Risque</th><th>Scénario</th><th>Criticité</th><th>Mesures de conception</th><th>Propriétaire</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">J-01</td><td>Donnée extraite erronée intégrée à un acte</td><td>Une quote-part mal lue arrive dans le projet et n'est pas vue</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Score de confiance, seuil d'auto-validation, origine affichée par variable, rapport de cohérence, visa notaire bloquant</td><td>Notaire</td></tr>
+      <tr><td class="mono">J-02</td><td>Information inventée par l'IA</td><td>Une clause ou une donnée sans source apparaît dans un livrable</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Génération contrainte aux données validées, citation de source obligatoire, refus applicatif de toute valeur sans document lié</td><td>Expert IA / notaire</td></tr>
+      <tr><td class="mono">J-03</td><td>Révélation d'un signalement LCB-FT au client</td><td>Une alerte confidentielle transparaît dans le portail ou un courrier</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Cloisonnement du service conformité, aucune projection vers le portail, gabarits de communication sans champ conformité, revue DPO</td><td>Resp. conformité</td></tr>
+      <tr><td class="mono">J-04</td><td>Acte finalisé sans contrôle obligatoire</td><td>Un projet part en signature avec un contrôle non terminé</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Blocage structurel de la finalisation, conditions de passage du workflow, validations nominatives</td><td>Notaire</td></tr>
+      <tr><td class="mono">J-05</td><td>Erreur de taxation</td><td>Frais ou droits mal calculés, écart découvert après signature</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>Double calcul, contrôle automatique des écarts, validation du comptable taxateur, états de clôture</td><td>Comptable taxateur</td></tr>
+      <tr><td class="mono">J-06</td><td>Atteinte au secret professionnel</td><td>Consultation ou export hors habilitation</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Droits par rôle/office/équipe/dossier, cloisonnement des dossiers sensibles, journal d'audit, détection des accès anormaux</td><td>DPO / RSSI</td></tr>
+      <tr><td class="mono">J-07</td><td>Altération d'une minute électronique</td><td>Écriture indue vers le minutier central</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Interdiction par construction : intégration MICEN en lecture seule, aucune API d'écriture</td><td>Architecte</td></tr>
+      <tr><td class="mono">C-01</td><td>Rançongiciel</td><td>Chiffrement malveillant du système et des sauvegardes</td><td class="risk-sev"><span class="status s-crit"><span class="dot"></span>critique</span></td><td>Sauvegardes chiffrées immuables testées, PRA exercé, segmentation, EDR, moindre privilège</td><td>RSSI</td></tr>
+      <tr><td class="mono">C-02</td><td>Compromission de compte</td><td>Hameçonnage d'un collaborateur, session détournée</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>MFA systématique, SSO, détection de connexions anormales, révocation immédiate, sensibilisation</td><td>RSSI</td></tr>
+      <tr><td class="mono">C-03</td><td>Exfiltration via le portail ou un partage</td><td>Lien de pièce accessible hors des parties autorisées</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>Liens expirants nominatifs, filigrane, traçabilité des téléchargements, quotas et alertes</td><td>RSSI</td></tr>
+      <tr><td class="mono">C-04</td><td>Indisponibilité prolongée</td><td>Panne du fournisseur d'hébergement</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>PCA/PRA avec RTO/RPO contractuels, multi-zones, mode dégradé consultation</td><td>Architecte</td></tr>
+      <tr><td class="mono">C-05</td><td>Sous-traitant non conforme</td><td>Donnée traitée hors UE ou hors contrat</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>Contrats art. 28 RGPD, localisation documentée, audits, réversibilité</td><td>DPO</td></tr>
+      <tr><td class="mono">IA-01</td><td>Dérive ou biais du modèle</td><td>Baisse silencieuse de la qualité d'extraction ou d'analyse</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>Jeux d'évaluation métier rejoués à chaque changement de modèle, suivi des taux de correction humaine, arrêt d'urgence par dossier</td><td>Expert IA</td></tr>
+      <tr><td class="mono">IA-02</td><td>Dépendance à un fournisseur de modèles</td><td>Hausse de prix, arrêt de service, conditions inacceptables</td><td class="risk-sev"><span class="status s-ok"><span class="dot"></span>modérée</span></td><td>Passerelle IA indépendante, contrat d'interface unique, bascule testée, aucune donnée d'entraînement cédée</td><td>Architecte</td></tr>
+      <tr><td class="mono">IA-03</td><td>Non-conformité au règlement européen sur l'IA</td><td>Usage requalifié, documentation ou supervision insuffisantes</td><td class="risk-sev"><span class="status s-warn"><span class="dot"></span>majeure</span></td><td>Cartographie des usages IA, documentation technique, transparence utilisateur, contrôle humain effectif sur toute décision</td><td>DPO / expert IA</td></tr>
+      <tr><td class="mono">R-01</td><td>Conservation non conforme</td><td>Données gardées au-delà des durées ou purgées à tort</td><td class="risk-sev"><span class="status s-ok"><span class="dot"></span>modérée</span></td><td>Politique de conservation par catégorie, destruction contrôlée et tracée, aucune purge des archives à conservation légale</td><td>DPO</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="l10">
+  <p class="eyebrow">Livrable 10</p>
+  <h2>Backlog priorisé</h2>
+  <p>Douze chantiers, priorisés MoSCoW par rapport au MVP ventes immobilières. <span class="tag must">must</span> conditionne la mise en service à l'étude ; <span class="tag should">should</span> suit dans la foulée ; <span class="tag could">could</span> attend la V2.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Chantier</th><th>Contenu</th><th>Priorité</th><th>Dépend de</th></tr></thead>
+    <tbody>
+      <tr><td><strong>E1 · Socle et habilitations</strong></td><td>Identité, MFA/SSO, rôles, cloisonnement, journal d'audit</td><td><span class="tag must">must</span></td><td>—</td></tr>
+      <tr><td><strong>E2 · Dossier et workflow</strong></td><td>Dossier unique, 20 états, tâches, checklist dynamique, timeline</td><td><span class="tag must">must</span></td><td>E1</td></tr>
+      <tr><td><strong>E3 · GED et intelligence documentaire</strong></td><td>Versions, aperçus, OCR, classification, extraction sourcée, anomalies</td><td><span class="tag must">must</span></td><td>E2</td></tr>
+      <tr><td><strong>E4 · Portail client et collecte</strong></td><td>Questionnaires, dépôt et photo de pièces, manquants, messagerie</td><td><span class="tag must">must</span></td><td>E2</td></tr>
+      <tr><td><strong>E5 · Relances et échéances</strong></td><td>Scénarios plafonnés, suspension, escalades, conditions suspensives</td><td><span class="tag must">must</span></td><td>E2 · E4</td></tr>
+      <tr><td><strong>E6 · Rédaction assistée</strong></td><td>Bibliothèque de modèles versionnée, préremplissage, cohérence, blocages</td><td><span class="tag must">must</span></td><td>E3</td></tr>
+      <tr><td><strong>E7 · Conformité LCB-FT</strong></td><td>Identification, bénéficiaires effectifs, PPE, gel des avoirs, vigilance, files confidentielles</td><td><span class="tag must">must</span></td><td>E1 · E2</td></tr>
+      <tr><td><strong>E8 · Comptabilité et flux</strong></td><td>Estimations, provisions, rapprochements, taxation préparée, clôture</td><td><span class="tag must">must</span></td><td>E2</td></tr>
+      <tr><td><strong>E9 · Tableau de bord de l'étude</strong></td><td>États, blocages, charge, délais, chiffre d'affaires, signalétique et filtres</td><td><span class="tag must">must</span></td><td>E2…E8 (données)</td></tr>
+      <tr><td><strong>E10 · Intégrations</strong></td><td>Messageries, comptabilité, puis écosystème notarial selon agréments</td><td><span class="tag should">should</span></td><td>Agréments (livrable 7)</td></tr>
+      <tr><td><strong>E11 · Signature et formalités</strong></td><td>Préparation de signature, dossier final, formalités postérieures outillées</td><td><span class="tag should">should</span></td><td>E6 · E10</td></tr>
+      <tr><td><strong>E12 · Successions</strong></td><td>Deuxième parcours métier complet (questionnaires, pièces, FCDDV, dévolution)</td><td><span class="tag could">could</span> — V2</td><td>MVP éprouvé</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="l11">
+  <p class="eyebrow">Livrable 11</p>
+  <h2>Plan du MVP sur six mois</h2>
+  <p>Un MVP consacré aux ventes immobilières, livré par incréments mensuels utilisables, avec l'étude Thomas Levy comme site pilote à partir du mois 4. Chaque mois se termine par un jalon vérifiable — pas de « démo qui marche presque ».</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Mois</th><th>Construit</th><th>Jalon de fin de mois</th></tr></thead>
+    <tbody>
+      <tr><td class="mono"><strong>M1</strong></td><td>Socle : identité, MFA/SSO, rôles et cloisonnement, dossier unique, workflow 20 états, journal d'audit</td><td>Un dossier de vente se crée, avance d'état en état, et chaque action est tracée</td></tr>
+      <tr><td class="mono"><strong>M2</strong></td><td>GED versionnée, checklist dynamique vente, questionnaires vendeur et acquéreur, portail client v1 (dépôt et photo de pièces)</td><td>Un client dépose ses pièces depuis son téléphone ; la checklist se met à jour seule</td></tr>
+      <tr><td class="mono"><strong>M3</strong></td><td>OCR, classification, extraction sourcée avec scores, détection des manquants, contradictions et pièces expirées, file de contrôle humain, relances plafonnées</td><td>Les quatre anomalies du scénario de démonstration sont détectées et mises en file sans intervention</td></tr>
+      <tr><td class="mono"><strong>M4</strong></td><td>Conditions suspensives et échéancier, préremplissage du projet d'acte, rapport de cohérence, blocages de finalisation, LCB-FT (criblage, vigilance, files confidentielles) — <strong>début du pilote à l'étude</strong></td><td>Un projet d'acte prérempli, sourcé variable par variable, refuse de se finaliser tant qu'un contrôle manque</td></tr>
+      <tr><td class="mono"><strong>M5</strong></td><td>Comptabilité (estimation, provisions, rapprochement, taxation préparée), préparation de signature, génération du dossier final, tableau de bord de l'étude</td><td>Le comité de pilotage lit l'activité réelle de l'étude dans le tableau de bord</td></tr>
+      <tr><td class="mono"><strong>M6</strong></td><td>Durcissement : tests d'intrusion, PRA exercé, accessibilité, performances, reprise des retours du pilote, documentation et formation</td><td>Recette sur les critères d'acceptation (livrable 12) et décision de mise en service</td></tr>
+    </tbody>
+  </table></div>
+  <p>En parallèle du développement, deux chantiers non techniques courent sur les six mois&nbsp;: le dossier de conformité (registre des traitements, AIPD, contrats de sous-traitance, politique de conservation) et l'instruction des intégrations institutionnelles (livrable 7), dont les délais ne dépendent pas de l'équipe produit.</p>
+</section>
+
+<section id="l12">
+  <p class="eyebrow">Livrable 12</p>
+  <h2>Critères d'acceptation et indicateurs de succès</h2>
+  <p>La recette du MVP se prononce sur des critères vérifiables, testés sur le scénario de démonstration et sur les dossiers réels du pilote. Formulation type « étant donné / quand / alors », résumée ici.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Capacité</th><th>Critère d'acceptation</th></tr></thead>
+    <tbody>
+      <tr><td>Ouverture de dossier</td><td>Depuis un contact qualifié, le dossier complet (checklist, équipe, échéancier, invitations portail) est créé en moins de 10 minutes de travail humain</td></tr>
+      <tr><td>Collecte et classification</td><td>Une pièce déposée est classée dans la bonne rubrique avec son score affiché ; toute pièce sous le seuil de confiance part en revue humaine — zéro classement silencieux erroné accepté en recette</td></tr>
+      <tr><td>Extraction sourcée</td><td>Chaque donnée extraite affiche document, page et zone d'origine ; aucun champ du dossier ne peut recevoir une valeur sans source ; aucune donnée sous le seuil n'est validée automatiquement (contrôle sur 100 % des cas de test)</td></tr>
+      <tr><td>Anomalies</td><td>Sur le scénario de démonstration, les quatre anomalies (PV d'AG manquant, différence d'adresse, condition suspensive à J-14, pièce d'identité expirée) sont détectées, motivées, assignées et visibles au tableau de bord</td></tr>
+      <tr><td>Relances</td><td>Une relance part au plus N fois selon le scénario paramétré, s'arrête dans les 5 minutes suivant la détection d'une réponse, et escalade en tâche humaine au plafond</td></tr>
+      <tr><td>Rédaction</td><td>Le projet prérempli n'utilise que des données validées et des modèles approuvés ; les variables non renseignées sont listées ; la finalisation est refusée tant qu'un contrôle obligatoire est ouvert (testé par tentative de contournement)</td></tr>
+      <tr><td>Validations</td><td>Aucun envoi officiel, signature, mouvement financier ou clôture sans validation nominative tracée — vérifié par relecture du journal d'audit sur tous les cas de test</td></tr>
+      <tr><td>Portail client</td><td>Un client ne peut accéder à aucune note interne, aucun élément LCB-FT, aucune donnée d'une autre partie — vérifié par tests d'intrusion applicatifs dédiés</td></tr>
+      <tr><td>Conformité</td><td>Criblage PPE / gel des avoirs exécuté et justifié documentairement pour chaque partie ; les alertes restent invisibles hors rôles habilités ; aucune déclaration automatique n'existe dans le code</td></tr>
+      <tr><td>Audit et sécurité</td><td>Journal d'audit infalsifiable (empreintes chaînées vérifiées), MFA obligatoire, sauvegarde restaurée avec succès en exercice, test d'intrusion sans vulnérabilité critique ouverte</td></tr>
+      <tr><td>Données</td><td>Export complet et lisible des données de l'étude (réversibilité) démontré en recette ; politique de conservation appliquée sur un cas de purge contrôlée</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Indicateurs de succès en exploitation</h3>
+  <p>Mesurés dès le pilote, comparés à la situation antérieure de l'étude&nbsp;: temps moyen d'ouverture d'un dossier ; temps consacré à la collecte des pièces ; taux de dossiers complets avant rédaction ; nombre de ressaisies évitées ; nombre d'anomalies détectées avant signature ; délai entre ouverture et signature ; taux de relances automatisées résolues sans intervention ; nombre de dossiers par collaborateur ; délai des formalités postérieures ; taux de satisfaction client. L'objectif qui gouverne l'ensemble&nbsp;: <strong>faire gagner plusieurs heures de travail par dossier sans réduire la sécurité juridique ni la responsabilité du notaire</strong> — un gain de temps qui affaiblit un contrôle n'est pas un gain.</p>
+</section>
+
+<section id="annexe">
+  <p class="eyebrow">Annexe A</p>
+  <h2>Prototype et scénario de démonstration</h2>
+  <p>Le prototype fonctionnel est publié séparément&nbsp;: <a id="proto-link" href="https://claude.ai/code/artifact/c915082d-e472-4c52-8734-7d5dea785b25">ouvrir le prototype Pilotage Notarial</a>. Toutes les données y sont fictives et signalées comme telles ; aucun bouton n'y est décoratif — chaque action visible fonctionne ou est explicitement marquée « indisponible dans le prototype ».</p>
+  <div class="card">
+    <h4 style="margin-top:0">Le dossier de démonstration</h4>
+    <p>Vente d'un appartement en copropriété (réf. <span class="mono">VTE-2026-0142</span>)&nbsp;: deux vendeurs mariés sous communauté, un acquéreur financé par emprunt, un syndic, une agence immobilière, un état hypothécaire portant une inscription à radier, des diagnostics. Quatre anomalies y sont volontairement présentes&nbsp;:</p>
+    <ol>
+      <li><strong>Procès-verbal d'assemblée générale 2025 manquant</strong> — pièce attendue du syndic, deux relances envoyées, escalade programmée ;</li>
+      <li><strong>Différence d'adresse entre deux documents</strong> — le titre de propriété et le pré-état daté ne désignent pas le même numéro de voie : contradiction en file de contrôle humain, « décision juridique requise » ;</li>
+      <li><strong>Condition suspensive de prêt à J-14</strong> — alerte rouge, relance de l'acquéreur, décision du notaire préparée ;</li>
+      <li><strong>Justificatif d'identité expiré</strong> — détecté à l'analyse, pièce redevenue manquante, demande automatique envoyée.</li>
+    </ol>
+    <p>Le prototype montre, pour chacune&nbsp;: la détection motivée et sourcée, la demande de pièce ou la relance générée, la tâche assignée au bon rôle, et la préparation du dossier pour validation humaine.</p>
+  </div>
+</section>
+
+</main>
+</div>
+<footer class="doc-foot"><div class="in">
+  Étude Thomas LEVY · 11 boulevard Flandrin, 75116 Paris · 01 40 75 05 55 · ea@levy-notaires.fr — Pilotage Notarial, dossier de conception v1.0, 22 août 2026. Document de travail ; les exemples, personnes et références de dossiers cités sont fictifs. Les connexions institutionnelles mentionnées restent soumises à validation technique, contractuelle et réglementaire préalable.
+</div></footer>
+
+</body></html>

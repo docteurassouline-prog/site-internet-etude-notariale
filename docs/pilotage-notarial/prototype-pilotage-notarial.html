@@ -1,0 +1,1535 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Pilotage Notarial</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Pilotage Notarial v2 — direction visuelle : marine profond, or du médaillon, papier chaud. Parti pris clair unique, couleurs explicites. */
+*{box-sizing:border-box}
+:root{
+  --marine:#0e1a33; --marine-2:#152544; --gold:#a97e3f;
+}
+html,body{height:100%}
+body{margin:0;background:#f1efe9;color:#1a1d24;font:400 14px/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+::selection{background:#e9d9b8}
+.demo-band{background:linear-gradient(90deg,#8a6428,#a97e3f 50%,#8a6428);color:#fdfbf5;text-align:center;font-size:11.5px;font-weight:600;letter-spacing:.08em;padding:5px 10px}
+.topbar{background:linear-gradient(180deg,#0c1730,#122242);color:#f2f0ea;display:flex;align-items:center;gap:16px;padding:10px 20px;position:sticky;top:0;z-index:40;box-shadow:0 2px 14px rgba(10,20,44,.35)}
+.topbar .logo{height:44px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.brand{font:700 19px/1.05 "Spectral",Georgia,serif;letter-spacing:.01em;white-space:nowrap}
+.brand small{display:block;font:600 9px/1.7 "Public Sans",sans-serif;letter-spacing:.22em;color:#c9a35f;text-transform:uppercase}
+.gsearch{flex:1;max-width:440px;position:relative}
+.gsearch input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(201,163,95,.35);border-radius:99px;color:#f2f0ea;padding:8px 16px;font:inherit;font-size:13px;transition:border-color .15s}
+.gsearch input:focus{outline:none;border-color:#c9a35f;background:rgba(255,255,255,.12)}
+.gsearch input::placeholder{color:#8d99b5}
+.gsearch .gs-res{position:absolute;top:115%;left:0;right:0;background:#fff;border:1px solid #e3e0d6;border-radius:12px;box-shadow:0 18px 44px rgba(10,20,44,.28);max-height:320px;overflow:auto;z-index:60}
+.gs-res button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;border-bottom:1px solid #f0ede5;color:#1a1d24}
+.gs-res button:hover{background:#f7f5ef}
+.gs-res .t{font-weight:600}.gs-res .s{font-size:12px;color:#83868e}
+.rolebox{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:12px;color:#8d99b5}
+.rolebox select{background:rgba(255,255,255,.08);color:#f2f0ea;border:1px solid rgba(201,163,95,.35);border-radius:9px;padding:7px 10px;font:inherit;font-size:13px}
+.userchip .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#c9a35f,#a97e3f);color:#0e1a33;display:grid;place-items:center;font-weight:700;font-size:12.5px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.shell{display:flex;min-height:calc(100vh - 90px)}
+.snav{width:228px;flex:none;background:#0e1a33;color:#aab4cc;padding:16px 12px 24px;position:sticky;top:64px;align-self:flex-start;max-height:calc(100vh - 64px);overflow:auto}
+.snav .grp{font:700 9.5px/1 "Public Sans",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#c9a35f;margin:18px 12px 8px;opacity:.9}
+.snav .grp:first-child{margin-top:4px}
+.snav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;border-radius:0 9px 9px 0;padding:9px 12px;color:#aab4cc;font-weight:500;font-size:13.5px;transition:background .12s,color .12s}
+.snav button:hover{background:rgba(255,255,255,.06);color:#f2f0ea}
+.snav button.on{background:linear-gradient(90deg,rgba(201,163,95,.16),rgba(201,163,95,.04));color:#fff;border-left-color:#c9a35f;font-weight:600}
+.snav button .ic{width:18px;text-align:center;opacity:.85}
+.snav button .bdg{margin-left:auto;background:#d03b3b;color:#fff;font-size:10.5px;font-weight:700;border-radius:99px;padding:0 6px;line-height:17px}
+.snav button.on .bdg{background:#c9a35f;color:#0e1a33}
+.snav .foot{margin:22px 12px 0;font-size:10.5px;color:#5d6a88;line-height:1.5}
+main{flex:1;min-width:0;padding:26px 30px 70px;max-width:1460px}
+h1.pg{font:600 24px/1.2 "Spectral",Georgia,serif;margin:0 0 4px;letter-spacing:.005em}
+.pg-sub{color:#82858d;font-size:13px;margin:0 0 18px}
+h2.sec{font:600 15.5px/1.3 "Spectral",Georgia,serif;margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+h2.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#ddd9cc,transparent)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1150px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:540px){.g4{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid #e6e2d7;border-radius:14px;padding:16px 18px;box-shadow:0 1px 2px rgba(26,29,36,.04)}
+.card h3{font:600 13px/1.3 "Public Sans",sans-serif;margin:0 0 10px;color:#4b5058;letter-spacing:.02em}
+.tile{position:relative;overflow:hidden}
+.tile::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#a97e3f,#e2cf9e 65%,rgba(226,207,158,.2))}
+.tile .lb{font-size:11.5px;color:#83868e;letter-spacing:.03em}
+.tile .vl{font-size:28px;font-weight:600;line-height:1.15;margin-top:3px;font-family:"Spectral",Georgia,serif}
+.tile .dl{font-size:12px;margin-top:2px;color:#83868e}
+.tile .dl.up{color:#006300}.tile .dl.bad{color:#a52f2f}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:1.5px 10px;font-size:11.5px;font-weight:600;white-space:nowrap;background:#eef0f4;color:#4b5058}
+.chip .d{width:8px;height:8px;border-radius:50%;flex:none}
+.c-ok{background:#e7f4e7;color:#006300}.c-ok .d{background:#0ca30c}
+.c-warn{background:#fdf3da;color:#7a5a10}.c-warn .d{background:#fab219}
+.c-crit{background:#fbe9e9;color:#a52f2f}.c-crit .d{background:#d03b3b}
+.c-gold{background:#f4edda;color:#8a6428}
+.c-blue{background:#e7f0fb;color:#1c5cab}
+.c-mut{background:#eef0f4;color:#4b5058}
+.c-ia{background:#0e1a33;color:#e9d9b8}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:#83868e;font-weight:700;padding:8px 11px;border-bottom:1px solid #e6e2d7;white-space:nowrap;background:#faf9f5}
+.tbl td{padding:9px 11px;border-bottom:1px solid #f0ede5;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr.rowbtn{cursor:pointer}
+.tbl tr.rowbtn:hover td{background:#faf8f2}
+.tbl .num{text-align:right;font-variant-numeric:tabular-nums}
+.tblwrap{overflow-x:auto;background:#fff;border:1px solid #e6e2d7;border-radius:14px;box-shadow:0 1px 2px rgba(26,29,36,.04)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em}
+.btn{border:1px solid #ddd9cc;background:#fff;border-radius:9px;padding:7px 14px;font-size:13px;font-weight:600;color:#1a1d24;transition:background .12s,border-color .12s}
+.btn:hover{background:#f7f5ef;border-color:#c9c4b4}
+.btn.pri{background:#0e1a33;border-color:#0e1a33;color:#f2f0ea}
+.btn.pri:hover{background:#1a2b52}
+.btn.gold{background:linear-gradient(135deg,#a97e3f,#8a6428);border-color:#8a6428;color:#fdfbf5;box-shadow:0 2px 8px rgba(138,100,40,.3)}
+.btn.gold:hover{filter:brightness(1.08)}
+.btn.ghost{background:none;border-color:transparent;color:#8a6428}
+.btn.ghost:hover{background:#f4edda}
+.btn.sm{padding:4px 10px;font-size:12px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-note{font-size:11.5px;color:#83868e;margin-top:5px}
+.tabs{display:flex;gap:2px;flex-wrap:wrap;border-bottom:2px solid #e6e2d7;margin:16px 0 18px}
+.tabs button{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:9px 13px;font-size:13px;font-weight:600;color:#83868e;border-radius:8px 8px 0 0}
+.tabs button:hover{color:#1a1d24;background:#f7f5ef}
+.tabs button.on{color:#8a6428;border-bottom-color:#a97e3f}
+.tabs button .bdg{background:#d03b3b;color:#fff;border-radius:99px;font-size:10px;padding:0 5px;margin-left:5px}
+.alert{border:1px solid #e6e2d7;border-left-width:4px;border-radius:11px;padding:11px 14px;background:#fff;margin:9px 0;box-shadow:0 1px 2px rgba(26,29,36,.03)}
+.alert.warn{border-left-color:#fab219;background:#fdf6e4}
+.alert.crit{border-left-color:#d03b3b;background:#fcecec}
+.alert.ok{border-left-color:#0ca30c;background:#ecf6ec}
+.alert.gold{border-left-color:#a97e3f;background:#f7f0df}
+.alert.ia{border-left-color:#0e1a33;background:#fff}
+.alert .t{font-weight:600;font-size:13.5px}
+.alert .s{font-size:12.5px;color:#4b5058;margin-top:2px}
+.src{display:inline-block;background:#eef0f4;border-radius:5px;padding:0 7px;font:500 11px/1.8 "IBM Plex Mono",monospace;color:#4b5058;white-space:nowrap}
+.card .src{white-space:normal;overflow-wrap:anywhere}
+.conf{display:inline-block;font:600 11px/1.7 "IBM Plex Mono",monospace;border-radius:5px;padding:0 7px}
+.conf.hi{background:#e7f4e7;color:#006300}
+.conf.md{background:#fdf3da;color:#7a5a10}
+.conf.lo{background:#fbe9e9;color:#a52f2f}
+.kb{display:grid;grid-template-columns:repeat(5,minmax(195px,1fr));gap:12px;overflow-x:auto;align-items:start}
+.kb .col{background:#f6f4ee;border:1px solid #e6e2d7;border-radius:12px;padding:10px;min-width:195px}
+.kb .col h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#83868e;margin:2px 4px 9px}
+.kcard{background:#fff;border:1px solid #e6e2d7;border-radius:10px;padding:9px 11px;margin-bottom:9px;cursor:pointer;box-shadow:0 1px 2px rgba(26,29,36,.04)}
+.kcard:hover{border-color:#a97e3f}
+.kcard .r{font:500 11px/1 "IBM Plex Mono",monospace;color:#83868e}
+.kcard .t{font-weight:600;font-size:12.5px;margin:4px 0 5px}
+.doc-line{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0ede5}
+.doc-line:last-child{border-bottom:none}
+.doc-ic{width:34px;height:42px;flex:none;border:1px solid #e6e2d7;border-radius:6px;background:#f6f4ee repeating-linear-gradient(#f6f4ee 0 6px,#e8e4d8 6px 8px);margin-top:2px}
+.viewer{border:1px solid #e6e2d7;border-radius:14px;background:#fff;overflow:hidden}
+.viewer .vh{display:flex;align-items:center;gap:10px;background:#faf9f5;border-bottom:1px solid #e6e2d7;padding:9px 14px;font-weight:600;font-size:13px;flex-wrap:wrap}
+.fakepage{background:#fdfdfb;border:1px solid #e8e4d8;margin:14px auto;max-width:520px;padding:22px 26px;font-size:12px;color:#4b5058;box-shadow:0 3px 14px rgba(26,29,36,.08)}
+.fakepage .fl{height:7px;background:#e8e4d8;border-radius:3px;margin:7px 0}
+.hl{background:#fdf3da;outline:2px solid #fab219;border-radius:3px;padding:0 3px;font-weight:600;color:#1a1d24}
+.hl.okv{background:#e7f4e7;outline-color:#0ca30c}
+.var{border-radius:4px;padding:0 4px;font-weight:600;cursor:help}
+.var.src-ok{background:#e7f4e7;color:#006300;border-bottom:1px dashed #0ca30c}
+.var.src-miss{background:#fbe9e9;color:#a52f2f;border-bottom:1px dashed #d03b3b}
+.acte{background:#fdfdfb;border:1px solid #e6e2d7;border-radius:14px;padding:28px 32px;font-size:13.5px;line-height:1.85;max-width:720px;box-shadow:0 1px 2px rgba(26,29,36,.04)}
+.acte h4{font:700 14px/1.4 "Spectral",Georgia,serif;text-align:center;letter-spacing:.05em;margin:0 0 14px}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{position:relative;padding:0 0 16px 26px;border-left:2px solid #e6e2d7;margin-left:8px}
+.tl li:last-child{border-left-color:transparent}
+.tl .pt{position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:#fff;border:2.5px solid #83868e}
+.tl li.ev-val .pt{border-color:#8a6428;background:#f4edda}
+.tl li.ev-anom .pt{border-color:#d03b3b}
+.tl li.ev-auto .pt{border-color:#2a78d6}
+.tl .tt{font-weight:600;font-size:13px}
+.tl .ts{font-size:11.5px;color:#83868e}
+.phone{width:330px;max-width:100%;border:10px solid #0e1a33;border-radius:30px;background:#f6f4ee;overflow:hidden;margin:0 auto;box-shadow:0 16px 40px rgba(10,20,44,.25)}
+.phone .ph-h{background:linear-gradient(180deg,#0c1730,#122242);color:#f2f0ea;padding:11px 15px 13px;font-weight:600;font-size:13px}
+.phone .ph-h small{display:block;font-weight:400;color:#8d99b5;font-size:11px}
+.phone .ph-b{padding:12px;max-height:640px;overflow:auto}
+.pcard{background:#fff;border:1px solid #e6e2d7;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px}
+.pcard h5{margin:0 0 6px;font-size:12px}
+.prog{height:7px;background:#e8e4d8;border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#a97e3f,#c9a35f);border-radius:4px}
+.toasts{position:fixed;bottom:20px;right:20px;z-index:90;display:flex;flex-direction:column;gap:9px;max-width:350px}
+.toast{background:#0e1a33;color:#f2f0ea;border:1px solid rgba(201,163,95,.4);border-radius:12px;padding:11px 15px;font-size:13px;box-shadow:0 12px 34px rgba(10,20,44,.4);animation:tin .18s ease-out}
+.toast b{color:#e9d9b8}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.toast{animation:none}}
+.assist-fab{position:fixed;bottom:20px;left:262px;z-index:80;background:linear-gradient(135deg,#a97e3f,#8a6428);color:#fdfbf5;border:none;border-radius:99px;padding:11px 18px;font-weight:600;font-size:13px;box-shadow:0 10px 26px rgba(138,100,40,.45)}
+.assist{position:fixed;bottom:68px;left:262px;z-index:85;width:395px;max-width:calc(100vw - 40px);background:#fff;border:1px solid #e6e2d7;border-radius:16px;box-shadow:0 22px 60px rgba(10,20,44,.3);display:flex;flex-direction:column;max-height:545px}
+.assist .ah{background:linear-gradient(180deg,#0c1730,#122242);color:#f2f0ea;border-radius:15px 15px 0 0;padding:11px 15px;font-weight:600;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.assist .ah small{display:block;font-weight:400;font-size:11px;color:#8d99b5}
+.assist .ab{padding:13px;overflow:auto;flex:1}
+.assist .af{display:flex;gap:8px;padding:11px;border-top:1px solid #e6e2d7}
+.assist .af input{flex:1;border:1px solid #ddd9cc;border-radius:9px;padding:8px 11px;font:inherit}
+.msg{border:1px solid #e6e2d7;border-radius:12px;padding:10px 13px;font-size:12.5px;margin-bottom:9px;background:#f6f4ee}
+.msg.ai{background:#fff}
+.msg .meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sugg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.sugg button{border:1px solid #ddd9cc;background:#f6f4ee;border-radius:99px;padding:5px 12px;font-size:12px}
+.sugg button:hover{border-color:#a97e3f;color:#8a6428}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+.filters select,.filters input{border:1px solid #ddd9cc;border-radius:9px;padding:7px 10px;font:inherit;font-size:13px;background:#fff;color:#1a1d24}
+.filters .lbl{font-size:12px;color:#83868e;font-weight:600}
+.seg{display:inline-flex;border:1px solid #ddd9cc;border-radius:9px;overflow:hidden;background:#fff}
+.seg button{border:none;background:none;padding:7px 13px;font-size:12.5px;font-weight:600;color:#83868e}
+.seg button.on{background:#0e1a33;color:#f2f0ea}
+.viz-tip{position:fixed;z-index:95;background:#0e1a33;color:#f2f0ea;font-size:12px;border-radius:8px;padding:6px 11px;pointer-events:none;box-shadow:0 8px 22px rgba(10,20,44,.35);display:none}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 335px;gap:16px;align-items:start}
+.split.docs{grid-template-columns:340px minmax(0,1fr)}
+.split.portail{grid-template-columns:360px minmax(0,1fr)}
+@media (max-width:1020px){.split,.split.docs,.split.portail{grid-template-columns:minmax(0,1fr)}}
+.checkgrp{margin-bottom:16px}
+.checkgrp h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#83868e;margin:0 0 7px}
+.pi{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid #ece8dd;border-radius:10px;background:#fff;margin-bottom:7px}
+.pi .st{flex:none;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;margin-top:1px}
+.pi .st.ok{background:#e7f4e7;color:#006300}
+.pi .st.wait{background:#e7f0fb;color:#1c5cab}
+.pi .st.miss{background:#fbe9e9;color:#a52f2f}
+.pi .st.warn{background:#fdf3da;color:#7a5a10}
+.pi .nm{font-weight:600;font-size:13px}
+.pi .dt{font-size:11.5px;color:#83868e}
+.pi .act{margin-left:auto;flex:none;display:flex;gap:6px;align-items:center}
+.hidden{display:none !important}
+a{color:#8a6428}
+.radio-row{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}
+.radio-row label{border:1px solid #ddd9cc;border-radius:9px;padding:7px 11px;font-size:12.5px;cursor:pointer;background:#fff;display:flex;gap:6px;align-items:center}
+.radio-row label:has(input:checked){border-color:#8a6428;background:#f4edda;font-weight:600}
+/* v2 — file d'approbation */
+.queue{background:linear-gradient(180deg,#fffdf7,#fbf6e9);border:1px solid #e2cf9e;border-radius:16px;padding:16px 18px;margin:0 0 18px;box-shadow:0 3px 14px rgba(169,126,63,.12)}
+.queue h2{font:600 16px/1.3 "Spectral",Georgia,serif;margin:0 0 4px;display:flex;align-items:center;gap:9px}
+.queue .n{background:#0e1a33;color:#e9d9b8;border-radius:99px;min-width:24px;text-align:center;padding:1px 8px;font:700 13px/20px "Public Sans",sans-serif}
+.queue .qs{font-size:12.5px;color:#7a6a45;margin:0 0 10px}
+.qitem{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #ece4cf;border-radius:12px;padding:11px 14px;margin:8px 0}
+.qitem .qi{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;background:#f4edda}
+.qitem .qt{font-weight:600;font-size:13.5px}
+.qitem .qd{font-size:12.5px;color:#4b5058;margin-top:1px}
+.qitem .qa{margin-left:auto;flex:none;display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+/* v2 — entrées */
+.flow3{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin:0 0 18px}
+.flow3 .f{background:#fff;border:1px solid #e6e2d7;border-radius:13px;padding:13px 15px;font-size:12.5px;color:#4b5058;position:relative}
+.flow3 .f b{display:flex;align-items:center;gap:8px;color:#1a1d24;font-size:13px;margin-bottom:4px}
+.flow3 .f .stp{width:22px;height:22px;border-radius:50%;background:#0e1a33;color:#e9d9b8;display:inline-grid;place-items:center;font:700 11.5px/1 "Public Sans",sans-serif;flex:none}
+.intake{border:1px solid #e6e2d7;border-radius:14px;background:#fff;padding:14px 16px;margin:10px 0;box-shadow:0 1px 2px rgba(26,29,36,.04)}
+.intake .ih{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.intake .from{font-weight:700;font-size:13.5px}
+.intake .obj{font-size:13px;color:#4b5058}
+.intake .when{margin-left:auto;font-size:11.5px;color:#83868e;white-space:nowrap}
+.iabox{margin-top:9px;border:1px dashed #cbb98d;background:#fbf8ef;border-radius:11px;padding:10px 13px;font-size:12.5px}
+.iabox .ial{display:flex;align-items:center;gap:7px;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8a6428;margin-bottom:6px}
+.kv{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0}
+.kv span{background:#fff;border:1px solid #e6e2d7;border-radius:7px;padding:2px 8px;font-size:12px}
+.kv b{font-weight:600}
+/* v2 — frise chronologique */
+.frise-wrap{overflow-x:auto;padding:6px 2px 2px}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.steps li{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid #ece8dd;border-radius:11px;padding:10px 13px}
+.steps .sic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;margin-top:1px}
+.steps .fait .sic{background:#e7f4e7}
+.steps .encours .sic{background:#f4edda;outline:2px solid #c9a35f}
+.steps .avenir .sic{background:#eef0f4}
+.steps .sn{font-weight:600;font-size:13px}
+.steps .sd{font-size:12px;color:#4b5058}
+.steps .sa{margin-left:auto;flex:none;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.expchip{display:inline-block;background:#f4edda;color:#7a5a2a;border:1px solid #e2cf9e;border-radius:7px;padding:1px 8px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.formbox{border:1px solid #e6e2d7;border-radius:14px;background:#fff;padding:15px 17px;margin-top:10px}
+.formbox label{display:block;font-size:12px;font-weight:600;color:#4b5058;margin:10px 0 4px}
+.formbox input,.formbox select,.formbox textarea{width:100%;border:1px solid #ddd9cc;border-radius:9px;padding:8px 11px;font:inherit;font-size:13px;background:#fff}
+.footnote{color:#83868e;font-size:11.5px;margin-top:26px;border-top:1px solid #e6e2d7;padding-top:10px}
+</style>
+
+<div class="demo-band">PROTOTYPE — DOSSIERS, PARTIES ET CHIFFRES FICTIFS · ÉTUDE THOMAS LEVY · AUCUNE ACTION RÉELLE N'EST EXÉCUTÉE</div>
+<header class="topbar">
+  <img class="logo" src="data:image/webp;base64,UklGRmoNAABXRUJQVlA4WAoAAAAQAAAAUQAAVwAAQUxQSMADAAABoHRt2yFJXtDzKce227ax4hgrr2zbs7Nt27Zt7GzbqIr4vvd9WomI+CJiAlBxCOhlCB4Ntc4aIAw47pknn2n/1DPXD1gNgHGuCQEAjjrxCXb/2Qkn7w0gmJpZAENmPvMxSZXUuShJfrTlFMC4GhkPt9L5v5GMZWL3UpaJ5DXDAW/qYoGN3/+NTCLsuSThf1fPAnwtjMN653xNRmXFkSzuXQnOVueBTftIYR2T8PVdUX3AStsXjMJ6aiRPHmpdNQH7vE1ljaXgKwa2CovNv2DJWmv676uxCD0zLRxDTaz/r5Pge4bjWQjrn/jLGPje+NZxLJVNTPxzHGwvHDagsKHCnyYE253Bis/FxjDxR8B0Y/yqrzCxuVEOb/lulsXF7GeTE8fDdWYx95dSGyXy9BrOdGLt3P+obHbJkxA6aeFE9rPhmn6fB9vO+A3fUWkaE99p+XYejzKx+UW5jfVLs37HPwvNgPBtmKUY2ILKHAq3N24Ji9H/SB4K3ozWEsHdyZJZlPT++tYCDlP7IjMZeax1gDPbMRui38EABp9QcqHy0yxjjdngG80GS56J0MJJLJgPPRnBLX+LpnxQ/90YGEJlTjgYGCB50fWAwcxK4nXAOrl5FdiGkpdnLd5gyssTwFN5EflwOJ7NCyP3z4/umh/unqHdMrRXdlLfDrlJfAZ4LjdPA0/m5g1gNDUnwjOAjTUryjWBwcxLGgyz/veqOeEQBBytZT6SPrKyCziTGSl4DFrWDP9ONBsxHmM8DL6k5EL4jTGAsS9kRJ+HARymM+YichYcgLDs3SzzoOmHscYugYtSJko5DwEADFYpVHOg+v+qxiwBZ05hmQPhN8u0sXbID0maJ+mHEdZi6R4XMjUv8UJ4tLV2LVIbJ31rWdsOzm/fl7RhJc/0AZ0avCTSLInvbWRMR87NZtmskjPg0Llb7iymJkWetVxA9xfG2JySV8Gga9PCO4xNEflvvHfdwdlNE6UZwjQXDr10mNun2gTVvrnw6K3HpoVI/USKTeHR64A5UaVuonEOAnofsHm/lPUqpX9zBFQZsECZ6pSoCxBQbcCm97DQumjBezZFQNUOuISMUotIXgI4VO8MDvyEFK1MEj85EMahjsZhwONvkZIqiSQf3wTOoKYB8A/8RkbRnqhIiizvXwAE1NcEYLlD3yNZlrGbWCpJ3joDCAa1NgBWm3XJrySVmtoqleQHH+8yEzAO9fcABp903GXs8pITdwQAZ9FI4ywADNhk3NPPLPXpcZsMAGCMc2iuDcGhSxs8qgZWUDgghAkAAHAqAJ0BKlIAWAA+PRqKQyIhoRY63oggA8S1BDgAuZgjQl+3+cNXv7p/S/1Hk9fS3+l+7T4N+ozzBf1R6SX7UepT9pP2O93v/Sepn0AP6L/eesA9AD9svTY/cb4P/7R/xP3R9rHMJfwA/QDyc/uP41ftL23/tb2P2yvyQ/bb9H/VeKXgBfjP88/wHA/gA/OP6b/huNT63+aR/s+PY8J9gD8p/8b7gPpa/n/+v/k/y79tH51/gP+Z/lf3Y+gb+T/0f/Vf238kfm382D2Qv1ZRvrN4EgmRHf82wlNHSQUFENx/AcSAvCNTrvJmajJu08oUTBo5Hp6Hh0YDC7Hkj5vykOtVA87HiT8vXhrSS2Gt+b2Xw5X4nmqV6TIPTjoQdwGPQ2E2Y537nyxokDwONbp/HHJAIjAx/1KuU/GTNi/HhzF+uJK+wSw9dR/zoZ8slT5xm2iHIT+/yZjkBRAoAAD++GFi/3hA8g2HBn8zpHXuPXYJileImXHlDI5jwmliMr81eE5k96mBPaf4x02PyL3feF7KW+aN5qNiqNqJJHrNxYUK+0d1INNQ5rYUcQdhngS7vY9r4Do4clelNVWZ6GRajMkvYNtsWu2VZ2rWYcvvM+ANXN9PGUBW7F0ajz+v+zkKBpeJi0GesAFWlMaTLMxxsIDSDVIkg6lEB9gZPVLiHXVmdwQ25Wp3gVLKtot47Ci3Acf5vMpufZeTZIARwr/6Ihj+KaBAq4zLZQIg2tpWqHNsmPkQlI77AZQ2Ef/dTM0R0JqhXc++CbJElSrAfxVAcVxN9YoKUIbtIRG/aoK5DLH010995eEZ9wEAWXkc43VFzcvZNdV13RymxAF+Jh2FJ/+PyzZakxk3V6ResgH5xcQw6sf2dh/JwUk++mE+fdl+sk5NDZV4wAJbHxhQu3xGN9TQmtdBxI+vicOKlT+SwzRxeJWWabupfaWc4ISzVvf4tqpgmYX1aOGF7+qgudqZ23yju1Y3Yp773xh+8tlAczKstw0Yacrnoza/VoNoHehCboWrK/9/PrMHRU3Puv5KsHoWpisySY6N7v9AnvQWqjy5sLt1W3jZjTAXdqD7LAlURwKBsWWOG7c2qLGoDTB8n4hqWTeQYVefuN6/nhYN9NqUUSDQE+4zpyPp7c+b+omgbM8Fhw1m29JJNgKYbZV9pIrA7HjgLUGpGfSAhf6G2n8Qd19WOuH9nr3+grBCgdmjnD/Epv3pOYRLptYCfuJm9SZ2NNuGKeg1YJmMtZSRBUCBOylQwiLZT8WqaO7vzcSKIKXRikj+5oq9mZJdu9lQ+WrsTNlv6cxgcPw3l/eteaNJEGpUK8YH2ovl7oki0KcO26/tqFg5ZdYCi1Yw9lhXVnY/bCv+u3feHFWdtjmfOHbi5ICbk1nWku5SJZRGnjCCCYiSJ0w+t+O4k6eyaMuDv+HjHaj+zc+ylmbu/9OxrVW2iijxd9nNoSZHRozQJtvSZzh2y7uzQe8zOr4hSCTGyOujjRLuF4XrKp+LIrJ5db0YFzZGGINfoRX7/Ku/ElEudjzH0G0qfn34wwMIDxheJ+X6m//R0z2kIRULYTrZcm306/PbV/aWE5Ra6y3uHqrixBibqSzlcgLjU6DBgf765MAHG70ua1i9FE6AzDePsj/QXIW7hgwdhpzT0FFJxgjBbzyCrtuwopb8pgs/D7TJqaqRJlyIhRs4Vyv/wCo/0Nr/RvF1yO/OMP+RLaaNJh8vr+vjyUUnYpGEKO9OsKSVjQqVXoPc7BEJPppy7bSgdY2Q01vH1Nh/5aBu4N8FwfzWSb8HqYDV3apERnRb8WBuJVGg24bR6hBGLtTaM9sGu0mg4lGj0TEPWhGBFYQ7tGVV0NZImUJrR+qYOMNTJLTQ7MdqO8E/+VT+XWmngWEwXlkCzPhiFjoJqXi5Kojs5fkipQ+OpMMkn+FJD4LqlqVE4n63SqGvMrO9vJWHkJP5G7Svh+17vEWrvdoF57T6djOErYj5eal+OVAqmIKGgWNB0fcY0uITC2C5JQFh1q9c/5mCeT0I2Xg734vvycyjYiDiIAADCPQ09N6dC4bslBBzx25tqB7QqXUWKTJhbKQIkDuOQy+krub97eZrGMqj+9NslsT9Cu4watwgWogrTgummaFvE8eho9sgfThDHaEfVtS3XN6hFr0RNrJlu/fi88k5HOq4B41CpAayDiObBlGp/ywTsxXiVyiVh8fzWctdJWtTg3ZYBX8lrBvrX0LDsV/8/OBTIC09Hqw5rEnUoiwl2lYPgwT3l3gB/Bhg7H7b8+oXNo3j//H75WpWf7em1O03BkrsiNUer70riBgiLazNn2P78o2E1ShdR7cgB3WSpvnRFNdZrutolft/ne5m3Q4dzGEIHHtyg4RRRUKcPRvI2GShXrlk2LuLAK2dm3vkEpvDTbni+K6U3DLG6KWG32MG28IKr/9uPI4tIlREIktvIsRJ6LZA3aAEAuBEZnh8glK765G0TYrZaIWZnYuJECYQ3/bx1a2IjDhS5LEl4r7lgfyID/6QucJ6g5ZCI4WBevAik7AY7FW7ppisLSuncabw9yJ88OxqjiOGGK2B+czNGcoaN+2YwnE9IOrUddE8o97qaImZgJ1EkLQDad7bLrHKRHZJsyJmuI2d3AKuOVcmnfH8TTNROIEpJsjDfF9Yg3BfdDcfg/pRLEPTMFRKNPjVo6pQA4faJqru0bMqCmf2y+awyQGkSvx7B/HrE9KXiZFfxsp8OiwM5obFXOtZqLWfJiWbFdxMQ5XjriZRFccMATRY8CJAw++Xy7l7t3XA4DThjlydonlNdBsYzIeI8xRmMYsLucKARivd9tv0BawaRuTzW4adfvODOjrlkOPTFSvUx3F/F4EyuIZ1r//zRLkm3v3Lfu3RGXr0mSiWx7T3yfl2tg96JlnnCC+86Qy5JLatSF2N9yRaU/vQB1/lXW8rv2U0djG4YfsItMkc8s5G1dbIiu7szJ/JTI/NJmliDV8yeM2rKiziZmcpT42ZLW/Vi+3It+qIAmNmDmFeE4f/auW2V/mIh4hGEStN9hw7zMbvcv4i/LY9msqk8SBnzsxq6HPncVQWgaofTXZE87zxCEIlMaokz6tY8bfNVlBbcL5XkdWELzfTw6goVcpImjkKCLh380JFXAVEtl5U5YcaQyW92s2Zlfn64WNyqfNn3pvEyS5iDjTXzbn6vERcRU+ovv3Xxl4lk71YNiP3BTIsSlpHY+5f9VG///DlHJlv67ZAAAAAAA==" alt="Étude Thomas Levy">
+  <div class="brand">Pilotage Notarial<small>Étude Thomas Levy</small></div>
+  <div class="gsearch">
+    <input id="gs" type="search" placeholder="Recherche globale — dossier, partie, bien, pièce…  ( / )" autocomplete="off">
+    <div id="gsres" class="gs-res hidden"></div>
+  </div>
+  <div class="rolebox"><span>Voir comme</span>
+    <select id="role">
+      <option value="levy" selected>Me Thomas Lévy — Notaire (direction)</option>
+      <option value="rouaud">Me Hélène Rouaud — Notaire salariée</option>
+      <option value="azzoulai">Me Julie Azzoulai — Notaire salariée</option>
+      <option value="michel">Véronique Michel — Notaire assistante</option>
+      <option value="abensour">Mylène Abensour — Notaire assistante</option>
+      <option value="knafo">Dan Knafo — Notaire stagiaire</option>
+      <option value="compta">Comptabilité de l'étude — Taxation</option>
+    </select>
+  </div>
+  <div class="userchip"><span class="av" id="uav">TL</span></div>
+</header>
+<div class="shell">
+  <nav class="snav" id="snav"></nav>
+  <main id="main"></main>
+</div>
+<div class="toasts" id="toasts"></div>
+<div class="viz-tip" id="viztip"></div>
+<button class="assist-fab hidden" id="fab">✳ Assistant du dossier</button>
+<div class="assist hidden" id="assist"></div>
+<script>
+/* ================= DONNÉES FICTIVES v2 ================= */
+const NOW = new Date('2026-08-22T09:00:00');
+const ETATS = ["Nouveau contact","Qualification","Conflits & doublons","Création du dossier","Lettre de mission","Identification des parties","Contrôles LCB-FT","Collecte des pièces","Analyse documentaire","Formalités préalables","Préparation financière","Rédaction du projet","Contrôle juridique","Envoi aux parties","Préparation signature","Signature","Formalités postérieures","Solde comptable","Clôture","Archivage"];
+const PHASES = [
+ {n:"Entrée en relation", range:[1,5]},
+ {n:"Constitution", range:[6,9]},
+ {n:"Préparation", range:[10,11]},
+ {n:"Acte", range:[12,16]},
+ {n:"Dénouement", range:[17,20]}
+];
+const phaseOf = e => PHASES.find(p=>e>=p.range[0]&&e<=p.range[1]);
+const COLLABS = ["Me H. Rouaud","Me J. Azzoulai","V. Michel","M. Abensour","D. Knafo"];
+const THEMES = ["Immobilier","Patrimoine et famille","Entreprise","International"];
+const ROLES = {
+ levy:{nom:"Me Thomas Lévy", titre:"Notaire — direction", av:"TL", vue:"notaire", resp:null},
+ rouaud:{nom:"Me Hélène Rouaud", titre:"Notaire salariée", av:"HR", vue:"redaction", resp:"Me H. Rouaud"},
+ azzoulai:{nom:"Me Julie Azzoulai", titre:"Notaire salariée", av:"JA", vue:"redaction", resp:"Me J. Azzoulai"},
+ michel:{nom:"Véronique Michel", titre:"Notaire assistante", av:"VM", vue:"assist", resp:"V. Michel"},
+ abensour:{nom:"Mylène Abensour", titre:"Notaire assistante", av:"MA", vue:"assist", resp:"M. Abensour"},
+ knafo:{nom:"Dan Knafo", titre:"Notaire stagiaire", av:"DK", vue:"assist", resp:"D. Knafo"},
+ compta:{nom:"Comptabilité de l'étude", titre:"Comptable taxateur", av:"CT", vue:"comptable", resp:"Comptabilité"}
+};
+
+/* them : thématique (expertises de l'étude) · exp : sous-expertise · heures : temps de gestion estimé */
+const DOSSIERS = [
+ {ref:"VTE-2026-0142", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:21, etat:9, parties:"Cts FABIANI / BELKACEM", resp:"Me H. Rouaud", risque:"faible", urg:"urgent", inact:0, ca:12460, alerte:{n:"crit", c:"Condition suspensive de prêt à J-14 · PV d'AG manquant"}, demo:true, sign:"2026-09-30"},
+ {ref:"VTE-2026-0139", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier commercial", heures:24, etat:13, parties:"SCI LES ORMES / GARNIER", resp:"Me J. Azzoulai", risque:"faible", urg:"normal", inact:1, ca:9800, alerte:{n:"warn", c:"Visa du notaire attendu depuis 3 jours"}, sign:"2026-09-12"},
+ {ref:"VTE-2026-0131", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:19, etat:15, parties:"MOREAU / DA COSTA", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:1, ca:8900, alerte:{n:"ok", c:""}, sign:"2026-09-04"},
+ {ref:"VTE-2026-0127", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:22, etat:17, parties:"LAMBERT / N'DIAYE", resp:"V. Michel", risque:"faible", urg:"normal", inact:2, ca:10200, alerte:{n:"ok", c:""}},
+ {ref:"VTE-2026-0119", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:18, etat:18, parties:"ROUX / PELLETIER", resp:"M. Abensour", risque:"faible", urg:"normal", inact:3, ca:7600, alerte:{n:"ok", c:""}},
+ {ref:"VTE-2026-0116", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:20, etat:8, parties:"HADDAD / VIDAL", resp:"Me J. Azzoulai", risque:"faible", urg:"normal", inact:9, ca:11400, alerte:{n:"warn", c:"Sans activité depuis 9 jours — diagnostics attendus"}},
+ {ref:"VEF-2026-0113", type:"VEFA", them:"Immobilier", exp:"VEFA", heures:30, etat:12, parties:"PROMOGRAND / acquéreurs T3-T4", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:1, ca:24300, alerte:{n:"ok", c:""}},
+ {ref:"MDB-2026-0108", type:"Marchand de biens", them:"Immobilier", exp:"Marchands de biens", heures:26, etat:10, parties:"SAS PIERRES & CO / Indivision RENAULT", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:2, ca:16900, alerte:{n:"ok", c:""}},
+ {ref:"ACQ-2026-0141", type:"Acquisition", them:"Immobilier", exp:"Immobilier résidentiel", heures:17, etat:8, parties:"M. et Mme TAIEB", resp:"Me J. Azzoulai", risque:"faible", urg:"normal", inact:1, ca:9900, alerte:{n:"ok", c:""}},
+ {ref:"ACQ-2026-0135", type:"Acquisition", them:"Immobilier", exp:"Immobilier commercial", heures:23, etat:11, parties:"SARL BONVIVRE", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:4, ca:12800, alerte:{n:"warn", c:"Plan de financement incomplet"}},
+ {ref:"ACQ-2026-0122", type:"Acquisition", them:"Immobilier", exp:"Immobilier résidentiel", heures:16, etat:14, parties:"DELCOURT", resp:"Me J. Azzoulai", risque:"faible", urg:"normal", inact:2, ca:8300, alerte:{n:"ok", c:""}, sign:"2026-09-18"},
+ {ref:"PRT-2026-0137", type:"Prêt hypothécaire", them:"Immobilier", exp:"Fiscalité immobilière", heures:8, etat:10, parties:"SCI HOCHE 9 / Banque Héliade", resp:"V. Michel", risque:"faible", urg:"normal", inact:2, ca:4800, alerte:{n:"ok", c:""}},
+ {ref:"PRT-2026-0118", type:"Prêt hypothécaire", them:"Immobilier", exp:"Immobilier résidentiel", heures:7, etat:13, parties:"FALL / Crédit Vauban", resp:"Me J. Azzoulai", risque:"faible", urg:"urgent", inact:0, ca:5200, alerte:{n:"warn", c:"Édition de l'offre attendue — signature souhaitée sous 15 jours"}},
+ {ref:"SUC-2026-0140", type:"Succession", them:"Patrimoine et famille", exp:"Successions", heures:58, etat:8, parties:"Succession Jeanne MARTIN", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:0, ca:14200, alerte:{n:"warn", c:"Acte de notoriété en attente de pièces d'état civil"}},
+ {ref:"SUC-2026-0133", type:"Succession", them:"Patrimoine et famille", exp:"Successions", heures:95, etat:9, parties:"Succession Paul REYNAUD", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:1, ca:16800, alerte:{n:"ok", c:""}},
+ {ref:"SUC-2026-0121", type:"Succession", them:"Patrimoine et famille", exp:"Successions", heures:44, etat:12, parties:"Succession Andrée COLIN", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:3, ca:13400, alerte:{n:"ok", c:""}},
+ {ref:"SUC-2025-0489", type:"Succession", them:"Patrimoine et famille", exp:"Successions", heures:88, etat:18, parties:"Succession Louise ADAM", resp:"M. Abensour", risque:"faible", urg:"normal", inact:12, ca:12900, alerte:{n:"warn", c:"Sommes à restituer aux héritiers — RIB manquant"}},
+ {ref:"DON-2026-0138", type:"Donation-partage", them:"Patrimoine et famille", exp:"Donations", heures:20, etat:7, parties:"M. et Mme SEBBAG à leurs 3 enfants", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:1, ca:11700, alerte:{n:"ok", c:""}},
+ {ref:"DON-2026-0125", type:"Donation", them:"Patrimoine et famille", exp:"Donations", heures:11, etat:12, parties:"CHEVRIER / CHEVRIER-LENOIR", resp:"Me J. Azzoulai", risque:"faible", urg:"normal", inact:2, ca:6400, alerte:{n:"ok", c:""}},
+ {ref:"DON-2026-0111", type:"Donation", them:"Patrimoine et famille", exp:"Donations", heures:9, etat:15, parties:"BOUKHOBZA", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:1, ca:5900, alerte:{n:"ok", c:""}, sign:"2026-09-08"},
+ {ref:"PTG-2026-0114", type:"Partage", them:"Patrimoine et famille", exp:"Partage", heures:34, etat:11, parties:"Indivision BERROUS", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:3, ca:9800, alerte:{n:"ok", c:""}},
+ {ref:"DIV-2026-0109", type:"Divorce — liquidation", them:"Patrimoine et famille", exp:"Divorce", heures:38, etat:12, parties:"Époux VASSEUR", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:2, ca:10600, alerte:{n:"ok", c:""}},
+ {ref:"SCI-2026-0136", type:"Constitution de SCI", them:"Patrimoine et famille", exp:"SCI", heures:9, etat:12, parties:"Famille OUALID — SCI OLIVIERS", resp:"D. Knafo", risque:"faible", urg:"normal", inact:1, ca:3900, alerte:{n:"ok", c:""}},
+ {ref:"STP-2026-0124", type:"Structuration patrimoniale", them:"Patrimoine et famille", exp:"Structuration patrimoniale", heures:14, etat:9, parties:"M. et Mme WORMS", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:4, ca:8700, alerte:{n:"ok", c:""}},
+ {ref:"TRE-2026-0134", type:"Transmission d'entreprise", them:"Entreprise", exp:"Transmission d'entreprise", heures:42, etat:9, parties:"SARL ATELIER 16 / repreneur", resp:"Me H. Rouaud", risque:"élevé", urg:"normal", inact:1, ca:18600, alerte:{n:"warn", c:"Vigilance renforcée LCB-FT en cours"}},
+ {ref:"CFC-2026-0129", type:"Cession fonds de commerce", them:"Entreprise", exp:"Transmission d'entreprise", heures:31, etat:8, parties:"BOULANGERIE MOZART / repreneur", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:8, ca:11900, alerte:{n:"warn", c:"Sans activité depuis 8 jours — séquestre à organiser"}},
+ {ref:"BAX-2026-0126", type:"Bail commercial", them:"Entreprise", exp:"Baux commerciaux", heures:10, etat:12, parties:"SCI POMPE 74 / OPTIQUE VISIA", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:2, ca:4300, alerte:{n:"ok", c:""}},
+ {ref:"INT-2026-0132", type:"Succession internationale", them:"International", exp:"Successions internationales", heures:64, etat:8, parties:"Succession Michel ALFANDARI (France/Israël)", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:1, ca:19800, alerte:{n:"ok", c:""}},
+ {ref:"INT-2026-0120", type:"Acquisition — investisseur étranger", them:"International", exp:"Investisseurs étrangers", heures:27, etat:11, parties:"HARLEY CAPITAL LLC", resp:"Me H. Rouaud", risque:"élevé", urg:"normal", inact:2, ca:21400, alerte:{n:"warn", c:"Vigilance renforcée — bénéficiaires effectifs en cours"}},
+ {ref:"INT-2026-0117", type:"Contrat de mariage — expatriés", them:"International", exp:"Expatriés", heures:7, etat:5, parties:"LEROY / TAKAHASHI (Tokyo)", resp:"D. Knafo", risque:"faible", urg:"normal", inact:0, ca:2900, alerte:{n:"ok", c:""}},
+ {ref:"INT-2026-0105", type:"Family office — conseil", them:"International", exp:"Family office", heures:16, etat:9, parties:"Famille K. — holding patrimoniale", resp:"Me H. Rouaud", risque:"moyen", urg:"normal", inact:5, ca:15400, alerte:{n:"ok", c:""}}
+];
+const ephr = d => Math.round(d.ca/d.heures);
+
+/* ---- Boîte d'entrée : courriels analysés par l'IA (fictifs) ---- */
+let INTAKE = [
+ {id:"E-1", from:"Banque Héliade — espace pro", obj:"Offre de prêt émise — Mme Inès Belkacem (480 000 €)", when:"aujourd'hui 08:42", pj:"offre-pret-belkacem.pdf", urgent:true,
+  analyse:{type:"Pièce attendue", cible:"VTE-2026-0142 — Vente FABIANI / BELKACEM", conf:97,
+  kv:[["Emprunteur","Mme Inès Belkacem"],["Montant","480 000 €"],["Taux","3,45 % ≤ 3,9 % ✓"],["Émise le","21/08/2026"]],
+  prop:"Rattacher l'offre au dossier, marquer la condition suspensive de prêt comme levée (échéance 05/09 respectée) et préparer le constat de levée pour votre validation."},
+  act:"intake-pret", label:"Approuver le rattachement + levée de la CS"},
+ {id:"E-2", from:"Syndic Meridian (Mme Costa)", obj:"PV d'assemblée générale 2025 — 24 rue de la Tour", when:"aujourd'hui 08:15", pj:"pv-ag-2025.pdf",
+  analyse:{type:"Pièce attendue", cible:"VTE-2026-0142 — Vente FABIANI / BELKACEM", conf:96,
+  kv:[["Nature","PV d'AG — exercice 2025"],["AG du","12/06/2025"],["Travaux votés","ravalement 2027 — quote-part lot 34 : 4 260 €"]],
+  prop:"Rattacher la pièce, clore l'anomalie A-1 (pièce manquante), suspendre le scénario de relance du syndic et verser la quote-part travaux au projet d'acte."},
+  act:"intake-pv", label:"Approuver le rattachement"},
+ {id:"E-3", from:"Agence Passy Trocadéro (E. Le Goff)", obj:"Compromis signé — 9 avenue Mozart, Paris 16e", when:"hier 18:37", pj:"compromis-mozart.pdf",
+  analyse:{type:"Nouveau dossier", cible:"Création proposée — Vente immobilière (Immobilier résidentiel)", conf:93,
+  kv:[["Vendeur","M. et Mme DELMAS"],["Acquéreur","Mme S. HABIB"],["Prix","980 000 €"],["CS prêt","15/10/2026"],["Signature visée","20/11/2026"]],
+  prop:"Créer le dossier de vente, générer la checklist copropriété, inviter les parties au portail et armer les relances. Rien ne part avant votre approbation."},
+  act:"intake-new-vte", label:"Approuver la création du dossier"},
+ {id:"E-4", from:"Me D. Goldberg, notary (Tel Aviv)", obj:"Succession franco-israélienne — M. Albert BENITAH", when:"hier 11:20", pj:"courrier-goldberg.pdf",
+  analyse:{type:"Nouveau dossier", cible:"Création proposée — Succession internationale", conf:88,
+  kv:[["Défunt","M. Albert Benitah (Paris / Tel Aviv)"],["Actifs FR","appartement Paris 16e + comptes"],["Correspondant","Me Goldberg"],["Règlement (UE) 650/2012","applicable — analyse préparée"]],
+  prop:"Créer le dossier de succession internationale, ouvrir la checklist spécifique (actes d'état civil apostillés, certificat successoral européen) et préparer le courrier de liaison au confrère."},
+  act:"intake-new-suc", label:"Approuver la création du dossier"},
+ {id:"E-5", from:"SoftNotaires Pro", obj:"Offre spéciale rentrée — 3 mois offerts", when:"hier 09:02", pj:null,
+  analyse:{type:"Hors dossier", cible:"Aucun dossier concerné", conf:99,
+  kv:[["Nature","prospection commerciale"]],
+  prop:"Classer sans suite. Aucune action requise."},
+  act:"intake-spam", label:"Classer sans suite"},
+];
+
+/* ---- Frises : étapes types (générées par l'IA selon le type et l'état) ---- */
+function typeSteps(d){
+  const S = (t,e,ia,note)=>({t,e,ia,note});
+  if(/Succession/.test(d.type)) return [
+    S("Ouverture & pièces d'état civil",5,true,"actes demandés automatiquement (mairies, COMEDEC sous réserve)"),
+    S("Notoriété & dévolution",8,true,"projet d'acte de notoriété prérempli"),
+    S("Inventaire des actifs",9,true,"comptes, biens et contrats détectés dans les pièces"),
+    S("Fiscalité & options",11,true,"simulation des droits préparée"),
+    S("Déclaration de succession",12,true,"formulaire prérempli, à contrôler"),
+    S("Visa du notaire",13,false,null),
+    S("Signature & attestation immobilière",16,false,null),
+    S("Formalités & clôture",20,true,"publicité foncière et solde préparés")];
+  if(/Donation|Partage|Divorce|SCI|Structuration|mariage/i.test(d.type)) return [
+    S("Ouverture & lettre de mission",5,true,null),
+    S("Identification & LCB-FT",7,true,"criblages exécutés, classification proposée"),
+    S("Collecte des pièces",8,true,"relances automatiques plafonnées"),
+    S("Analyse patrimoniale IA",9,true,"actifs et régimes détectés, synthèse produite"),
+    S("Fiscalité & simulations",11,true,"droits et abattements calculés"),
+    S("Rédaction du projet",12,true,"projet prérempli depuis les données validées"),
+    S("Visa du notaire",13,false,null),
+    S("Signature & formalités",20,false,null)];
+  if(/Transmission|fonds de commerce|Bail/.test(d.type)) return [
+    S("Ouverture & NDA",5,true,null),
+    S("LCB-FT renforcée",7,true,"bénéficiaires effectifs recherchés"),
+    S("Audit documentaire",9,true,"baux, comptes et contrats analysés"),
+    S("Séquestre & garanties",11,true,"état préparé"),
+    S("Rédaction des actes",12,true,"projet prérempli"),
+    S("Visa du notaire",13,false,null),
+    S("Signature",16,false,null),
+    S("Séquestre, oppositions & clôture",20,true,"délais légaux suivis automatiquement")];
+  return [
+    S("Ouverture & lettre de mission",5,true,"dossier créé depuis le courriel ou l'avant-contrat"),
+    S("Identification & LCB-FT",7,true,"criblages et origine des fonds contrôlés"),
+    S("Collecte des pièces",8,true,"demandes et relances automatiques"),
+    S("Analyse IA & anomalies",9,true,"extraction sourcée, contradictions détectées"),
+    S("Formalités préalables",10,true,"urbanisme, syndic, hypothèques demandés"),
+    S("Financier & conditions",11,true,"provisions et échéances suivies"),
+    S("Rédaction du projet",12,true,"acte prérempli, variables sourcées"),
+    S("Visa du notaire",13,false,null),
+    S("Envoi & signature",16,false,null),
+    S("Formalités & clôture",20,true,"dépôts préparés, taxation calculée")];
+}
+/* action IA « prête à approuver » générée selon l'état (pour les dossiers non détaillés) */
+function iaPending(d){
+  if(d._appr) return null;
+  if(d.etat===8) return {t:"Relances de pièces prêtes", d:"L'IA a préparé les relances des pièces manquantes ("+(d.ref===$DEMOREF?4:2)+" destinataires) — envoi après votre approbation.", label:"Approuver l'envoi"};
+  if(d.etat===9) return {t:"Synthèse d'analyse prête", d:"Pièces analysées, données extraites sourcées. Valider la synthèse pour passer aux formalités préalables.", label:"Valider la synthèse"};
+  if(d.etat===10) return {t:"Réquisitions préparées", d:"Demandes d'urbanisme et états hypothécaires assemblés — transmission après approbation.", label:"Approuver la transmission"};
+  if(d.etat===11) return {t:"Appel de provision prêt", d:"Estimation des frais calculée, appel de provision rédigé — envoi après approbation.", label:"Approuver l'appel"};
+  if(d.etat===12) return {t:"Projet d'acte prérempli", d:"Projet généré depuis les données validées, variables sourcées — l'envoyer au visa du notaire.", label:"Envoyer au visa"};
+  if(d.etat===17) return {t:"Dépôt de formalité assemblé", d:"Dossier de publicité foncière complet — transmission officielle après validation du formaliste.", label:"Approuver le dépôt"};
+  if(d.etat===18) return {t:"Taxation préparée", d:"Calcul contrôlé sans écart — validation du comptable taxateur requise.", label:"Valider la taxation"};
+  return null;
+}
+const $DEMOREF = "VTE-2026-0142";
+const DEMO = {
+ ref:"VTE-2026-0142", ouvert:"2026-07-09",
+ bien:{adresse:"24 rue de la Tour, 75116 Paris (n° en cours d'arbitrage — voir anomalie A-2)", nature:"Appartement 4 pièces, 3e étage, et cave", lots:"Lots n° 34 (appartement, 412/10000e) et n° 112 (cave)", cadastre:"Section CD n° 87", carrez:"92,40 m²", prix:1250000, dpe:"D"},
+ ia:{
+  resume:"Vente d'un appartement en copropriété au prix de 1 250 000 € (compromis du 07/07, p. 8). Vendeurs mariés sous communauté ; acquéreur financée par un prêt de 480 000 € sous condition suspensive au 05/09 (compromis p. 15). Rétractation purgée le 20/07, la Ville a renoncé à préempter le 12/08 (DIA). 14 pièces sur 20 validées. Quatre points appellent une décision : PV d'AG 2025 manquant (syndic relancé ×2), contradiction d'adresse titre/pré-état daté (22 ≠ 24), condition suspensive à J-14, CNI du vendeur expirée. Provision de 88 000 € reçue et rapprochée. Signature cible : 30/09.",
+  conf:94,
+  srcs:["Compromis p. 8 et 15","Titre p. 2","Pré-état daté p. 1 et 6","État hypothécaire feuillet 2","Relevé bancaire du 14/08"]
+ },
+ parties:[
+  {q:"Vendeur", nom:"M. Serge FABIANI", detail:"Né le 04/02/1961 à Marseille · marié sous communauté réduite aux acquêts", ct:"Portail activé · préfère le courriel", flag:"CNI expirée le 12/03/2026"},
+  {q:"Vendeur", nom:"Mme Hélène FABIANI née ROCHE", detail:"Née le 19/09/1963 à Lyon · commune en biens", ct:"Portail activé", flag:""},
+  {q:"Acquéreur", nom:"Mme Inès BELKACEM", detail:"Née le 30/05/1988 à Paris · célibataire · financement par emprunt", ct:"Portail activé · préfère le SMS", flag:"Prêt de 480 000 € — Banque Héliade"},
+  {q:"Syndic", nom:"Cabinet MERIDIAN Copropriétés", detail:"Syndic de l'immeuble — pré-état daté reçu, PV d'AG 2025 attendu", ct:"Interlocutrice : Mme Costa", flag:"PV AG 2025 manquant"},
+  {q:"Agence", nom:"Agence PASSY TROCADÉRO IMMOBILIER", detail:"Mandat de vente — honoraires charge vendeur", ct:"M. Erwan Le Goff", flag:""}
+ ],
+ jalons:[
+  {t:"Compromis signé", d:"07/07/2026", st:"ok"},
+  {t:"Rétractation SRU purgée", d:"20/07/2026", st:"ok"},
+  {t:"DIA — renonciation à préemption reçue", d:"12/08/2026", st:"ok"},
+  {t:"Condition suspensive de prêt", d:"05/09/2026", st:"crit", note:"J-14"},
+  {t:"Signature de l'acte (cible)", d:"30/09/2026", st:"wait"}
+ ],
+ pieces:[
+  {g:"Identité des parties", items:[
+   {n:"CNI — M. Serge Fabiani", st:"warn", d:"Expirée le 12/03/2026 — nouvelle pièce demandée le 16/08", src:"Vendeur", act:"relance-cni"},
+   {n:"CNI — Mme Hélène Fabiani", st:"ok", d:"Validée · valide jusqu'au 03/2031", src:"Vendeur"},
+   {n:"Livret de famille / acte de mariage", st:"ok", d:"Validée — communauté réduite aux acquêts (contrat du 12/06/1985)", src:"Vendeur"},
+   {n:"CNI — Mme Inès Belkacem", st:"ok", d:"Validée · valide jusqu'au 11/2032", src:"Acquéreur"},
+   {n:"Justificatif de domicile acquéreur", st:"wait", d:"Reçue le 21/08 — analyse en cours", src:"Acquéreur"}
+  ]},
+  {g:"Bien et copropriété", items:[
+   {n:"Titre de propriété (2011)", st:"ok", d:"Analysé — désignation, origine de propriété, servitudes extraites", src:"Vendeur"},
+   {n:"Règlement de copropriété + état descriptif", st:"ok", d:"Analysé — tantièmes lot 34 : 412/10000", src:"Syndic"},
+   {n:"Procès-verbaux d'AG — 3 derniers exercices", st:"miss", d:"2023 et 2024 reçus · PV 2025 MANQUANT — syndic relancé ×2, escalade le 26/08", src:"Syndic", act:"relance-pv"},
+   {n:"Pré-état daté", st:"ok", d:"Analysé — charges 3 840 €/an · anomalie d'adresse détectée (A-2)", src:"Syndic"},
+   {n:"Carnet d'entretien", st:"wait", d:"Reçu le 20/08 — analyse en cours", src:"Syndic"}
+  ]},
+  {g:"Diagnostics", items:[
+   {n:"DPE", st:"ok", d:"Classe D — établi le 12/11/2024, valide", src:"Vendeur"},
+   {n:"Amiante · Plomb (CREP) · Électricité", st:"ok", d:"Validés, dans leur durée de validité", src:"Vendeur"},
+   {n:"Superficie Carrez", st:"ok", d:"92,40 m² — attestation du 03/07/2026", src:"Vendeur"},
+   {n:"État des risques (ERP)", st:"ok", d:"Établi le 15/07/2026 — à refaire si signature après le 15/01/2027", src:"Étude"}
+  ]},
+  {g:"Hypothèques et urbanisme", items:[
+   {n:"État hypothécaire", st:"ok", d:"Inscription de 2011 (Banque Héliade) — radiation à prévoir au plus tard à la signature", src:"Étude"},
+   {n:"Réponse DIA — mairie de Paris", st:"ok", d:"Renonciation au droit de préemption reçue le 12/08", src:"Étude"},
+   {n:"Note de renseignements d'urbanisme", st:"wait", d:"Demandée le 30/07 — retour attendu vers le 28/08", src:"Étude"}
+  ]},
+  {g:"Financement", items:[
+   {n:"Offre de prêt — Banque Héliade", st:"miss", d:"Condition suspensive au 05/09/2026 — banque annonce l'édition en cours (réponse du 19/08)", src:"Acquéreur", act:"relance-pret"},
+   {n:"Justificatifs d'apport (858 000 €)", st:"ok", d:"Vente précédente 610 000 € + épargne 248 000 € — contrôlés (LCB-FT)", src:"Acquéreur"},
+   {n:"RIB des vendeurs", st:"ok", d:"Validé", src:"Vendeur"}
+  ]}
+ ],
+ docs:[
+  {id:"D1", n:"Titre de propriété", meta:"Acte du 17/05/2011 · 28 pages · v1", st:"Analysé", ext:[
+    {f:"Propriétaires", v:"M. et Mme FABIANI", src:"p. 1", conf:98, stv:"validée"},
+    {f:"Adresse du bien", v:"22 rue de la Tour", src:"p. 2", conf:96, stv:"contradiction"},
+    {f:"Lots", v:"n° 34 et n° 112", src:"p. 3", conf:97, stv:"validée"},
+    {f:"Cadastre", v:"section CD n° 87", src:"p. 3", conf:95, stv:"validée"},
+    {f:"Servitude", v:"cour commune (fonds voisin n° 85)", src:"p. 11", conf:88, stv:"validée"}
+  ]},
+  {id:"D2", n:"Pré-état daté (syndic)", meta:"Reçu le 08/08/2026 · 9 pages · v1", st:"Analysé", ext:[
+    {f:"Adresse du bien", v:"24 rue de la Tour", src:"p. 1", conf:91, stv:"contradiction"},
+    {f:"Charges courantes", v:"3 840 € / an", src:"p. 4", conf:88, stv:"validée"},
+    {f:"Travaux votés — ravalement 2027 (quote-part)", v:"4 260 €", src:"p. 6", conf:72, stv:"à valider"}
+  ]},
+  {id:"D3", n:"CNI — Serge Fabiani", meta:"Déposée le 15/07/2026 · v1", st:"Non conforme", ext:[
+    {f:"Fin de validité", v:"12/03/2026 — EXPIRÉE", src:"recto", conf:99, stv:"anomalie"}
+  ]},
+  {id:"D4", n:"Compromis de vente", meta:"Signé le 07/07/2026 · 42 pages · v1", st:"Analysé", ext:[
+    {f:"Prix", v:"1 250 000 €", src:"p. 8", conf:99, stv:"validée"},
+    {f:"Condition suspensive de prêt", v:"480 000 € · taux ≤ 3,9 % · échéance 05/09/2026", src:"p. 15", conf:97, stv:"validée"},
+    {f:"Date de signature prévue", v:"30/09/2026 au plus tard", src:"p. 16", conf:96, stv:"validée"}
+  ]},
+  {id:"D5", n:"État hypothécaire", meta:"Délivré le 29/07/2026 · v1", st:"Analysé", ext:[
+    {f:"Inscription", v:"Privilège de prêteur de deniers — Banque Héliade (2011)", src:"feuillet 2", conf:90, stv:"validée"},
+    {f:"Conséquence", v:"Radiation à obtenir — solde estimé 96 400 €", src:"feuillet 2", conf:84, stv:"à valider"}
+  ]},
+  {id:"D6", n:"PV d'assemblée générale 2024", meta:"Reçu le 08/08/2026 · v1", st:"Analysé", ext:[
+    {f:"Résolution travaux", v:"Ravalement voté — appels 2027", src:"p. 5", conf:79, stv:"à valider"}
+  ]},
+  {id:"D7", n:"DPE", meta:"Établi le 12/11/2024 · v1", st:"Analysé", ext:[
+    {f:"Classe énergie", v:"D (215 kWh/m²/an)", src:"p. 1", conf:97, stv:"validée"}
+  ]}
+ ],
+ anomalies:[
+  {id:"A-1", t:"Pièce manquante — PV d'AG 2025", n:"crit",
+   d:"Le dernier procès-verbal d'assemblée générale (exercice 2025) n'a pas été fourni par le syndic. Il est obligatoire pour l'information de l'acquéreur et pour vérifier les travaux votés non encore appelés.",
+   src:[["Checklist copropriété","pièce n° 3"],["Pré-état daté","p. 6 — mentionne l'AG du 12/06/2025"]],
+   prop:"Relance n° 3 prête (courriel + appel). Escalade en tâche humaine le 26/08 si silence. Un courriel du syndic est arrivé ce matin dans les Entrées — approuvez le rattachement pour clore l'anomalie.",
+   etat:"2 relances envoyées (12/08, 19/08) — scénario actif, plafond 3", act:"pv"},
+  {id:"A-2", t:"Contradiction — adresse du bien", n:"warn",
+   d:"Le titre de propriété désigne le bien au 22 rue de la Tour ; le pré-état daté du syndic indique 24 rue de la Tour. La désignation de l'acte ne peut pas être arrêtée en l'état.",
+   src:[["Titre de propriété","p. 2 — « 22 rue de la Tour »"],["Pré-état daté","p. 1 — « 24 rue de la Tour »"]],
+   prop:"Le cadastre (section CD n° 87) et la taxe foncière 2025 portent le n° 24. Hypothèse d'erreur de plume au titre — décision juridique requise.",
+   etat:"En file de contrôle humain — à trancher", act:"adresse"},
+  {id:"A-3", t:"Condition suspensive de prêt — échéance J-14", n:"crit",
+   d:"La condition suspensive d'obtention du prêt (480 000 €, taux ≤ 3,9 %) expire le 05/09/2026.",
+   src:[["Compromis de vente","p. 15"],["Réponse de l'acquéreur","19/08 — « édition de l'offre en cours »"]],
+   prop:"L'offre de la Banque Héliade est arrivée ce matin dans les Entrées (3,45 % ≤ 3,9 %). Approuvez le rattachement : l'IA marquera la condition comme levée et préparera le constat pour votre validation.",
+   etat:"Alerte rouge déclenchée à J-14 — offre reçue ce matin, à rattacher", act:"pret"},
+  {id:"A-4", t:"Justificatif d'identité expiré — M. Fabiani", n:"warn",
+   d:"La CNI de M. Serge Fabiani est expirée depuis le 12/03/2026. L'identification à l'acte requiert un titre en cours de validité.",
+   src:[["CNI Serge Fabiani","recto — fin de validité 12/03/2026"]],
+   prop:"Demande automatique envoyée le 16/08 avec lien de dépôt (nouvelle CNI ou passeport). Suspension automatique de la relance à réception.",
+   etat:"Relance 1/3 envoyée — prochaine le 23/08 (SMS)", act:"cni"}
+ ],
+ relances:[
+  {d:"12/08 09:12", canal:"Courriel", dest:"Syndic Meridian (Mme Costa)", obj:"PV d'AG 2025 — demande initiale", st:"Envoyée"},
+  {d:"16/08 08:40", canal:"Portail + courriel", dest:"M. Serge Fabiani", obj:"Pièce d'identité en cours de validité", st:"Envoyée"},
+  {d:"18/08 10:05", canal:"Courriel", dest:"Mme Inès Belkacem", obj:"Point d'étape sur l'offre de prêt (CS au 05/09)", st:"Répondue le 19/08 — scénario suspendu"},
+  {d:"19/08 09:00", canal:"Courriel + SMS", dest:"Syndic Meridian", obj:"PV d'AG 2025 — relance n° 2", st:"Envoyée"}
+ ],
+ scenarios:[
+  {c:"PV d'AG 2025 (syndic)", envoyees:2, plafond:3, next:"26/08 — escalade en tâche humaine", st:"Actif"},
+  {c:"CNI M. Fabiani", envoyees:1, plafond:3, next:"23/08 — SMS", st:"Actif"},
+  {c:"Offre de prêt (acquéreur)", envoyees:1, plafond:2, next:"—", st:"Suspendu (réponse détectée)"}
+ ],
+ compta:{
+  estimation:[["Émoluments (TTC)","12 462 €"],["Droits et taxes (DMTO)","72 583 €"],["Contribution de sécurité immobilière","1 250 €"],["Débours et formalités","810 €"]],
+  totalFrais:"87 105 €",
+  recus:[["Provision sur frais — virement Mme Belkacem","88 000 €","14/08/2026","Rapprochée ✓"]],
+  attendus:[["Prix (apport 858 000 € + prêt 480 000 €)","1 338 000 € au plus tard la veille de la signature"],["Solde éventuel après taxation","à déterminer"]],
+  taxation:{st:"Préparée le 20/08 — en attente de validation", detail:"Calcul automatique contrôlé sans écart (référence barème 2026)"}
+ },
+ lcbft:{
+  vigilance:"Normale", risque:"Faible", revue:"13/08/2026 — Me Thomas Lévy",
+  motifs:"Opération résidentielle classique · fonds bancarisés dans l'UE et justifiés · parties identifiées sans divergence · aucune personne politiquement exposée · aucun gel des avoirs",
+  criblages:[["M. Serge Fabiani","PPE : non · Gel des avoirs : non · 13/08"],["Mme Hélène Fabiani","PPE : non · Gel des avoirs : non · 13/08"],["Mme Inès Belkacem","PPE : non · Gel des avoirs : non · 13/08"]],
+  fonds:"Apport 858 000 € — actes et relevés à l'appui (vente du 12/01/2026 : 610 000 € · épargne : 248 000 €) · Prêt 480 000 € — Banque Héliade (offre reçue le 22/08, en cours de rattachement)"
+ },
+ timeline:[
+  {d:"09/07", t:"Dossier créé depuis le compromis — checklist vente en copropriété générée (24 pièces)", k:"auto"},
+  {d:"09/07", t:"Invitations portail envoyées aux 3 parties · questionnaires vendeur et acquéreur ouverts", k:"auto"},
+  {d:"11/07", t:"Lettre de mission signée par les vendeurs — validation Me Lévy", k:"val"},
+  {d:"15/07", t:"Pièces d'identité déposées via le portail — CNI M. Fabiani détectée expirée (A-4)", k:"anom"},
+  {d:"18/07", t:"Contrôles LCB-FT : criblages sans alerte, origine des fonds documentée", k:"auto"},
+  {d:"20/07", t:"Délai de rétractation SRU purgé (aucune rétractation)", k:"auto"},
+  {d:"30/07", t:"Demandes formalités préalables : note d'urbanisme, état hypothécaire", k:"auto"},
+  {d:"08/08", t:"Pré-état daté et PV AG 2023-2024 reçus du syndic — PV 2025 manquant (A-1)", k:"anom"},
+  {d:"08/08", t:"Contradiction d'adresse détectée entre titre et pré-état daté (A-2)", k:"anom"},
+  {d:"12/08", t:"Réponse DIA : la Ville renonce à préempter", k:"auto"},
+  {d:"13/08", t:"Classification LCB-FT « risque faible » arrêtée — Me Lévy", k:"val"},
+  {d:"14/08", t:"Provision sur frais reçue (88 000 €) et rapprochée", k:"auto"},
+  {d:"19/08", t:"Projet d'acte prérempli (v1) généré depuis les données validées", k:"auto"},
+  {d:"21/08", t:"Alerte J-14 condition suspensive de prêt (A-3) — escalade au notaire", k:"anom"},
+  {d:"22/08", t:"Courriels reçus : offre de prêt (Banque Héliade) et PV d'AG 2025 (syndic) — analysés, en attente d'approbation dans les Entrées", k:"auto"}
+ ],
+ acte:{
+  vars:[
+   {n:"Comparants vendeurs", v:"M. et Mme FABIANI", src:"Titre p.1 · CNI · livret de famille", ok:true},
+   {n:"Comparant acquéreur", v:"Mme Inès BELKACEM", src:"CNI · questionnaire", ok:true},
+   {n:"Désignation — adresse", v:"[ARBITRAGE A-2 REQUIS]", src:"Titre p.2 ≠ pré-état daté p.1", ok:false},
+   {n:"Désignation — lots et tantièmes", v:"lots 34 (412/10000) et 112", src:"Titre p.3 · règlement de copropriété", ok:true},
+   {n:"Prix", v:"1 250 000 €", src:"Compromis p.8", ok:true},
+   {n:"Financement — prêt", v:"[OFFRE DE PRÊT ATTENDUE]", src:"CS au 05/09 (compromis p.15)", ok:false},
+   {n:"Charges et travaux votés", v:"[PV AG 2025 MANQUANT]", src:"Pré-état daté p.6", ok:false},
+   {n:"Servitudes rappelées", v:"cour commune (fonds n° 85)", src:"Titre p.11", ok:true},
+   {n:"Diagnostics annexés", v:"DPE classe D et suite", src:"Dossier de diagnostic technique", ok:true},
+   {n:"Inscription à radier", v:"PPD Banque Héliade (2011)", src:"État hypothécaire feuillet 2", ok:true}
+  ],
+  blocages:["Anomalie A-2 (adresse) non arbitrée","Offre de prêt non rattachée (Entrées — à approuver)","PV d'AG 2025 non rattaché (Entrées — à approuver)"],
+  versions:[
+   {v:"v1", d:"19/08 — génération initiale depuis les données validées"},
+   {v:"v2", d:"21/08 — ajout de la clause de radiation (état hypothécaire) · prix en lettres corrigé · rappel de servitude complété"}
+  ]
+ }
+};
+
+const ECHEANCES = [
+ {d:"2026-08-26", t:"VTE-2026-0142 — escalade PV d'AG 2025 (syndic)", n:"warn"},
+ {d:"2026-08-28", t:"VTE-2026-0142 — retour attendu note d'urbanisme", n:"ok"},
+ {d:"2026-09-04", t:"VTE-2026-0131 — signature (MOREAU / DA COSTA)", n:"ok"},
+ {d:"2026-09-05", t:"VTE-2026-0142 — CONDITION SUSPENSIVE DE PRÊT", n:"crit"},
+ {d:"2026-09-08", t:"DON-2026-0111 — signature donation BOUKHOBZA", n:"ok"},
+ {d:"2026-09-12", t:"VTE-2026-0139 — signature (SCI LES ORMES / GARNIER)", n:"ok"},
+ {d:"2026-09-15", t:"SUC-2026-0140 — relance état civil (mairie de naissance)", n:"warn"},
+ {d:"2026-09-18", t:"ACQ-2026-0122 — signature DELCOURT", n:"ok"},
+ {d:"2026-09-30", t:"VTE-2026-0142 — signature de l'acte (date cible)", n:"warn"}
+];
+const CA = {produit: 486300, previsionnel: 172900};
+let AUDIT = [
+ {ts:"22/08 08:43", a:"Système", act:"Courriel Banque Héliade analysé — offre de prêt Belkacem détectée, proposition de rattachement préparée", o:"Entrées"},
+ {ts:"22/08 08:16", a:"Système", act:"Courriel syndic Meridian analysé — PV d'AG 2025 détecté, rattachement proposé", o:"Entrées"},
+ {ts:"22/08 08:12", a:"Système", act:"Alerte J-14 générée — condition suspensive de prêt", o:"VTE-2026-0142"},
+ {ts:"21/08 17:40", a:"Me H. Rouaud", act:"Consultation du projet d'acte v2", o:"VTE-2026-0142"},
+ {ts:"21/08 11:03", a:"Système", act:"Projet d'acte v2 généré (données validées uniquement)", o:"VTE-2026-0142"},
+ {ts:"20/08 15:22", a:"Système", act:"Taxation préparée — en attente de validation", o:"VTE-2026-0142"},
+ {ts:"19/08 09:00", a:"Système", act:"Relance n° 2 envoyée au syndic (PV AG 2025)", o:"VTE-2026-0142"},
+ {ts:"18/08 10:05", a:"Me H. Rouaud", act:"Relance acquéreur validée et envoyée (point offre de prêt)", o:"VTE-2026-0142"},
+ {ts:"14/08 09:31", a:"Système", act:"Provision 88 000 € rapprochée du relevé bancaire", o:"VTE-2026-0142"},
+ {ts:"13/08 16:12", a:"Me T. Lévy", act:"Classification LCB-FT « risque faible » validée", o:"VTE-2026-0142"},
+ {ts:"11/07 18:20", a:"Me T. Lévy", act:"Lettre de mission validée et envoyée en signature", o:"VTE-2026-0142"}
+];
+let VALIDATIONS = [
+ {id:"V1", t:"Apposer le visa juridique — vente SCI LES ORMES / GARNIER", d:"Rapport de cohérence prêt : aucune incohérence, 2 points d'attention signalés. Le projet part aux parties dès votre visa.", ref:"VTE-2026-0139", type:"visa"},
+ {id:"V2", t:"Trancher l'adresse du bien — 22 ou 24 rue de la Tour", d:"Cadastre et taxe foncière portent le n° 24 ; le titre porte le n° 22. L'IA recommande le n° 24 avec mention explicative. Votre décision débloque la désignation de l'acte.", ref:"VTE-2026-0142", type:"arbitrage"},
+ {id:"V3", t:"Statuer sur la condition suspensive de prêt (J-14)", d:"L'offre est arrivée ce matin (3,45 % ≤ 3,9 %). Après rattachement, constat de levée préparé — à valider avant envoi aux parties.", ref:"VTE-2026-0142", type:"decision"}
+];
+</script>
+<script>
+/* ================= NOYAU ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtEur = n => n.toLocaleString('fr-FR') + ' €';
+let state = {view:'dashboard', role:'levy', dossierTab:'ia', dossierRef:null, vueListe:'liste', filtres:{resp:'', type:'', them:'', urg:''}, arbitrageChoix:null, assistOpen:false, chatLog:[], manuOpen:false, complOpen:false};
+
+function toast(msg){
+  const t = document.createElement('div'); t.className='toast'; t.innerHTML=msg;
+  $('#toasts').appendChild(t); setTimeout(()=>t.remove(), 5600);
+}
+function audit(act, o){
+  const ts = '22/08 ' + new Date().toTimeString().slice(0,5);
+  AUDIT.unshift({ts, a: ROLES[state.role].nom, act, o: o||'—'});
+}
+function chipEtat(e){
+  const ph = phaseOf(e);
+  return `<span class="chip c-mut" title="${esc(ph.n)}">${String(e).padStart(2,'0')} · ${esc(ETATS[e-1])}</span>`;
+}
+function chipAl(a){
+  if(!a || a.n==='ok') return '<span class="chip c-ok"><span class="d"></span>à jour</span>';
+  if(a.n==='warn') return `<span class="chip c-warn" title="${esc(a.c)}"><span class="d"></span>attention</span>`;
+  return `<span class="chip c-crit" title="${esc(a.c)}"><span class="d"></span>bloquant</span>`;
+}
+function chipRisque(r){
+  return {faible:'<span class="chip c-ok"><span class="d"></span>risque faible</span>', moyen:'<span class="chip c-warn"><span class="d"></span>risque moyen</span>', 'élevé':'<span class="chip c-crit"><span class="d"></span>risque élevé</span>'}[r];
+}
+function confChip(c){
+  const k = c>=85?'hi':(c>=60?'md':'lo');
+  return `<span class="conf ${k}" title="Score de confiance de l'IA">${c}%</span>`;
+}
+function jr(dstr){ const d = new Date(dstr); return Math.round((d - NOW)/86400000); }
+const intakePending = () => INTAKE.filter(i=>!i.done);
+
+/* ================= NAVIGATION ================= */
+const NAV = [
+ {grp:"Pilotage"},
+ {id:'dashboard', ic:'▦', l:'Tableau de bord'},
+ {id:'entrees', ic:'✉', l:'Entrées', bdg:()=>intakePending().length},
+ {id:'echeances', ic:'◷', l:'Échéances'},
+ {grp:"Production"},
+ {id:'dossiers', ic:'▤', l:'Dossiers'},
+ {id:'dossier', ic:'★', l:'VTE-2026-0142 (démo)', bdg:()=>DEMO.anomalies.filter(a=>!a.resolue).length},
+ {grp:"Fonctions"},
+ {id:'conformite', ic:'◈', l:'Conformité LCB-FT'},
+ {id:'compta', ic:'Σ', l:'Comptabilité'},
+ {id:'portail', ic:'▣', l:'Portail client (aperçu)'},
+ {id:'audit', ic:'≡', l:"Journal d'audit"}
+];
+function renderNav(){
+  $('#snav').innerHTML = NAV.map(n => n.grp ? `<div class="grp">${n.grp}</div>` :
+    `<button data-nav="${n.id}" class="${state.view===n.id?'on':''}"><span class="ic">${n.ic}</span> ${n.l}${n.bdg && n.bdg()? `<span class="bdg">${n.bdg()}</span>`:''}</button>`).join('')
+    + `<div class="foot">Étude Thomas Levy<br>11 bd Flandrin, Paris 16e<br>Prototype v2 — données fictives</div>`;
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-nav]'); if(b){ go(b.dataset.nav); }
+});
+function go(view, opts={}){
+  state.view = view; Object.assign(state, opts);
+  if(view==='dossier' && !state.dossierRef) state.dossierRef = $DEMOREF;
+  render();
+  window.scrollTo({top:0});
+}
+function render(){
+  renderNav();
+  const v = {dashboard, entrees, dossiers, dossier, echeances, conformite, compta:comptaEtude, portail, audit:auditView}[state.view] || dashboard;
+  $('#main').innerHTML = v();
+  bindView();
+  const inDossier = state.view==='dossier' && state.dossierRef===$DEMOREF;
+  $('#fab').classList.toggle('hidden', !inDossier || state.assistOpen);
+  $('#assist').classList.toggle('hidden', !(inDossier && state.assistOpen));
+  if(inDossier && state.assistOpen) renderAssist();
+}
+
+/* ================= FILE DU NOTAIRE : tout est prêt, il n'y a qu'à approuver ================= */
+function todosNotaire(){
+  const T = [];
+  intakePending().forEach(i=>T.push({ic:'✉', t:i.analyse.type+" — "+i.obj, d:i.analyse.prop+" (confiance "+i.analyse.conf+" %)", ref:i.analyse.cible, act:'intake:'+i.id, label:i.label, crit:i.urgent}));
+  VALIDATIONS.forEach(v=>T.push({ic:v.type==='visa'?'✒':'⚖', t:v.t, d:v.d, ref:v.ref, act:'val:'+v.id, label:v.type==='visa'?'Apposer le visa':'Examiner et décider', crit:v.type!=='visa'}));
+  DOSSIERS.filter(d=>!d.demo).forEach(d=>{ const p = iaPending(d); if(p) T.push({ic:'🤖', t:p.t+" — "+d.ref, d:p.d, ref:d.parties, act:'appr:'+d.ref, label:p.label}); });
+  return T;
+}
+function todosRole(vue){
+  if(vue==='notaire') return todosNotaire();
+  if(vue==='redaction') return DEMO.anomalies.filter(a=>!a.resolue).map(a=>({ic:'⚠', t:a.id+' — '+a.t, d:a.prop, ref:$DEMOREF, act:'open-anom', label:'Traiter', crit:a.n==='crit'}));
+  if(vue==='comptable') return [
+   {ic:'Σ', t:'Valider la taxation — VTE-2026-0142', d:'Calcul contrôlé sans écart (87 105 €). États de clôture prêts à générer.', ref:'VTE-2026-0142', act:'do:valider-taxe', label:'Valider la taxation'},
+   {ic:'Σ', t:'Rapprocher le prix reçu — VTE-2026-0119', d:'640 000 € au relevé du 21/08 — rapprochement préparé.', ref:'VTE-2026-0119', act:'do:rappro', label:'Rapprocher'}];
+  return [
+   {ic:'⌂', t:'Dépôt de publicité foncière — VTE-2026-0127', d:'Dossier assemblé et contrôlé. Transmission (canal sous réserve d\'agrément) après votre validation.', ref:'VTE-2026-0127', act:'do:depot-ok', label:'Approuver le dépôt'},
+   {ic:'✉', t:'Escalade PV d\'AG — appel au syndic', d:'Plafond de relances bientôt atteint sur VTE-2026-0142 — appel à passer le 26/08, fiche préparée.', ref:'VTE-2026-0142', act:'open-demo', label:'Ouvrir le dossier'}];
+}
+
+/* ================= TABLEAU DE BORD ================= */
+function applyFiltres(list){
+  const f = state.filtres;
+  return list.filter(d => (!f.resp||d.resp===f.resp) && (!f.type||d.type===f.type) && (!f.them||d.them===f.them) && (!f.urg||d.urg===f.urg));
+}
+function dashboard(){
+  const r = ROLES[state.role], vue = r.vue;
+  const L = applyFiltres(DOSSIERS);
+  const bloq = L.filter(d=>d.alerte.n==='crit'), att = L.filter(d=>d.alerte.n==='warn');
+  const signatures = L.filter(d=>d.sign).length;
+  const parThem = THEMES.map(t=>({n:t, c:L.filter(d=>d.them===t).length}));
+  const rentThem = THEMES.map(t=>{ const ds = L.filter(d=>d.them===t); const h = ds.reduce((s,d)=>s+d.heures,0)||1; return {n:t, c:Math.round(ds.reduce((s,d)=>s+d.ca,0)/h)}; });
+  const parCollab = COLLABS.map(c=>({n:c, c:L.filter(d=>d.resp===c).length})).filter(x=>x.c>0);
+  const hTot = L.reduce((s,d)=>s+d.heures,0)||1;
+  const ephrMoy = Math.round(L.reduce((s,d)=>s+d.ca,0)/hTot);
+  const byE = [...L].sort((a,b)=>ephr(b)-ephr(a));
+  const todos = todosRole(vue);
+  const shown = state.queueAll ? todos : todos.slice(0,8);
+  const queue = `
+  <div class="queue">
+    <h2><span class="n">${todos.length}</span> À traiter ${vue==='notaire'?'— tout est préparé, il n\'y a qu\'à approuver':'aujourd\'hui'}</h2>
+    <p class="qs">${vue==='notaire' ? "L'IA a analysé les courriels, préparé les actes, relances et décisions. Chaque ligne est prête : une lecture, un clic. Rien ne part sans vous." : "Votre file de travail du jour, préparée automatiquement."}</p>
+    ${shown.map(t=>`<div class="qitem ${t.crit?'':''}">
+      <span class="qi">${t.ic}</span>
+      <div><div class="qt">${esc(t.t)} ${t.crit?'<span class="chip c-crit"><span class="d"></span>prioritaire</span>':''}</div>
+      <div class="qd">${esc(t.d)}</div>
+      <div class="qd" style="color:#83868e;margin-top:2px">${esc(t.ref)}</div></div>
+      <div class="qa"><button class="btn sm gold" data-q="${t.act}">${esc(t.label)}</button></div>
+    </div>`).join('') || '<p class="qs">Rien en attente — tout est à jour.</p>'}
+    ${todos.length>8 ? `<div style="text-align:center;margin-top:6px"><button class="btn sm ghost" data-act="toggle-queue">${state.queueAll?'Replier — garder les 8 prioritaires ▴':'Voir les '+(todos.length-8)+' autres tâches préparées par l\'IA ▾'}</button></div>`:''}
+  </div>`;
+  return `
+  <h1 class="pg">Tableau de bord de l'étude</h1>
+  <p class="pg-sub">Bonjour ${r.nom} · vendredi 22 août 2026 · ${L.length} dossiers ouverts${L.length!==DOSSIERS.length?' (filtrés sur '+DOSSIERS.length+')':''}</p>
+  ${queue}
+  <div class="filters">
+    <span class="lbl">Filtres</span>
+    <select data-f="them"><option value="">Toutes thématiques</option>${THEMES.map(t=>`<option ${state.filtres.them===t?'selected':''}>${t}</option>`).join('')}</select>
+    <select data-f="resp"><option value="">Tous collaborateurs</option>${COLLABS.map(c=>`<option ${state.filtres.resp===c?'selected':''}>${c}</option>`).join('')}</select>
+    <select data-f="urg"><option value="">Toutes urgences</option><option ${state.filtres.urg==='urgent'?'selected':''} value="urgent">Urgents</option><option ${state.filtres.urg==='normal'?'selected':''} value="normal">Non urgents</option></select>
+    <span class="lbl" style="margin-left:6px">Notaire : Me T. Lévy</span>
+  </div>
+  <div class="grid g4">
+    <div class="card tile"><div class="lb">Dossiers ouverts</div><div class="vl">${L.length}</div><div class="dl">sur l'office</div></div>
+    <div class="card tile"><div class="lb">Bloqués</div><div class="vl" style="color:#a52f2f">${bloq.length}</div><div class="dl">cause identifiée sur chacun</div></div>
+    <div class="card tile"><div class="lb">Points d'attention</div><div class="vl" style="color:#7a5a10">${att.length}</div><div class="dl">dont ${L.filter(d=>d.inact>=7).length} sans activité ≥ 7 j</div></div>
+    <div class="card tile"><div class="lb">Entrées à approuver</div><div class="vl">${intakePending().length}</div><div class="dl">courriels analysés par l'IA</div></div>
+    <div class="card tile"><div class="lb">Signatures programmées</div><div class="vl">${signatures}</div><div class="dl">sur 45 jours</div></div>
+    <div class="card tile"><div class="lb">CA produit 2026</div><div class="vl">${(CA.produit/1000).toFixed(0)} k€</div><div class="dl up">prévisionnel : ${(CA.previsionnel/1000).toFixed(0)} k€</div></div>
+    <div class="card tile"><div class="lb">Rentabilité moyenne</div><div class="vl">${ephrMoy} €/h</div><div class="dl">honoraires / temps de gestion</div></div>
+    <div class="card tile"><div class="lb">Délai moyen vente</div><div class="vl">74 j</div><div class="dl up">− 11 j vs 2025</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>Dossiers par thématique</h3>${barChart(parThem,'')}
+      <div class="btn-note">Les quatre thématiques d'expertise de l'étude. Filtrez le tableau via « Toutes thématiques » ci-dessus.</div></div>
+    <div class="card"><h3>Rentabilité du temps de gestion (€ / heure)</h3>${barChart(rentThem,'€/h')}
+      <div class="btn-note">Honoraires rapportés aux heures de gestion estimées par l'IA (temps saisi + temps reconstitué).</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>Meilleure et moindre rentabilité de gestion</h3>
+      <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Dossier</th><th>Thématique</th><th class="num">Heures</th><th class="num">Honoraires</th><th class="num">€ / h</th></tr></thead><tbody>
+      ${byE.slice(0,3).map(d=>`<tr class="rowbtn" data-open="${d.ref}"><td><span class="mono">${d.ref}</span></td><td>${esc(d.them)}</td><td class="num">${d.heures}</td><td class="num">${fmtEur(d.ca)}</td><td class="num" style="color:#006300;font-weight:700">${ephr(d)}</td></tr>`).join('')}
+      ${byE.slice(-3).reverse().map(d=>`<tr class="rowbtn" data-open="${d.ref}"><td><span class="mono">${d.ref}</span></td><td>${esc(d.them)}</td><td class="num">${d.heures}</td><td class="num">${fmtEur(d.ca)}</td><td class="num" style="color:#a52f2f;font-weight:700">${ephr(d)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div class="btn-note">Trois meilleurs et trois moins rentables. Les successions absorbent le temps : candidates prioritaires à l'automatisation IA.</div></div>
+    <div class="card"><h3>Charge par collaborateur</h3>${hbarChart(parCollab)}
+      <h3 style="margin-top:16px">Délais moyens</h3>
+      <table class="tbl"><tbody>
+        <tr><td>Vente immobilière</td><td class="num">74 j</td><td class="num">21 j de formalités</td></tr>
+        <tr><td>Succession</td><td class="num">148 j</td><td class="num">34 j de formalités</td></tr>
+        <tr><td>Donation</td><td class="num">41 j</td><td class="num">17 j de formalités</td></tr>
+      </tbody></table></div>
+  </div>
+  <h2 class="sec">Alertes prioritaires</h2>
+  ${[...bloq, ...att].slice(0,5).map(d=>`<div class="alert ${d.alerte.n==='crit'?'crit':'warn'}"><div class="t"><span class="mono">${d.ref}</span> — ${esc(d.parties)}</div><div class="s">${esc(d.alerte.c)}</div><div style="margin-top:7px"><button class="btn sm" data-open="${d.ref}">Ouvrir le dossier</button></div></div>`).join('')}`;
+}
+function barChart(data, unit){
+  const W=460, H=195, pad={l:36,r:10,t:16,b:46};
+  const max = Math.max(...data.map(d=>d.c), 1);
+  const bw = 26, iw = (W-pad.l-pad.r)/data.length;
+  const ticks = [0, Math.ceil(max/2), max];
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Répartition" style="max-width:100%;height:auto">`;
+  ticks.forEach(t=>{ const y = pad.t + (H-pad.t-pad.b)*(1-t/max);
+    s += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${y}" y2="${y}" stroke="#e8e4d8" stroke-width="1"/><text x="${pad.l-6}" y="${y+3.5}" text-anchor="end" font-size="10" fill="#83868e" font-family="Public Sans">${t}</text>`;});
+  data.forEach((d,i)=>{
+    const h = (H-pad.t-pad.b)*(d.c/max), x = pad.l + i*iw + (iw-bw)/2, y = H-pad.b-h;
+    s += `<path d="M${x} ${H-pad.b} v${-(Math.max(h-4,0))} q0 -4 4 -4 h${bw-8} q4 0 4 4 v${Math.max(h-4,0)} z" fill="#2a78d6" data-tip="${esc(d.n)} : ${d.c}${unit?' '+unit:''}"/>`;
+    s += `<text x="${x+bw/2}" y="${y-6}" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1d24" font-family="Public Sans">${d.c}</text>`;
+    const words = d.n.split(' ');
+    const l1 = words.slice(0, words.length>2?2:1).join(' '), l2 = words.slice(words.length>2?2:1).join(' ');
+    s += `<text x="${x+bw/2}" y="${H-pad.b+14}" text-anchor="middle" font-size="9.5" fill="#4b5058" font-family="Public Sans">${esc(l1)}</text>`;
+    if(l2) s += `<text x="${x+bw/2}" y="${H-pad.b+25}" text-anchor="middle" font-size="9.5" fill="#4b5058" font-family="Public Sans">${esc(l2)}</text>`;
+  });
+  s += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${H-pad.b}" y2="${H-pad.b}" stroke="#c3beae" stroke-width="1"/></svg>`;
+  return s;
+}
+function hbarChart(data){
+  const W=460, rh=30, pad={l:100,r:46,t:6,b:6};
+  const H = pad.t+pad.b+data.length*rh;
+  const max = Math.max(...data.map(d=>d.c),1);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Dossiers actifs par collaborateur" style="max-width:100%;height:auto">`;
+  data.forEach((d,i)=>{
+    const y = pad.t+i*rh, w = (W-pad.l-pad.r)*(d.c/max), bh=18;
+    s += `<text x="${pad.l-8}" y="${y+bh/2+4}" text-anchor="end" font-size="11" fill="#4b5058" font-family="Public Sans">${esc(d.n)}</text>`;
+    s += `<path d="M${pad.l} ${y} h${Math.max(w-4,0)} q4 0 4 4 v${bh-8} q0 4 -4 4 h${-Math.max(w-4,0)} z" fill="#2a78d6" data-tip="${esc(d.n)} : ${d.c} dossiers actifs"/>`;
+    s += `<text x="${pad.l+w+7}" y="${y+bh/2+4}" font-size="11" font-weight="600" fill="#1a1d24" font-family="Public Sans">${d.c}</text>`;
+  });
+  s += `<line x1="${pad.l}" x2="${pad.l}" y1="${pad.t}" y2="${H-pad.b}" stroke="#c3beae" stroke-width="1"/></svg>`;
+  return s;
+}
+</script>
+<script>
+/* ================= ENTRÉES : les dossiers arrivent seuls, l'humain approuve ================= */
+function entrees(){
+  const pend = intakePending(), done = INTAKE.filter(i=>i.done);
+  return `
+  <h1 class="pg">Entrées</h1>
+  <p class="pg-sub">Courriels et dépôts reçus par l'étude, lus et analysés par l'IA. Chaque proposition attend une approbation — rien ne se crée ni ne part tout seul.</p>
+  <div class="flow3">
+    <div class="f"><b><span class="stp">1</span> Le courriel arrive</b>Boîte de l'étude, portail client ou dépôt d'un confrère : pièces jointes ouvertes et lues par l'IA.</div>
+    <div class="f"><b><span class="stp">2</span> L'IA analyse et prépare</b>Type d'acte détecté, parties et montants extraits (sourcés, avec confiance), proposition : créer un dossier, rattacher une pièce, compléter, ou classer.</div>
+    <div class="f"><b><span class="stp">3</span> Vous approuvez</b>Un clic et tout s'exécute : dossier créé, checklist générée, pièce rattachée, anomalie close. Tout est tracé au journal.</div>
+  </div>
+  <h2 class="sec">À approuver (${pend.length})</h2>
+  ${pend.map(i=>`<div class="intake">
+    <div class="ih"><span class="from">${esc(i.from)}</span><span class="obj">${esc(i.obj)}</span><span class="when">${esc(i.when)}${i.pj?' · 📎 '+esc(i.pj):''}</span></div>
+    <div class="iabox">
+      <div class="ial">✳ Analyse de l'IA · ${i.analyse.type} ${confChip(i.analyse.conf)}</div>
+      <div style="font-weight:600">${esc(i.analyse.cible)}</div>
+      <div class="kv">${i.analyse.kv.map(k=>`<span>${esc(k[0])} : <b>${esc(k[1])}</b></span>`).join('')}</div>
+      <div>${esc(i.analyse.prop)}</div>
+      <div style="margin-top:9px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn sm gold" data-intake="${i.id}">${esc(i.label)}</button>
+        <button class="btn sm" data-intake-edit="${i.id}">Corriger avant d'approuver</button>
+      </div>
+    </div>
+  </div>`).join('') || '<p class="pg-sub">Aucune entrée en attente.</p>'}
+  ${done.length?`<h2 class="sec">Traitées aujourd'hui (${done.length})</h2>${done.map(i=>`<div class="alert ok"><div class="t">${esc(i.obj)}</div><div class="s">${esc(i.doneMsg)}</div></div>`).join('')}`:''}
+  <h2 class="sec">Autres façons d'alimenter un dossier</h2>
+  <p class="pg-sub" style="margin:0 0 10px">L'essentiel arrive tout seul (courriels, portail client, confrères). Si besoin, vous gardez la main :</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn" data-act="toggle-manu">＋ Créer un dossier manuellement</button>
+    <button class="btn" data-act="toggle-compl">✎ Compléter un dossier existant</button>
+  </div>
+  <div id="manubox" class="formbox ${state.manuOpen?'':'hidden'}" style="max-width:560px">
+    <label>Type de dossier</label>
+    <select id="m-type">${["Vente immobilière","Acquisition","VEFA","Succession","Succession internationale","Donation","Partage","Divorce — liquidation","Constitution de SCI","Structuration patrimoniale","Transmission d'entreprise","Bail commercial","Contrat de mariage — expatriés"].map(t=>`<option>${t}</option>`).join('')}</select>
+    <label>Parties (résumé)</label>
+    <input id="m-parties" placeholder="ex. DUPONT / MARTIN">
+    <label>Note d'ouverture (facultative)</label>
+    <textarea id="m-note" rows="2" placeholder="Contexte, urgence, référence…"></textarea>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+      <button class="btn pri" data-act="creer-dossier">Créer le dossier</button>
+      <span class="btn-note" style="margin:0">La checklist, l'équipe et l'échéancier seront générés automatiquement.</span>
+    </div>
+  </div>
+  <div id="complbox" class="formbox ${state.complOpen?'':'hidden'}" style="max-width:560px">
+    <label>Dossier à compléter</label>
+    <select id="c-ref">${DOSSIERS.map(d=>`<option>${d.ref} — ${esc(d.parties)}</option>`).join('')}</select>
+    <label>Élément à ajouter</label>
+    <input id="c-note" placeholder="ex. RIB reçu au guichet, à verser au dossier">
+    <div style="margin-top:12px"><button class="btn pri" data-act="completer">Ajouter au dossier</button></div>
+  </div>`;
+}
+
+/* ================= DOSSIERS ================= */
+function dossiers(){
+  const L = applyFiltres(DOSSIERS);
+  let body = '';
+  if(state.vueListe==='liste'){
+    body = `<div class="tblwrap"><table class="tbl"><thead><tr><th>Réf.</th><th>Thématique</th><th>Type</th><th>Parties</th><th>État</th><th>Resp.</th><th class="num">€ / h</th><th>Signal</th></tr></thead><tbody>
+    ${L.map(d=>`<tr class="rowbtn" data-open="${d.ref}">
+      <td><span class="mono">${d.ref}</span>${d.demo?' <span class="chip c-gold">démo</span>':''}</td>
+      <td><span class="expchip">${esc(d.exp)}</span></td>
+      <td>${esc(d.type)}</td><td>${esc(d.parties)}</td><td>${chipEtat(d.etat)}</td>
+      <td>${esc(d.resp)}</td><td class="num" style="font-weight:700;color:${ephr(d)>=500?'#006300':(ephr(d)<250?'#a52f2f':'#4b5058')}">${ephr(d)}</td><td>${chipAl(d.alerte)}</td></tr>`).join('')}
+    </tbody></table></div>`;
+  } else if(state.vueListe==='kanban'){
+    body = `<div class="kb">${PHASES.map(p=>{
+      const cards = L.filter(d=>d.etat>=p.range[0]&&d.etat<=p.range[1]);
+      return `<div class="col"><h4>${p.n} · ${cards.length}</h4>${cards.map(d=>`<div class="kcard" data-open="${d.ref}"><div class="r">${d.ref}</div><div class="t">${esc(d.parties)}</div><span class="expchip">${esc(d.exp)}</span><div style="margin-top:6px">${chipAl(d.alerte)}</div></div>`).join('')||'<p style="font-size:12px;color:#83868e;padding:4px">—</p>'}</div>`;}).join('')}</div>
+    <p class="pg-sub" style="margin-top:8px">Le déplacement d'une carte n'est volontairement pas possible : un changement d'état passe par le workflow et ses validations.</p>`;
+  } else {
+    const grp = {};
+    ECHEANCES.forEach(e=>{ const k = e.d.slice(0,7); (grp[k]=grp[k]||[]).push(e); });
+    body = Object.entries(grp).map(([m,evts])=>`
+      <h2 class="sec">${{'2026-08':'Août 2026','2026-09':'Septembre 2026'}[m]||m}</h2>
+      ${evts.map(e=>{const j=jr(e.d);return `<div class="alert ${e.n==='crit'?'crit':(e.n==='warn'?'warn':'ok')}" style="margin:6px 0"><div class="t">${new Date(e.d).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} <span class="chip ${j<=14?'c-crit':(j<=30?'c-warn':'c-mut')}" style="margin-left:6px">J${j>=0?'−':'+'}${Math.abs(j)}</span></div><div class="s">${esc(e.t)}</div></div>`;}).join('')}`).join('');
+  }
+  return `<h1 class="pg">Dossiers</h1><p class="pg-sub">${L.length} dossiers ${L.length!==DOSSIERS.length?'(filtres actifs)':''} · organisés par thématique d'expertise et rentabilité de gestion · cliquer une ligne ouvre le dossier</p>
+  <div class="filters">
+    <div class="seg">${['liste','kanban','calendrier'].map(v=>`<button data-vue="${v}" class="${state.vueListe===v?'on':''}">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div>
+    <select data-f="them"><option value="">Toutes thématiques</option>${THEMES.map(t=>`<option ${state.filtres.them===t?'selected':''}>${t}</option>`).join('')}</select>
+    <select data-f="resp"><option value="">Tous collaborateurs</option>${COLLABS.map(c=>`<option ${state.filtres.resp===c?'selected':''}>${c}</option>`).join('')}</select>
+    <select data-f="urg"><option value="">Toutes urgences</option><option value="urgent" ${state.filtres.urg==='urgent'?'selected':''}>Urgents</option><option value="normal" ${state.filtres.urg==='normal'?'selected':''}>Non urgents</option></select>
+    <button class="btn sm ghost" data-nav="entrees">＋ Nouveau dossier (via Entrées)</button>
+  </div>${body}`;
+}
+
+/* ================= DOSSIER : synthèse IA + frise ================= */
+function friseSVG(steps, etat){
+  const n = steps.length, W = Math.max(760, (n-1)*112 + 144), H = 118, y = 46;
+  const gap = (W-144)/(n-1);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Frise chronologique du dossier" style="min-width:${W}px;height:auto;display:block">`;
+  s += `<line x1="72" x2="${W-72}" y1="${y}" y2="${y}" stroke="#e0dccc" stroke-width="3"/>`;
+  const doneN = steps.filter(st=>etat>st.e).length;
+  if(doneN>0) s += `<line x1="72" x2="${72+gap*Math.min(doneN,n-1)}" y1="${y}" y2="${y}" stroke="#0e1a33" stroke-width="3"/>`;
+  steps.forEach((st,i)=>{
+    const x = 72+gap*i;
+    const fait = etat>st.e, cur = !fait && (i===0 || etat>steps[i-1].e);
+    if(cur) s += `<circle cx="${x}" cy="${y}" r="12" fill="#f4edda" stroke="#c9a35f" stroke-width="2.5"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="${cur?6:7}" fill="${fait?'#0e1a33':(cur?'#a97e3f':'#fff')}" stroke="${fait?'#0e1a33':(cur?'#a97e3f':'#b9b3a0')}" stroke-width="2"/>`;
+    if(fait) s += `<text x="${x}" y="${y+3.5}" text-anchor="middle" font-size="8.5" fill="#fff" font-family="Public Sans">✓</text>`;
+    s += `<text x="${x}" y="${y-24}" text-anchor="middle" font-size="10" fill="${st.ia?'#8a6428':'#4b5058'}" font-family="Public Sans" font-weight="700">${st.ia?'🤖 IA':'👤'}</text>`;
+    const words = st.t.split(' ');
+    const mid = Math.ceil(words.length/2);
+    const l1 = words.slice(0,mid).join(' '), l2 = words.slice(mid).join(' ');
+    s += `<text x="${x}" y="${y+26}" text-anchor="middle" font-size="10" font-weight="${cur?'700':'500'}" fill="${cur?'#1a1d24':'#4b5058'}" font-family="Public Sans">${esc(l1)}</text>`;
+    if(l2) s += `<text x="${x}" y="${y+38}" text-anchor="middle" font-size="10" font-weight="${cur?'700':'500'}" fill="${cur?'#1a1d24':'#4b5058'}" font-family="Public Sans">${esc(l2)}</text>`;
+    s += `<text x="${x}" y="${y+54}" text-anchor="middle" font-size="9" fill="#9a958a" font-family="Public Sans">${fait?'fait':(cur?'en cours':'à venir')}</text>`;
+  });
+  s += `</svg>`;
+  return `<div class="frise-wrap">${s}</div>`;
+}
+function tabIA(d, isDemo){
+  const steps = typeSteps(d);
+  const resume = isDemo ? DEMO.ia.resume :
+    `Dossier « ${d.type} » (${d.exp}) au stade « ${ETATS[d.etat-1]} », phase ${phaseOf(d.etat).n.toLowerCase()}. Parties : ${d.parties}. Honoraires prévus ${fmtEur(d.ca)} pour ${d.heures} h de gestion estimées (${ephr(d)} €/h). ${d.alerte.c?('Point de vigilance : '+d.alerte.c+'. '):''}L'IA exécute les étapes marquées 🤖 et prépare chaque décision ; les étapes 👤 restent entièrement humaines.`;
+  const p = isDemo ? null : iaPending(d);
+  const conf = isDemo ? DEMO.ia.conf : 90;
+  return `
+  <div class="card" style="border-left:4px solid #0e1a33">
+    <h3 style="display:flex;align-items:center;gap:8px">✳ Synthèse du dossier par l'IA <span class="conf ${conf>=85?'hi':'md'}">${conf}%</span> <span class="chip c-ia">relue et corrigeable</span></h3>
+    <p style="margin:4px 0;font-size:13.5px;line-height:1.65">${esc(resume)}</p>
+    ${isDemo?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${DEMO.ia.srcs.map(s=>`<span class="src">${esc(s)}</span>`).join('')}</div>`:'<div class="btn-note">Synthèse générée à partir de l\'état du dossier (démonstration) — dans le produit, elle cite chaque pièce.</div>'}
+  </div>
+  <h2 class="sec">Frise chronologique — qui fait quoi</h2>
+  <div class="card">${friseSVG(steps, d.etat)}
+  <div class="btn-note">🤖 IA : étape exécutée ou préparée automatiquement, soumise à approbation · 👤 : décision ou acte réservé à l'humain. La frise avance à mesure des approbations.</div></div>
+  <h2 class="sec">Étapes à réaliser maintenant — préparées, il n'y a qu'à approuver</h2>
+  <ul class="steps">
+  ${isDemo ? `
+    <li class="encours"><span class="sic">✉</span><div><div class="sn">Rattacher l'offre de prêt et le PV d'AG reçus ce matin</div><div class="sd">Deux courriels analysés — l'approbation clôt les anomalies A-1 et A-3 et lève la condition suspensive.</div></div><div class="sa"><button class="btn sm gold" data-nav="entrees">Ouvrir les Entrées (2)</button></div></li>
+    <li class="encours"><span class="sic">⚖</span><div><div class="sn">Trancher l'adresse du bien (A-2)</div><div class="sd">Recommandation IA : n° 24 (cadastre + taxe foncière), mention explicative à l'acte.</div></div><div class="sa"><button class="btn sm gold" data-tab-go="anomalies">Trancher</button></div></li>
+    <li class="avenir"><span class="sic">✒</span><div><div class="sn">Viser le projet d'acte v2</div><div class="sd">Se débloque quand les trois contrôles ci-dessus sont levés — le rapport de cohérence est déjà prêt.</div></div><div class="sa"><span class="chip c-mut">en attente des contrôles</span></div></li>`
+  : (p && !d._appr ? `
+    <li class="encours"><span class="sic">🤖</span><div><div class="sn">${esc(p.t)}</div><div class="sd">${esc(p.d)}</div></div><div class="sa"><button class="btn sm gold" data-appr="${d.ref}">${esc(p.label)}</button></div></li>`
+  : `<li class="fait"><span class="sic">✓</span><div><div class="sn">Rien en attente sur ce dossier</div><div class="sd">L'IA poursuit la préparation de l'étape suivante ; vous serez sollicité à la prochaine décision.</div></div></li>`)}
+  </ul>
+  ${isDemo?'':'<p class="btn-note">Seul le dossier de démonstration VTE-2026-0142 est détaillé pièce par pièce dans ce prototype ; ce dossier fictif alimente le tableau de bord, la frise et la file d\'approbation.</p>'}`;
+}
+function dossier(){
+  const ref = state.dossierRef || $DEMOREF;
+  const d = DOSSIERS.find(x=>x.ref===ref);
+  if(!d) return '<p>Dossier introuvable.</p>';
+  const isDemo = !!d.demo;
+  const anomN = DEMO.anomalies.filter(a=>!a.resolue).length;
+  const TABS = isDemo
+    ? [['ia','Synthèse IA'],['synthese','Fiche'],['checklist','Checklist'],['docs','Documents'],['anomalies','Anomalies'],['relances','Relances'],['acte','Projet d’acte'],['compta','Comptabilité'],['lcbft','LCB-FT'],['timeline','Timeline']]
+    : [['ia','Synthèse IA'],['synthese','Fiche']];
+  const tab = TABS.some(t=>t[0]===state.dossierTab) ? state.dossierTab : 'ia';
+  const body = tab==='ia' ? tabIA(d,isDemo)
+    : ({synthese:()=>tabSynthese(d,isDemo), checklist:tabChecklist, docs:tabDocs, anomalies:tabAnomalies, relances:tabRelances, acte:tabActe, compta:tabCompta, lcbft:tabLcbft, timeline:tabTimeline}[tab])();
+  return `
+  <h1 class="pg"><span class="mono" style="font-size:18px">${d.ref}</span> — ${esc(d.parties)} ${isDemo?'<span class="chip c-gold">dossier de démonstration</span>':''}</h1>
+  <p class="pg-sub">${esc(d.type)} · <span class="expchip">${esc(d.exp)}</span> · ${chipEtat(d.etat)} · responsable ${esc(d.resp)} · ${d.heures} h de gestion · <b>${ephr(d)} €/h</b>${d.sign?' · signature '+d.sign.split('-').reverse().join('/'):''}</p>
+  <div class="tabs">${TABS.map(([id,l])=>`<button data-tab="${id}" class="${tab===id?'on':''}">${l}${id==='anomalies'&&anomN?`<span class="bdg">${anomN}</span>`:''}</button>`).join('')}</div>
+  ${body}`;
+}
+function tabSynthese(d,isDemo){
+  if(!isDemo) return `
+  <div class="grid g3">
+    <div class="card"><h3>État</h3>${chipEtat(d.etat)}<p style="font-size:12.5px;margin-top:8px">Phase « ${esc(phaseOf(d.etat).n)} »</p></div>
+    <div class="card"><h3>Signal</h3>${chipAl(d.alerte)}${d.alerte.c?`<p style="font-size:12.5px;margin-top:8px">${esc(d.alerte.c)}</p>`:''}</div>
+    <div class="card"><h3>Rentabilité</h3><p style="font-size:20px;font-weight:700;margin:0">${ephr(d)} €/h</p><p style="font-size:12.5px;color:#83868e;margin:4px 0 0">${fmtEur(d.ca)} · ${d.heures} h estimées</p></div>
+  </div>
+  <div class="alert gold" style="margin-top:14px"><div class="t">Détail complet dans le dossier de démonstration</div><div class="s">Pièces, extractions, anomalies et projet d'acte sont développés sur <span class="mono">VTE-2026-0142</span>.</div>
+  <div style="margin-top:8px"><button class="btn sm pri" data-open="VTE-2026-0142">Ouvrir le dossier de démonstration</button></div></div>`;
+  return `
+  <div class="grid g2">
+    <div class="card"><h3>Parties et intervenants</h3>
+      ${DEMO.parties.map(p=>`<div class="doc-line"><div><div style="font-weight:600">${esc(p.nom)} <span class="chip c-mut" style="margin-left:4px">${p.q}</span></div>
+      <div style="font-size:12.5px;color:#4b5058">${esc(p.detail)}</div>
+      <div style="font-size:12px;color:#83868e">${esc(p.ct)}</div>
+      ${p.flag?`<div style="margin-top:3px"><span class="chip c-warn"><span class="d"></span>${esc(p.flag)}</span></div>`:''}</div></div>`).join('')}
+    </div>
+    <div>
+      <div class="card"><h3>Le bien</h3>
+        <p style="margin:2px 0;font-size:13px"><b>${esc(DEMO.bien.nature)}</b><br>${esc(DEMO.bien.adresse)}<br>
+        ${esc(DEMO.bien.lots)}<br>Cadastre : ${esc(DEMO.bien.cadastre)} · Carrez : ${DEMO.bien.carrez} · DPE ${DEMO.bien.dpe}</p>
+        <p style="margin:8px 0 0;font-size:16px"><b>Prix : ${fmtEur(DEMO.bien.prix)}</b> <span style="font-size:12px;color:#83868e">· source : compromis p. 8</span></p>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Jalons</h3>
+        ${DEMO.jalons.map(j=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px">
+          <span class="chip ${j.st==='ok'?'c-ok':(j.st==='crit'?'c-crit':'c-mut')}">${j.st==='ok'?'<span class="d"></span>fait':(j.st==='crit'?'<span class="d"></span>'+(j.note||'à risque'):'à venir')}</span>
+          <span>${esc(j.t)}</span><span style="margin-left:auto;color:#83868e" class="mono">${j.d}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <h2 class="sec">Équipe</h2>
+  <p style="font-size:13px">Notaire : <b>Me Thomas Lévy</b> · Rédaction : <b>Me Hélène Rouaud</b>, notaire salariée · Collecte et formalités : <b>Véronique Michel</b>, notaire assistante · Appui : <b>Dan Knafo</b>, notaire stagiaire · Taxation : comptabilité de l'étude</p>`;
+}
+</script>
+<script>
+/* ---------- Onglets détaillés du dossier de démonstration (inchangés v1, habillage v2) ---------- */
+function tabChecklist(){
+  const tot = DEMO.pieces.flatMap(g=>g.items).length;
+  const ok = DEMO.pieces.flatMap(g=>g.items).filter(i=>i.st==='ok').length;
+  return `<p class="pg-sub">${ok} pièces validées sur ${tot} attendues — la liste est générée par le type « vente en copropriété » et les réponses aux questionnaires ; elle se met à jour à chaque dépôt.</p>
+  ${DEMO.pieces.map(g=>`<div class="checkgrp"><h4>${esc(g.g)}</h4>
+    ${g.items.map(i=>`<div class="pi">
+      <span class="st ${i.st}">${{ok:'✓',wait:'…',miss:'✕',warn:'!'}[i.st]}</span>
+      <div><div class="nm">${esc(i.n)}</div><div class="dt">${esc(i.d)} · attendue de : ${esc(i.src)}</div></div>
+      <div class="act">
+        ${i.st==='miss'||i.st==='warn'?`<button class="btn sm" data-relance="${esc(i.n)}">Relancer</button>`:''}
+        ${i.st==='ok'?'<span class="chip c-ok"><span class="d"></span>validée</span>':''}
+        ${i.st==='wait'?'<span class="chip c-blue">analyse en cours</span>':''}
+      </div></div>`).join('')}
+  </div>`).join('')}`;
+}
+function tabDocs(){
+  const sel = state.docSel ? DEMO.docs.find(x=>x.id===state.docSel) : null;
+  return `<p class="pg-sub">Chaque donnée extraite garde son document source, sa page et son score de confiance. Sous 85 %, la donnée attend une validation humaine ; en cas de contradiction, elle part en file de contrôle.</p>
+  <div class="split docs">
+    <div class="card" style="padding:8px 14px">
+      ${DEMO.docs.map(doc=>`<div class="doc-line" style="cursor:pointer" data-doc="${doc.id}">
+        <div class="doc-ic"></div>
+        <div style="min-width:0"><div style="font-weight:600;font-size:13px">${esc(doc.n)} ${doc.st==='Non conforme'?'<span class="chip c-crit"><span class="d"></span>non conforme</span>':'<span class="chip c-ok"><span class="d"></span>analysé</span>'}</div>
+        <div style="font-size:12px;color:#83868e">${esc(doc.meta)} · ${doc.ext.length} donnée${doc.ext.length>1?'s':''} extraite${doc.ext.length>1?'s':''}</div></div>
+        <div class="act"><button class="btn sm">Ouvrir</button></div></div>`).join('')}
+    </div>
+    <div>${sel ? docViewer(sel) : '<div class="card"><h3>Visionneuse</h3><p style="font-size:12.5px;color:#83868e">Sélectionnez un document pour voir l’aperçu et ses extractions sourcées.</p></div>'}</div>
+  </div>`;
+}
+function docViewer(doc){
+  return `<div class="viewer"><div class="vh">${esc(doc.n)} <span style="color:#83868e;font-weight:400">· ${esc(doc.meta)}</span></div>
+  <div class="fakepage" aria-label="Aperçu simulé du document">
+    <div class="fl" style="width:52%"></div><div class="fl" style="width:88%"></div><div class="fl" style="width:80%"></div>
+    <p style="margin:10px 0 4px;font-size:12px">… ${doc.ext.slice(0,2).map(e=>`<span class="hl ${e.stv==='validée'?'okv':''}">${esc(e.v)}</span>`).join(' … ')} …</p>
+    <div class="fl" style="width:84%"></div><div class="fl" style="width:70%"></div><div class="fl" style="width:88%"></div><div class="fl" style="width:40%"></div>
+    <p style="font-size:10.5px;color:#83868e;margin:10px 0 0">Aperçu simulé — dans le produit : PDF réel, zones surlignées à l'emplacement exact.</p>
+  </div>
+  <div style="padding:0 14px 14px;overflow-x:auto">
+    <table class="tbl"><thead><tr><th>Donnée</th><th>Valeur</th><th>Source</th><th>Confiance</th><th>Statut</th></tr></thead><tbody>
+    ${doc.ext.map((e,i)=>`<tr><td>${esc(e.f)}</td><td style="font-weight:600">${esc(e.v)}</td><td><span class="src">${esc(doc.n.split(' ')[0])} ${esc(e.src)}</span></td><td>${confChip(e.conf)}</td>
+      <td>${e.stv==='validée'?'<span class="chip c-ok"><span class="d"></span>validée</span>': e.stv==='contradiction'?'<span class="chip c-crit"><span class="d"></span>contradiction (A-2)</span>': e.stv==='anomalie'?'<span class="chip c-crit"><span class="d"></span>anomalie (A-4)</span>':`<button class="btn sm pri" data-valext="${doc.id}:${i}">Valider la donnée</button>`}</td></tr>`).join('')}
+    </tbody></table>
+  </div></div>`;
+}
+function tabAnomalies(){
+  return `<p class="pg-sub">File de contrôle humain — l'IA détecte, motive et propose ; la décision reste nominative. Chaque traitement est journalisé.</p>
+  ${DEMO.anomalies.map(a=>{
+    if(a.resolue) return `<div class="alert ok"><div class="t">${a.id} — ${esc(a.t)}</div><div class="s">Résolue : ${esc(a.resolue)}</div></div>`;
+    let actions='';
+    if(a.act==='adresse'){
+      actions = `<div class="radio-row">
+        <label><input type="radio" name="adr" value="24" ${state.arbitrageChoix==='24'?'checked':''}> Retenir le n° 24 (cadastre + taxe foncière) avec mention explicative</label>
+        <label><input type="radio" name="adr" value="22" ${state.arbitrageChoix==='22'?'checked':''}> Retenir le n° 22 (titre)</label>
+        <label><input type="radio" name="adr" value="piece" ${state.arbitrageChoix==='piece'?'checked':''}> Demander un justificatif complémentaire</label>
+      </div>
+      ${ROLES[state.role].vue==='notaire'
+        ? `<button class="btn sm gold" data-act="trancher-adresse">Trancher (décision du notaire)</button><div class="btn-note">La décision motivée sera inscrite au journal et débloquera la désignation de l'acte.</div>`
+        : `<button class="btn sm pri" data-act="soumettre-adresse">Transmettre au notaire</button><div class="btn-note">Réservé au notaire pour la décision finale — passez « Voir comme : Me Lévy » pour trancher.</div>`}`;
+    }
+    if(a.act==='pv'){
+      actions = `<button class="btn sm gold" data-nav="entrees">Approuver le rattachement (Entrées)</button>
+      <button class="btn sm" data-relance="PV d'AG 2025 (syndic Meridian)">Relancer encore le syndic</button>`;
+    }
+    if(a.act==='pret'){
+      actions = `<button class="btn sm gold" data-nav="entrees">Approuver le rattachement de l'offre (Entrées)</button>`;
+    }
+    if(a.act==='cni'){
+      actions = `<button class="btn sm" data-tab-go="relances">Voir la demande envoyée</button><span class="chip c-blue" style="margin-left:6px">suspension automatique à réception</span>`;
+    }
+    return `<div class="alert ${a.n==='crit'?'crit':'warn'}">
+      <div class="t">${a.id} — ${esc(a.t)}</div>
+      <div class="s">${esc(a.d)}</div>
+      <div style="margin:7px 0 4px;display:flex;gap:6px;flex-wrap:wrap">${a.src.map(s=>`<span class="src" title="Source documentaire">${esc(s[0])} · ${esc(s[1])}</span>`).join('')}</div>
+      <div class="s" style="background:#fff;border:1px dashed #d8cfb6;border-radius:9px;padding:8px 11px;margin:7px 0"><b>✳ Proposition de l'IA</b> — ${esc(a.prop)} <span class="chip c-gold" style="margin-left:4px">décision humaine requise</span></div>
+      <div class="s" style="color:#83868e">${esc(a.etat)}</div>
+      <div style="margin-top:9px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">${actions}</div>
+    </div>`;}).join('')}`;
+}
+function tabRelances(){
+  return `<h2 class="sec" style="margin-top:0">Scénarios actifs</h2>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Cible</th><th>Envoyées / plafond</th><th>Prochaine étape</th><th>Statut</th><th></th></tr></thead><tbody>
+  ${DEMO.scenarios.map((s,i)=>`<tr><td>${esc(s.c)}</td><td class="num">${s.envoyees} / ${s.plafond}</td><td>${esc(s.next)}</td>
+    <td>${s.st.startsWith('Suspendu')?`<span class="chip c-ok"><span class="d"></span>${esc(s.st)}</span>`:`<span class="chip c-blue">${esc(s.st)}</span>`}</td>
+    <td>${s.st==='Actif'?`<button class="btn sm" data-suspend="${i}">Suspendre</button>`:`<button class="btn sm" data-reprend="${i}">Réactiver</button>`}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p class="pg-sub" style="margin-top:8px">Une réponse détectée suspend le scénario ; le plafond atteint crée une tâche humaine. Les relances standard partent sans validation ; toute communication juridiquement sensible attend une validation nominative.</p>
+  <h2 class="sec">Historique</h2>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Date</th><th>Canal</th><th>Destinataire</th><th>Objet</th><th>Statut</th></tr></thead><tbody>
+  ${DEMO.relances.map(r=>`<tr><td class="mono" style="white-space:nowrap">${r.d}</td><td>${r.canal}</td><td>${esc(r.dest)}</td><td>${esc(r.obj)}</td><td>${r.st.startsWith('Répondue')?`<span class="chip c-ok"><span class="d"></span>${esc(r.st)}</span>`:`<span class="chip c-mut">${esc(r.st)}</span>`}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+function tabActe(){
+  const nOk = DEMO.acte.vars.filter(v=>v.ok).length;
+  const nb = DEMO.acte.blocages.length;
+  return `<div class="split">
+    <div>
+      ${nb>0 ? `<div class="alert crit"><div class="t">Finalisation bloquée — ${nb} contrôle${nb>1?'s':''} obligatoire${nb>1?'s':''} non terminé${nb>1?'s':''}</div>
+      <div class="s">${DEMO.acte.blocages.map(b=>'• '+esc(b)).join('<br>')}</div></div>`
+      : `<div class="alert ok"><div class="t">Contrôles obligatoires terminés</div><div class="s">Adresse arbitrée, offre de prêt et PV d'AG 2025 rattachés — le projet peut partir au visa du notaire.</div></div>`}
+      <div class="acte">
+        <h4>PROJET — VENTE (v2 du 21/08/2026)</h4>
+        <p><b>ONT COMPARU :</b> <span class="var src-ok" title="Sources : titre p.1, CNI, livret de famille">M. Serge FABIANI et Mme Hélène FABIANI née ROCHE</span>, mariés sous le régime de la communauté réduite aux acquêts, vendeurs ; et <span class="var src-ok" title="Sources : CNI, questionnaire acquéreur">Mme Inès BELKACEM</span>, acquéreur.</p>
+        <p><b>DÉSIGNATION.</b> Un appartement de quatre pièces au troisième étage et une cave, <span class="var src-ok" title="Titre p.3 et règlement de copropriété">lots n° 34 (412/10000e) et n° 112</span> de l'immeuble sis <span class="var src-miss" title="Contradiction A-2 : titre p.2 (n°22) ≠ pré-état daté p.1 (n°24) — arbitrage du notaire requis">[ADRESSE — ARBITRAGE A-2 REQUIS]</span>, cadastré <span class="var src-ok" title="Titre p.3">section CD n° 87</span>. Superficie Carrez : <span class="var src-ok" title="Attestation du 03/07/2026">92,40 m²</span>.</p>
+        <p><b>PRIX.</b> La vente est consentie moyennant le prix de <span class="var src-ok" title="Compromis p.8 — validé le 09/07">1 250 000 € (un million deux cent cinquante mille euros)</span>, payable comptant le jour de la signature.</p>
+        <p><b>FINANCEMENT.</b> Au moyen d'un apport de <span class="var src-ok" title="Justificatifs contrôlés (LCB-FT) le 18/07">858 000 €</span> et d'un prêt de <span class="var src-miss" title="Offre reçue le 22/08 — rattachement à approuver dans les Entrées (A-3)">[OFFRE DE PRÊT — RATTACHEMENT À APPROUVER]</span>.</p>
+        <p><b>COPROPRIÉTÉ — CHARGES ET TRAVAUX.</b> Charges courantes de <span class="var src-ok" title="Pré-état daté p.4">3 840 € par an</span>. État des procédures et travaux votés : <span class="var src-miss" title="PV d'AG 2025 reçu le 22/08 — rattachement à approuver dans les Entrées (A-1)">[PV D'AG 2025 — RATTACHEMENT À APPROUVER]</span>.</p>
+        <p><b>SERVITUDES.</b> <span class="var src-ok" title="Titre p.11">Servitude de cour commune au profit du fonds voisin (n° 85)</span>, rappelée à l'acte.</p>
+        <p><b>SITUATION HYPOTHÉCAIRE.</b> <span class="var src-ok" title="État hypothécaire feuillet 2">Inscription de privilège de prêteur de deniers (2011) à radier au plus tard lors de la publication</span>.</p>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">
+        ${DEMO.acte.visaVise ? '<span class="chip c-ok"><span class="d"></span>Visa du notaire apposé — envoi aux parties préparé</span>'
+          : DEMO.acte.visaDemande ? '<span class="chip c-gold">Visa demandé — dans la file de Me Lévy</span>'
+          : nb>0 ? `<button class="btn pri" disabled title="Bloqué : ${nb} contrôle${nb>1?'s':''} obligatoire${nb>1?'s':''} non terminé${nb>1?'s':''}">Demander le visa du notaire</button>`
+          : `<button class="btn gold" data-act="demander-visa">Demander le visa du notaire</button>`}
+        <button class="btn" data-act="versions">Comparer v1 → v2</button>
+      </div>
+      <div class="btn-note">${nb>0 ? "Le bouton de visa se débloquera quand l'arbitrage A-2 sera rendu et les deux rattachements approuvés dans les Entrées. " : ""}La validation définitive appartient exclusivement au notaire.</div>
+      <div id="verspanel" class="hidden card" style="margin-top:10px"><h3>v1 (19/08) → v2 (21/08)</h3>
+        <p style="font-size:12.5px">＋ Clause de radiation de l'inscription (état hypothécaire feuillet 2)<br>＊ Prix en lettres corrigé (« deux cent cinquante » manquant en v1)<br>＋ Rappel de la servitude de cour commune (titre p. 11)</p>
+        <p style="font-size:12px;color:#83868e">Chaque version est conservée ; le comparatif complet mot à mot est disponible dans le produit.</p></div>
+    </div>
+    <div>
+      <div class="card"><h3>Variables du projet (${nOk}/${DEMO.acte.vars.length} renseignées)</h3>
+      ${DEMO.acte.vars.map(v=>`<div style="padding:6px 0;border-bottom:1px solid #f0ede5;font-size:12.5px">
+        <div style="display:flex;gap:6px;align-items:baseline"><span style="flex:1;font-weight:600">${esc(v.n)}</span>${v.ok?'<span class="chip c-ok"><span class="d"></span>ok</span>':'<span class="chip c-crit"><span class="d"></span>manquante</span>'}</div>
+        <div style="color:${v.ok?'#4b5058':'#a52f2f'}">${esc(v.v)}</div>
+        <div><span class="src">${esc(v.src)}</span></div></div>`).join('')}
+      <p style="font-size:11.5px;color:#83868e;margin-top:8px">Seules des données validées entrent dans le projet — jamais une extraction non contrôlée, jamais une invention. Modèle : « Vente lots de copropriété » v2026-03, approuvé par l'étude.</p></div>
+    </div>
+  </div>`;
+}
+function tabCompta(){
+  const t = DEMO.compta;
+  return `<div class="grid g2">
+    <div class="card"><h3>Estimation des frais (barème 2026)</h3>
+      <table class="tbl">${t.estimation.map(e=>`<tr><td>${esc(e[0])}</td><td class="num">${esc(e[1])}</td></tr>`).join('')}
+      <tr><td style="font-weight:700">Total estimé</td><td class="num" style="font-weight:700">${esc(t.totalFrais)}</td></tr></table>
+    </div>
+    <div class="card"><h3>Taxation</h3>
+      <p style="font-size:13px">${esc(t.taxation.st)}</p><p style="font-size:12.5px;color:#4b5058">${esc(t.taxation.detail)}</p>
+      ${ROLES[state.role].vue==='comptable' ? `<button class="btn sm pri" data-act="valider-taxe">Valider la taxation</button>` : `<button class="btn sm" disabled title="Réservé au comptable taxateur">Valider la taxation</button><div class="btn-note">Réservé au rôle Comptable taxateur — changez de rôle pour l'essayer.</div>`}
+    </div>
+    <div class="card"><h3>Fonds reçus</h3>
+      <table class="tbl">${t.recus.map(r=>`<tr><td>${esc(r[0])}<div style="font-size:11.5px;color:#83868e">${r[2]}</div></td><td class="num">${esc(r[1])}</td><td><span class="chip c-ok"><span class="d"></span>${esc(r[3])}</span></td></tr>`).join('')}</table>
+    </div>
+    <div class="card"><h3>Fonds attendus</h3>
+      <table class="tbl">${t.attendus.map(r=>`<tr><td>${esc(r[0])}</td><td style="font-size:12.5px">${esc(r[1])}</td></tr>`).join('')}</table>
+      <p style="font-size:11.5px;color:#83868e;margin-top:8px">Le système prépare et rapproche. Aucun virement n'est exécuté depuis l'outil — l'exécution reste bancaire, sous double contrôle humain.</p>
+    </div>
+  </div>`;
+}
+function tabLcbft(){
+  const l = DEMO.lcbft;
+  return `<div class="alert gold"><div class="t">Espace cloisonné</div><div class="s">Réservé aux rôles habilités (notaire, responsable conformité). Rien de cet onglet n'est jamais visible du portail client. Montré ici à des fins de démonstration.</div></div>
+  <div class="grid g2">
+    <div class="card"><h3>Classification</h3>
+      <p style="font-size:13px">Vigilance : <b>${l.vigilance}</b> · Risque : <span class="chip c-ok"><span class="d"></span>${l.risque}</span></p>
+      <p style="font-size:12.5px;color:#4b5058">${esc(l.motifs)}</p>
+      <p style="font-size:12px;color:#83868e">Revue : ${esc(l.revue)} — décision tracée au journal</p></div>
+    <div class="card"><h3>Criblages (justification documentaire)</h3>
+      <table class="tbl">${l.criblages.map(c=>`<tr><td>${esc(c[0])}</td><td style="font-size:12.5px">${esc(c[1])}</td></tr>`).join('')}</table></div>
+    <div class="card" style="grid-column:1/-1"><h3>Origine et destination des fonds</h3>
+      <p style="font-size:13px">${esc(l.fonds)}</p>
+      <p style="font-size:12px;color:#83868e;margin-top:6px">Le logiciel détecte et suggère ; il n'effectue jamais de déclaration de soupçon et n'en révèle jamais l'existence — aucune fonction de ce type n'existe dans l'outil.</p></div>
+  </div>`;
+}
+function tabTimeline(){
+  return `<ul class="tl" style="margin-top:6px">${DEMO.timeline.slice().reverse().map(e=>`<li class="ev-${e.k}"><span class="pt"></span><div class="tt">${esc(e.t)}</div><div class="ts">${e.d}/2026 · ${e.k==='val'?'validation humaine':(e.k==='anom'?'anomalie détectée':'automatisation tracée')}</div></li>`).join('')}</ul>
+  <p class="pg-sub">Historique complet — chaque entrée renvoie à l'événement du journal d'audit correspondant.</p>`;
+}
+</script>
+<script>
+/* ---------- Autres vues ---------- */
+function echeances(){
+  return `<h1 class="pg">Échéances et conditions suspensives</h1>
+  <p class="pg-sub">Grille d'alerte : <span class="chip c-ok"><span class="d"></span>au-delà de J-30</span> <span class="chip c-warn"><span class="d"></span>J-30 — relance et tâche</span> <span class="chip c-crit"><span class="d"></span>J-14 — escalade au notaire</span></p>
+  ${ECHEANCES.map(e=>{const j=jr(e.d);const n=j<=14?'crit':(j<=30?'warn':'ok');
+    return `<div class="alert ${n==='crit'?'crit':(n==='warn'?'warn':'ok')}" style="display:flex;gap:12px;align-items:center">
+    <span class="chip ${n==='crit'?'c-crit':(n==='warn'?'c-warn':'c-ok')}" style="min-width:64px;justify-content:center"><span class="d"></span>J${j>=0?'−':'+'}${Math.abs(j)}</span>
+    <div style="flex:1"><div class="t">${esc(e.t)}</div><div class="s">${new Date(e.d).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</div></div>
+    ${e.t.includes('0142')?`<button class="btn sm" data-open="VTE-2026-0142">Ouvrir</button>`:''}</div>`;}).join('')}
+  <p class="pg-sub" style="margin-top:10px">Toute conséquence juridique d'une échéance (prorogation, constat de levée, défaillance) est une décision humaine — le système fournit le compte à rebours, les justificatifs et la trace des relances.</p>`;
+}
+function conformite(){
+  return `<h1 class="pg">Conformité LCB-FT — vue de l'étude</h1>
+  <p class="pg-sub">Espace réservé aux rôles habilités · jamais visible du portail client</p>
+  <div class="grid g3">
+    <div class="card tile"><div class="lb">Dossiers en vigilance normale</div><div class="vl">28</div></div>
+    <div class="card tile"><div class="lb">Vigilance renforcée</div><div class="vl" style="color:#7a5a10">3</div><div class="dl">TRE-2026-0134 · CFC-2026-0129 · INT-2026-0120</div></div>
+    <div class="card tile"><div class="lb">Criblages du mois</div><div class="vl">44</div><div class="dl">PPE : 0 · gel des avoirs : 0</div></div>
+  </div>
+  <h2 class="sec">File de vigilance</h2>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Dossier</th><th>Motif</th><th>Mesure</th><th>Échéance de revue</th></tr></thead><tbody>
+    <tr><td><span class="mono">TRE-2026-0134</span> — transmission</td><td>Montage avec holding étrangère UE — bénéficiaires effectifs en cours de documentation</td><td><span class="chip c-warn"><span class="d"></span>vigilance renforcée</span></td><td>29/08 — Me Lévy</td></tr>
+    <tr><td><span class="mono">INT-2026-0120</span> — investisseur étranger</td><td>Structure LLC — chaîne de détention à documenter, origine des fonds hors UE</td><td><span class="chip c-warn"><span class="d"></span>vigilance renforcée</span></td><td>28/08 — Me Lévy</td></tr>
+    <tr><td><span class="mono">CFC-2026-0129</span> — fonds de commerce</td><td>Apport partiellement en espèces déclaré — justification d'origine demandée</td><td><span class="chip c-warn"><span class="d"></span>vigilance renforcée</span></td><td>27/08 — Me Lévy</td></tr>
+    <tr class="rowbtn" data-open="VTE-2026-0142"><td><span class="mono">VTE-2026-0142</span> — vente</td><td>Opération classique, fonds justifiés</td><td><span class="chip c-ok"><span class="d"></span>vigilance normale</span></td><td>Revue faite le 13/08</td></tr>
+  </tbody></table></div>
+  <p class="pg-sub" style="margin-top:10px">Chaque contrôle est justifié documentairement et chaque décision tracée. L'outil ne fait aucune déclaration automatique et n'en révèle jamais l'existence.</p>`;
+}
+function comptaEtude(){
+  return `<h1 class="pg">Comptabilité — vue de l'étude</h1>
+  <p class="pg-sub">Préparation et rapprochement uniquement — l'exécution des virements reste bancaire, hors outil</p>
+  <div class="grid g3">
+    <div class="card tile"><div class="lb">Fonds reçus (10 jours)</div><div class="vl">789 k€</div><div class="dl">4 mouvements — 3 rapprochés</div></div>
+    <div class="card tile"><div class="lb">À rapprocher</div><div class="vl" style="color:#7a5a10">1</div><div class="dl">VTE-2026-0119 — 640 000 €</div></div>
+    <div class="card tile"><div class="lb">Taxations en attente</div><div class="vl">1</div><div class="dl">VTE-2026-0142</div></div>
+  </div>
+  <h2 class="sec">Mouvements récents</h2>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Date</th><th>Dossier</th><th>Libellé</th><th class="num">Montant</th><th>Statut</th></tr></thead><tbody>
+    <tr><td class="mono">21/08</td><td><span class="mono">VTE-2026-0119</span></td><td>Réception prix de vente</td><td class="num">640 000 €</td><td><span class="chip c-warn"><span class="d"></span>à rapprocher</span></td></tr>
+    <tr><td class="mono">20/08</td><td><span class="mono">SUC-2026-0133</span></td><td>Provision frais succession</td><td class="num">6 500 €</td><td><span class="chip c-ok"><span class="d"></span>rapprochée</span></td></tr>
+    <tr class="rowbtn" data-open="VTE-2026-0142"><td class="mono">14/08</td><td><span class="mono">VTE-2026-0142</span></td><td>Provision sur frais — Mme Belkacem</td><td class="num">88 000 €</td><td><span class="chip c-ok"><span class="d"></span>rapprochée</span></td></tr>
+    <tr><td class="mono">13/08</td><td><span class="mono">DON-2026-0111</span></td><td>Provision droits de donation</td><td class="num">54 200 €</td><td><span class="chip c-ok"><span class="d"></span>rapprochée</span></td></tr>
+  </tbody></table></div>
+  <h2 class="sec">Sommes à restituer</h2>
+  <div class="alert warn"><div class="t">SUC-2025-0489 — 12 340 € à restituer aux héritiers</div><div class="s">RIB d'un héritier manquant — relance automatique active (2/3). La restitution sera préparée à réception ; l'exécution restera humaine.</div></div>`;
+}
+function portail(){
+  return `<h1 class="pg">Portail client — aperçu</h1>
+  <p class="pg-sub">Ce que voit <b>Mme Hélène Fabiani</b> (vendeur) sur son téléphone — et surtout ce qu'elle ne voit pas.</p>
+  <div class="split portail">
+    <div class="phone">
+      <div class="ph-h">Étude Thomas Levy<small>Votre vente — 24 rue de la Tour · Espace sécurisé</small></div>
+      <div class="ph-b">
+        <div class="pcard"><h5>Avancement</h5>
+          <div class="prog"><i style="width:45%"></i></div>
+          <p style="margin:6px 0 0;font-size:12px">Étape 4 sur 9 : <b>vérification de vos documents</b>. Prochaine étape : préparation du projet d'acte.</p></div>
+        <div class="pcard"><h5>Il nous manque (côté vendeurs)</h5>
+          <p style="margin:0 0 6px;font-size:12px">• Pièce d'identité en cours de validité de M. Fabiani</p>
+          <button class="btn sm pri" data-act="depot-client">📷 Photographier la nouvelle pièce</button></div>
+        <div class="pcard"><h5>Messages de l'étude</h5>
+          <p style="margin:0;font-size:12px"><b>16/08</b> — Bonjour, la carte d'identité de M. Fabiani a expiré en mars. Pouvez-vous nous transmettre un titre en cours de validité ? Merci !</p>
+          <p style="margin:6px 0 0;font-size:12px"><b>12/08</b> — Bonne nouvelle : la mairie a renoncé à préempter. La vente peut se poursuivre.</p>
+          <button class="btn sm" data-act="msg-client" style="margin-top:8px">Répondre dans la messagerie sécurisée</button></div>
+        <div class="pcard"><h5>Rendez-vous</h5>
+          <p style="margin:0;font-size:12px">Signature envisagée fin septembre. Nous vous proposerons des créneaux dès que le prêt de l'acquéreur sera confirmé.</p>
+          <button class="btn sm" data-act="rdv-client" style="margin-top:8px">Demander un rendez-vous</button></div>
+        <div class="pcard" style="border-style:dashed"><h5 style="color:#83868e">Informations financières</h5>
+          <p style="margin:0;font-size:12px;color:#83868e">Le détail vérifié (prix, frais, remboursement de votre prêt) apparaîtra ici à l'approche de la signature, après validation par l'étude.</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3>Ce que le portail ne montre jamais</h3>
+        <p style="font-size:13px">Le portail est une vue filtrée du dossier, jamais le dossier lui-même. Pour ce même dossier, Mme Fabiani ne voit :</p>
+        <ul style="font-size:13px;margin:8px 0;padding-left:18px">
+          <li>ni l'espace conformité LCB-FT (criblages, classification de risque, revues) ;</li>
+          <li>ni les notes internes et la file d'anomalies de l'étude ;</li>
+          <li>ni les informations propres à l'acquéreur (plan de financement, justificatifs d'apport) ;</li>
+          <li>ni le projet d'acte tant que le notaire n'a pas décidé de le partager.</li>
+        </ul>
+        <p style="font-size:12.5px;color:#4b5058">L'anomalie « différence d'adresse » (A-2) ne lui est pas exposée : c'est un point d'analyse interne tant que le notaire n'a pas arbitré — le portail affiche seulement les demandes qui la concernent.</p>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Ce que le portail permet</h3>
+        <p style="font-size:13px">Questionnaire dynamique, ajout des autres parties, dépôt et photo de pièces, liste des manquants en temps réel, réponses aux demandes, suivi d'avancement autorisé, prise de rendez-vous, consultation et approbation des projets partagés, signature des documents que ce canal permet juridiquement, informations financières vérifiées, messagerie sécurisée.</p>
+      </div>
+    </div>
+  </div>`;
+}
+function auditView(){
+  return `<h1 class="pg">Journal d'audit</h1>
+  <p class="pg-sub">Append-only, horodaté, non modifiable — consultations, modifications, téléchargements, exports, validations. Vos actions dans ce prototype s'y inscrivent en direct.</p>
+  <div class="tblwrap"><table class="tbl"><thead><tr><th>Horodatage</th><th>Acteur</th><th>Action</th><th>Objet</th></tr></thead><tbody>
+    ${AUDIT.map(a=>`<tr><td class="mono" style="white-space:nowrap">${a.ts}</td><td>${esc(a.a)}</td><td>${esc(a.act)}</td><td class="mono">${esc(a.o)}</td></tr>`).join('')}
+  </tbody></table></div>
+  <p class="pg-sub" style="margin-top:8px">Dans le produit : intégrité par empreintes chaînées, alertes de consultation anormale, export de preuve. La purge suit la politique de conservation — jamais à la main.</p>`;
+}
+/* ---------- Assistant IA du dossier ---------- */
+const CANNED = [
+ {k:["adresse","a-2","a2"], q:"Pourquoi l'adresse du bien est-elle bloquée ?", a:"Deux documents se contredisent : le titre de propriété désigne le bien au « 22 rue de la Tour » alors que le pré-état daté du syndic indique « 24 rue de la Tour ». Le cadastre (section CD n° 87) et la taxe foncière 2025 portent le n° 24, ce qui oriente vers une erreur de plume au titre — mais c'est une décision juridique qui appartient au notaire, pas à moi.", src:["Titre de propriété p. 2","Pré-état daté p. 1","Anomalie A-2"], conf:92, tag:"Décision juridique requise"},
+ {k:["prêt","pret","condition","suspensive","a-3","a3","banque"], q:"Où en est la condition suspensive de prêt ?", a:"Elle expire le 05/09/2026. Bonne nouvelle : l'offre de la Banque Héliade est arrivée ce matin (480 000 €, taux 3,45 % ≤ 3,9 %). J'ai préparé le rattachement et le constat de levée — ils attendent votre approbation dans les Entrées.", src:["Compromis p. 15","Courriel Banque Héliade du 22/08","Anomalie A-3"], conf:96, tag:"Fait + action préparée"},
+ {k:["pv","assemblée","ag","syndic"], q:"Que manque-t-il du côté du syndic ?", a:"Le procès-verbal d'assemblée générale 2025 — et il vient d'arriver : le syndic l'a envoyé ce matin, je l'ai analysé (travaux votés : ravalement 2027, quote-part lot 34 de 4 260 €). Le rattachement attend votre approbation dans les Entrées ; il clôturera l'anomalie A-1.", src:["Courriel syndic du 22/08","Pré-état daté p. 6","Scénario de relance n° 1"], conf:97, tag:"Fait + action préparée"},
+ {k:["frais","taxe","taxation","provision","coût","cout"], q:"Où en sont les frais et la provision ?", a:"Les frais sont estimés à 87 105 € : émoluments 12 462 € TTC, droits et taxes 72 583 €, contribution de sécurité immobilière 1 250 €, débours 810 €. La provision de 88 000 € versée par l'acquéreur le 14/08 est rapprochée. La taxation préparée le 20/08 attend la validation du comptable taxateur.", src:["Fiche comptable du dossier","Barème 2026"], conf:94, tag:"Fait"},
+ {k:["cni","identité","identite","expir"], q:"Quel est le problème d'identité ?", a:"La CNI de M. Serge Fabiani est expirée depuis le 12/03/2026. Une demande automatique avec lien de dépôt lui a été envoyée le 16/08 (relance 1/3, prochaine le 23/08 par SMS, suspension automatique dès réception). L'identification à l'acte exige un titre en cours de validité.", src:["CNI S. Fabiani — recto","Anomalie A-4","Scénario de relance n° 2"], conf:99, tag:"Fait"}
+];
+function renderAssist(){
+  $('#assist').innerHTML = `
+  <div class="ah"><div>Assistant du dossier<small>VTE-2026-0142 · répond uniquement sur les pièces de ce dossier · tracé au journal</small></div>
+  <button class="btn sm" style="background:rgba(255,255,255,.1);border-color:rgba(201,163,95,.4);color:#f2f0ea" data-act="assist-close">✕</button></div>
+  <div class="ab" id="chatlog">
+    ${state.chatLog.length===0 ? `<div class="msg ai">Bonjour Maître — je réponds à partir des pièces du dossier, en citant mes sources. Je distingue les faits, les actions que j'ai préparées et ce qui exige votre décision.</div>
+    <div class="sugg">${CANNED.slice(0,3).map((c,i)=>`<button data-canned="${i}">${esc(c.q)}</button>`).join('')}</div>` : ''}
+    ${state.chatLog.map(m=>m.me?`<div class="msg"><b>Vous</b> — ${esc(m.t)}</div>`:
+      `<div class="msg ai">${esc(m.t)}${m.src?`<div class="meta">${m.src.map(s=>`<span class="src">${esc(s)}</span>`).join('')} <span class="conf ${m.conf>=85?'hi':'md'}">${m.conf}%</span> <span class="chip c-gold">${esc(m.tag)}</span></div>`:''}</div>`).join('')}
+  </div>
+  <div class="af"><input id="chatin" placeholder="Poser une question sur ce dossier…" autocomplete="off"><button class="btn pri" data-act="assist-send">Envoyer</button></div>`;
+  const log = $('#chatlog'); log.scrollTop = log.scrollHeight;
+  bindAssist();
+  const inp = $('#chatin'); if(inp) inp.focus();
+}
+function bindAssist(){
+  const root = $('#assist');
+  root.querySelectorAll('[data-canned]').forEach(el=>el.addEventListener('click', ()=>askAssist(CANNED[+el.dataset.canned].q)));
+  root.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click', ()=>act(el.dataset.act, el)));
+  const ci = $('#chatin');
+  if(ci) ci.addEventListener('keydown', e=>{ if(e.key==='Enter'){ const v = ci.value.trim(); if(v) askAssist(v); } });
+}
+function askAssist(q){
+  state.chatLog.push({me:true, t:q});
+  const low = q.toLowerCase();
+  const hit = CANNED.find(c=>c.k.some(k=>low.includes(k)));
+  if(hit) state.chatLog.push({t:hit.a, src:hit.src, conf:hit.conf, tag:hit.tag});
+  else state.chatLog.push({t:"Dans ce prototype, je réponds à un jeu limité de questions sur ce dossier (adresse, prêt, PV d'AG, identité, frais). Dans le produit, je m'appuierais sur l'ensemble des pièces indexées — toujours en citant mes sources, sans jamais inventer une information absente des documents.", src:["Limites du prototype"], conf:100, tag:"Information"});
+  audit("Question posée à l'assistant du dossier : « "+q.slice(0,60)+(q.length>60?"…":"")+" »", "VTE-2026-0142");
+  renderAssist();
+}
+</script>
+<script>
+/* ---------- Exécution des approbations (Entrées) ---------- */
+function doIntake(id){
+  const i = INTAKE.find(x=>x.id===id); if(!i || i.done) return;
+  if(id==='E-1'){
+    const it = DEMO.pieces[4].items[0]; it.st='wait'; it.d="Offre reçue le 22/08 — rattachée, conforme à la CS (3,45 % ≤ 3,9 %)"; delete it.act;
+    const a = DEMO.anomalies.find(x=>x.id==='A-3'); a.resolue = "offre de prêt rattachée le 22/08 — condition suspensive levée dans les délais ; constat de levée préparé, à valider (file du notaire)";
+    DEMO.acte.blocages = DEMO.acte.blocages.filter(b=>!b.includes('Offre'));
+    const v = DEMO.acte.vars.find(v=>v.n.includes('Financement')); v.ok=true; v.v="prêt de 480 000 € — Banque Héliade, offre du 21/08"; v.src="Offre de prêt p.1 · rattachée le 22/08";
+    i.done=true; i.doneMsg="Offre rattachée à VTE-2026-0142 · condition suspensive marquée levée · constat de levée en attente de validation du notaire.";
+    audit("APPROBATION — offre de prêt rattachée à VTE-2026-0142, CS levée, constat préparé", "VTE-2026-0142");
+    toast("<b>Offre rattachée</b><br>Condition suspensive levée dans les délais. Le constat de levée attend votre validation dans la file.");
+  }
+  if(id==='E-2'){
+    const it = DEMO.pieces[1].items[2]; it.st='wait'; it.d="PV 2025 reçu le 22/08 — rattaché, analysé : ravalement 2027, quote-part lot 34 : 4 260 €"; delete it.act;
+    const a = DEMO.anomalies.find(x=>x.id==='A-1'); a.resolue = "PV d'AG 2025 reçu par courriel du syndic et rattaché le 22/08 — quote-part travaux versée au projet d'acte";
+    DEMO.scenarios[0].st = "Suspendu (pièce reçue)"; DEMO.scenarios[0].next = "—";
+    DEMO.acte.blocages = DEMO.acte.blocages.filter(b=>!b.includes("PV"));
+    const v = DEMO.acte.vars.find(v=>v.n.includes('Charges')); v.ok=true; v.v="3 840 €/an · travaux votés : ravalement 2027, quote-part 4 260 €"; v.src="Pré-état daté p.4 · PV AG 2025 p.5";
+    i.done=true; i.doneMsg="PV d'AG 2025 rattaché à VTE-2026-0142 · anomalie A-1 close · relances syndic suspendues.";
+    audit("APPROBATION — PV d'AG 2025 rattaché, anomalie A-1 close, relances suspendues", "VTE-2026-0142");
+    toast("<b>PV d'AG rattaché</b><br>Anomalie A-1 close, relances syndic suspendues, projet d'acte complété.");
+  }
+  if(id==='E-3'){
+    DOSSIERS.push({ref:"VTE-2026-0143", type:"Vente immobilière", them:"Immobilier", exp:"Immobilier résidentiel", heures:20, etat:4, parties:"DELMAS / HABIB", resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:0, ca:9600, alerte:{n:"ok", c:""}, sign:"2026-11-20"});
+    i.done=true; i.doneMsg="Dossier VTE-2026-0143 créé (9 av. Mozart) : checklist copropriété générée, lettre de mission préparée, invitations portail prêtes à partir.";
+    audit("APPROBATION — création du dossier VTE-2026-0143 depuis le compromis reçu par courriel", "VTE-2026-0143");
+    toast("<b>Dossier VTE-2026-0143 créé</b><br>Checklist générée, équipe assignée, invitations portail préparées.");
+  }
+  if(id==='E-4'){
+    DOSSIERS.push({ref:"INT-2026-0135", type:"Succession internationale", them:"International", exp:"Successions internationales", heures:60, etat:4, parties:"Succession Albert BENITAH (FR/IL)", resp:"Me J. Azzoulai", risque:"moyen", urg:"normal", inact:0, ca:18000, alerte:{n:"ok", c:""}});
+    i.done=true; i.doneMsg="Dossier INT-2026-0135 créé : checklist succession internationale générée (actes apostillés, certificat successoral européen), courrier de liaison à Me Goldberg préparé.";
+    audit("APPROBATION — création du dossier INT-2026-0135 (succession internationale)", "INT-2026-0135");
+    toast("<b>Dossier INT-2026-0135 créé</b><br>Checklist internationale générée, courrier au confrère préparé — envoi après votre validation.");
+  }
+  if(id==='E-5'){
+    i.done=true; i.doneMsg="Classé sans suite — aucun dossier concerné.";
+    audit("Courriel classé sans suite (prospection)", "Entrées");
+    toast("<b>Classé sans suite</b>");
+  }
+  render();
+}
+/* ---------- Liaisons ---------- */
+function bindView(){
+  document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click', e=>{
+    e.stopPropagation(); go('dossier', {dossierRef: el.dataset.open, dossierTab:'ia'});
+  }));
+  document.querySelectorAll('[data-open-anom]').forEach(el=>el.addEventListener('click', ()=>{
+    go('dossier', {dossierRef:$DEMOREF, dossierTab:'anomalies'});
+  }));
+  document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click', ()=>{ state.dossierTab = el.dataset.tab; render(); }));
+  document.querySelectorAll('[data-tab-go]').forEach(el=>el.addEventListener('click', ()=>{ state.dossierTab = el.dataset.tabGo; render(); }));
+  document.querySelectorAll('[data-vue]').forEach(el=>el.addEventListener('click', ()=>{ state.vueListe = el.dataset.vue; render(); }));
+  document.querySelectorAll('[data-f]').forEach(el=>el.addEventListener('change', ()=>{ state.filtres[el.dataset.f] = el.value; render(); }));
+  document.querySelectorAll('[data-doc]').forEach(el=>el.addEventListener('click', ()=>{ state.docSel = el.dataset.doc; audit('Consultation du document « '+(DEMO.docs.find(d=>d.id===el.dataset.doc)||{}).n+' »', $DEMOREF); render(); }));
+  document.querySelectorAll('[data-intake]').forEach(el=>el.addEventListener('click', ()=>doIntake(el.dataset.intake)));
+  document.querySelectorAll('[data-intake-edit]').forEach(el=>el.addEventListener('click', ()=>{
+    toast("<b>Correction avant approbation</b><br>Indisponible dans le prototype — dans le produit, chaque champ extrait est modifiable avant exécution.");
+  }));
+  document.querySelectorAll('[data-appr]').forEach(el=>el.addEventListener('click', ()=>{
+    const d = DOSSIERS.find(x=>x.ref===el.dataset.appr); const p = d && iaPending(d); if(!d||!p) return;
+    d._appr = true; audit("APPROBATION — "+p.t+" ("+d.ref+")", d.ref);
+    toast("<b>Approuvé</b><br>"+esc(p.t)+" — exécution lancée, tracée au journal.");
+    render();
+  }));
+  document.querySelectorAll('[data-q]').forEach(el=>el.addEventListener('click', ()=>{
+    const q = el.dataset.q;
+    if(q.startsWith('intake:')) return doIntake(q.slice(7));
+    if(q==='val:V1'){ VALIDATIONS = VALIDATIONS.filter(v=>v.id!=='V1');
+      const d = DOSSIERS.find(x=>x.ref==='VTE-2026-0139'); if(d){ d.etat=14; d.alerte={n:'ok',c:''}; }
+      audit('VISA JURIDIQUE apposé — projet SCI LES ORMES / GARNIER', 'VTE-2026-0139');
+      toast('<b>Visa apposé</b><br>VTE-2026-0139 passe à « Envoi aux parties » — envoi préparé, à valider.'); render(); return; }
+    if(q==='val:V2'){ go('dossier', {dossierRef:$DEMOREF, dossierTab:'anomalies'}); return; }
+    if(q==='val:V4'){ VALIDATIONS = VALIDATIONS.filter(v=>v.id!=='V4');
+      DEMO.acte.visaVise = true;
+      audit('VISA JURIDIQUE apposé — projet de vente FABIANI / BELKACEM (v2)', $DEMOREF);
+      toast('<b>Visa apposé</b><br>Projet prêt pour l\'envoi aux parties — envoi préparé, à valider.'); render(); return; }
+    if(q==='val:V3'){
+      const e1 = INTAKE.find(x=>x.id==='E-1');
+      if(!e1.done){ toast('<b>Une étape d\'abord</b><br>Approuvez le rattachement de l\'offre de prêt dans les Entrées — le constat de levée se validera ensuite ici.'); go('entrees'); return; }
+      VALIDATIONS = VALIDATIONS.filter(v=>v.id!=='V3');
+      audit('CONSTAT DE LEVÉE de la condition suspensive validé — notification des parties préparée', $DEMOREF);
+      toast('<b>Constat de levée validé</b><br>Notification aux parties préparée — envoi après votre approbation.'); render(); return; }
+    if(q.startsWith('appr:')){ const d = DOSSIERS.find(x=>x.ref===q.slice(5)); const p = d && iaPending(d); if(d&&p){ d._appr=true; audit("APPROBATION — "+p.t+" ("+d.ref+")", d.ref); toast("<b>Approuvé</b><br>"+esc(p.t)); render(); } return; }
+    if(q==='do:valider-taxe') return act('valider-taxe');
+    if(q==='do:rappro') return act('rappro');
+    if(q==='do:depot-ok'){ audit('Dépôt de publicité foncière approuvé — transmission officielle (canal sous réserve d\'agrément)', 'VTE-2026-0127'); toast('<b>Dépôt approuvé</b><br>Transmission préparée — tracée au journal.'); return; }
+    if(q==='open-anom'){ go('dossier', {dossierRef:$DEMOREF, dossierTab:'anomalies'}); return; }
+    if(q==='open-demo'){ go('dossier', {dossierRef:$DEMOREF, dossierTab:'ia'}); return; }
+  }));
+  document.querySelectorAll('[data-relance]').forEach(el=>el.addEventListener('click', ()=>{
+    const cible = el.dataset.relance;
+    DEMO.relances.unshift({d:'22/08 '+new Date().toTimeString().slice(0,5), canal:'Courriel', dest:cible.includes('syndic')||cible.includes('Meridian')||cible.includes('PV')?'Syndic Meridian':'Partie concernée', obj:'Relance — '+cible, st:'Envoyée'});
+    audit('Relance envoyée : '+cible, $DEMOREF);
+    toast('<b>Relance envoyée</b><br>'+esc(cible)+' — tracée au journal, suspension automatique à réception.');
+    render();
+  }));
+  document.querySelectorAll('[data-suspend]').forEach(el=>el.addEventListener('click', ()=>{
+    const s = DEMO.scenarios[+el.dataset.suspend]; s.st = 'Suspendu (manuellement)'; s.next='—';
+    audit('Scénario de relance suspendu : '+s.c, $DEMOREF); toast('<b>Scénario suspendu</b><br>'+esc(s.c)); render();
+  }));
+  document.querySelectorAll('[data-reprend]').forEach(el=>el.addEventListener('click', ()=>{
+    const s = DEMO.scenarios[+el.dataset.reprend]; s.st = 'Actif'; s.next='prochaine relance planifiée';
+    audit('Scénario de relance réactivé : '+s.c, $DEMOREF); toast('<b>Scénario réactivé</b><br>'+esc(s.c)); render();
+  }));
+  document.querySelectorAll('[data-valext]').forEach(el=>el.addEventListener('click', ()=>{
+    const [id,i] = el.dataset.valext.split(':'); const doc = DEMO.docs.find(d=>d.id===id); const ex = doc.ext[+i];
+    ex.stv = 'validée'; audit('Donnée validée : « '+ex.f+' = '+ex.v+' » ('+doc.n+', '+ex.src+')', $DEMOREF);
+    toast('<b>Donnée validée</b><br>'+esc(ex.f)+' — validation nominative inscrite au journal.'); render();
+  }));
+  document.querySelectorAll('input[name="adr"]').forEach(el=>el.addEventListener('change', ()=>{ state.arbitrageChoix = el.value; }));
+  document.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click', ()=>act(el.dataset.act, el)));
+  attachTips();
+}
+function act(a, el){
+  if(a==='assist-close'){ state.assistOpen=false; render(); return; }
+  if(a==='assist-send'){ const v=$('#chatin').value.trim(); if(v) askAssist(v); return; }
+  if(a==='versions'){ $('#verspanel').classList.toggle('hidden'); audit('Comparaison des versions v1 → v2 du projet', $DEMOREF); return; }
+  if(a==='demander-visa'){
+    if(DEMO.acte.blocages.length){ toast('<b>Contrôles restants</b><br>Levez les contrôles obligatoires avant la demande de visa.'); return; }
+    DEMO.acte.visaDemande = true;
+    VALIDATIONS.push({id:"V4", t:"Apposer le visa juridique — vente FABIANI / BELKACEM", d:"Contrôles obligatoires terminés (adresse arbitrée, offre de prêt et PV d'AG rattachés). Rapport de cohérence prêt.", ref:"VTE-2026-0142", type:"visa"});
+    audit("DEMANDE DE VISA envoyée à Me T. Lévy — projet d'acte v2 (contrôles obligatoires terminés)", $DEMOREF);
+    toast("<b>Demande de visa envoyée</b><br>Le projet v2 est dans la file « À traiter » de Me Lévy.");
+    render(); return;
+  }
+  if(a==='toggle-queue'){ state.queueAll=!state.queueAll; render(); return; }
+  if(a==='toggle-manu'){ state.manuOpen=!state.manuOpen; state.complOpen=false; render(); return; }
+  if(a==='toggle-compl'){ state.complOpen=!state.complOpen; state.manuOpen=false; render(); return; }
+  if(a==='creer-dossier'){
+    const type = $('#m-type').value, parties = $('#m-parties').value.trim()||'Parties à préciser', note = $('#m-note').value.trim();
+    const MAP = {"Vente immobilière":["Immobilier","Immobilier résidentiel",20,9500],"Acquisition":["Immobilier","Immobilier résidentiel",17,9000],"VEFA":["Immobilier","VEFA",30,22000],"Succession":["Patrimoine et famille","Successions",55,14000],"Succession internationale":["International","Successions internationales",62,19000],"Donation":["Patrimoine et famille","Donations",10,6000],"Partage":["Patrimoine et famille","Partage",32,9500],"Divorce — liquidation":["Patrimoine et famille","Divorce",36,10200],"Constitution de SCI":["Patrimoine et famille","SCI",9,3900],"Structuration patrimoniale":["Patrimoine et famille","Structuration patrimoniale",14,8500],"Transmission d'entreprise":["Entreprise","Transmission d'entreprise",40,18000],"Bail commercial":["Entreprise","Baux commerciaux",10,4300],"Contrat de mariage — expatriés":["International","Expatriés",7,2900]};
+    const m = MAP[type]||["Immobilier","Immobilier résidentiel",20,9000];
+    const ref = "MAN-2026-0"+(150+DOSSIERS.filter(d=>d.ref.startsWith('MAN')).length);
+    DOSSIERS.push({ref, type, them:m[0], exp:m[1], heures:m[2], etat:4, parties, resp:"Me H. Rouaud", risque:"faible", urg:"normal", inact:0, ca:m[3], alerte:{n:"ok", c:""}});
+    audit('Dossier créé manuellement : '+ref+' — '+type+(note?' · note : '+note:''), ref);
+    toast('<b>Dossier '+ref+' créé</b><br>Checklist « '+esc(type)+' » générée, équipe assignée. L\'IA prend le relais.');
+    state.manuOpen=false; go('dossiers'); return;
+  }
+  if(a==='completer'){
+    const ref = ($('#c-ref').value||'').split(' — ')[0], note = $('#c-note').value.trim();
+    if(!note){ toast('<b>Précisez l\'élément à ajouter</b>'); return; }
+    audit('Complément ajouté manuellement : '+note, ref);
+    toast('<b>Ajouté au dossier '+esc(ref)+'</b><br>'+esc(note)+' — l\'IA reclassera la pièce et mettra la checklist à jour.');
+    state.complOpen=false; render(); return;
+  }
+  if(a==='soumettre-adresse'){
+    if(!state.arbitrageChoix){ toast('<b>Choisissez une option</b><br>Sélectionnez une proposition avant de transmettre.'); return; }
+    audit('Anomalie A-2 transmise au notaire avec proposition : option « '+state.arbitrageChoix+' »', $DEMOREF);
+    toast('<b>Transmis au notaire</b><br>L\'arbitrage apparaît dans la file de Me Lévy. Passez « Voir comme : Me Lévy » pour trancher.');
+    return;
+  }
+  if(a==='trancher-adresse'){
+    if(!state.arbitrageChoix){ toast('<b>Choisissez une option</b><br>Sélectionnez la solution retenue avant de trancher.'); return; }
+    const lib = {['24']:'n° 24 retenu (cadastre + taxe foncière), mention explicative à l\'acte', ['22']:'n° 22 du titre retenu', piece:'justificatif complémentaire demandé avant décision'}[state.arbitrageChoix];
+    const an = DEMO.anomalies.find(x=>x.id==='A-2'); an.resolue = 'décision de Me Lévy — '+lib;
+    if(state.arbitrageChoix!=='piece'){ DEMO.acte.blocages = DEMO.acte.blocages.filter(b=>!b.includes('A-2'));
+      const v = DEMO.acte.vars.find(v=>v.n.includes('adresse')); v.ok=true; v.v = (state.arbitrageChoix==='24'?'24':'22')+' rue de la Tour, 75116 Paris'; v.src='Décision du notaire du 22/08 + cadastre CD 87'; }
+    VALIDATIONS = VALIDATIONS.filter(v=>v.id!=='V2');
+    audit('DÉCISION DU NOTAIRE — arbitrage A-2 : '+lib, $DEMOREF);
+    toast('<b>Décision enregistrée</b><br>'+esc(lib)+'. Journal mis à jour, blocage de l\'acte levé le cas échéant.');
+    render(); return;
+  }
+  if(a==='valider-taxe'){
+    audit('TAXATION VALIDÉE — 87 105 € (contrôle des écarts : aucun)', $DEMOREF);
+    toast('<b>Taxation validée</b><br>États de clôture préparés. Validation nominative inscrite au journal.');
+    return;
+  }
+  if(a==='rappro'){
+    audit('Rapprochement validé — prix de vente 640 000 €', 'VTE-2026-0119');
+    toast('<b>Rapprochement effectué</b><br>Relevé du 21/08 pointé — solde du dossier à jour.');
+    return;
+  }
+  if(a==='depot-client'){
+    toast('<b>Dépôt simulé</b><br>Dans le produit : capture photo, contrôle de lisibilité immédiat, analyse, et suspension automatique de la relance.');
+    audit('Portail — dépôt de pièce simulé par le client (démonstration)', $DEMOREF);
+    return;
+  }
+  if(a==='msg-client'){ toast('<b>Messagerie sécurisée</b><br>Fil de discussion chiffré côté produit — la réponse arriverait dans l\'onglet Relances de l\'étude.'); return; }
+  if(a==='rdv-client'){ toast('<b>Prise de rendez-vous</b><br>Le produit proposera les créneaux de l\'étude synchronisés avec l\'agenda — indisponible dans le prototype.'); return; }
+}
+function attachTips(){
+  const tip = $('#viztip');
+  document.querySelectorAll('[data-tip]').forEach(el=>{
+    el.addEventListener('mousemove', e=>{ tip.style.display='block'; tip.textContent = el.dataset.tip; tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY-10)+'px'; });
+    el.addEventListener('mouseleave', ()=>{ tip.style.display='none'; });
+  });
+}
+/* ---------- Recherche globale ---------- */
+function buildIndex(){
+  return [
+   ...DOSSIERS.map(d=>({t:d.ref+' — '+d.parties, s:d.type+' · '+ETATS[d.etat-1], go:()=>go('dossier',{dossierRef:d.ref, dossierTab:'ia'})})),
+   {t:'Serge Fabiani', s:'Vendeur — VTE-2026-0142 · CNI expirée', go:()=>go('dossier',{dossierRef:$DEMOREF,dossierTab:'synthese'})},
+   {t:'Inès Belkacem', s:'Acquéreur — VTE-2026-0142 · prêt Banque Héliade', go:()=>go('dossier',{dossierRef:$DEMOREF,dossierTab:'synthese'})},
+   {t:'24 rue de la Tour', s:'Bien — VTE-2026-0142 (adresse en arbitrage)', go:()=>go('dossier',{dossierRef:$DEMOREF,dossierTab:'anomalies'})},
+   {t:"PV d'AG 2025", s:'Pièce reçue ce matin — rattachement à approuver (Entrées)', go:()=>go('entrees')},
+   {t:'Condition suspensive de prêt', s:'Offre reçue — levée à approuver', go:()=>go('entrees')}
+  ];
+}
+$('#gs').addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase(); const res = $('#gsres');
+  if(q.length<2){ res.classList.add('hidden'); return; }
+  const hits = buildIndex().filter(x=>(x.t+' '+x.s).toLowerCase().includes(q)).slice(0,8);
+  res.innerHTML = hits.map((h,i)=>`<button data-gs="${i}"><div class="t">${esc(h.t)}</div><div class="s">${esc(h.s)}</div></button>`).join('') || '<button disabled><div class="s">Aucun résultat dans les données fictives</div></button>';
+  res.classList.remove('hidden');
+  res.querySelectorAll('[data-gs]').forEach(b=>b.addEventListener('click', ()=>{ hits[+b.dataset.gs].go(); res.classList.add('hidden'); $('#gs').value=''; }));
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.gsearch')) $('#gsres').classList.add('hidden'); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && !e.target.matches('input,textarea')){ e.preventDefault(); $('#gs').focus(); }
+});
+/* ---------- Rôle & init ---------- */
+$('#role').addEventListener('change', e=>{
+  state.role = e.target.value; $('#uav').textContent = ROLES[state.role].av;
+  audit('Changement de vue — connexion en tant que '+ROLES[state.role].nom+' (simulation)', '—');
+  toast('<b>Vue « '+ROLES[state.role].titre+' »</b><br>Tableau de bord et permissions adaptés.');
+  go('dashboard');
+});
+$('#fab').addEventListener('click', ()=>{ state.assistOpen = true; render(); });
+render();
+</script>
+
+</body></html>
