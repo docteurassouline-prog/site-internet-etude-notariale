@@ -112,21 +112,19 @@ export function SiteHeader() {
           href="/"
           className="group flex items-center gap-3 no-underline"
         >
-{/* Panonceau — l'emblème fourni par le notaire reprend sa place, le
-              7 septembre 2026. Le monogramme « TL » qui l'avait remplacé était
-              une initiale dessinée en CSS, sans existence hors de ce site ; le
-              panonceau est l'emblème de la profession, celui qui figure sur la
-              façade de l'étude. Il est rendu ici en statique, à hauteur de la
-              barre : la version animée du composant EmblemeNotaire est faite
-              pour un grand format, elle n'a pas de sens à quarante pixels. */}
+{/* Marque de l'étude — 7 septembre 2026. Le monogramme « TL » qui
+              tenait cette place était une initiale dessinée en CSS, sans
+              existence hors de ce site, quand l'étude a sa propre marque :
+              le cercle et le « L » biseauté de l'enseigne. Le fichier est une
+              reconstitution d'après la photographie de la salle, faute de
+              vectoriel dans le dépôt — voir l'en-tête du SVG. */}
           <Image
-            src={cheminPublic("/images/embleme-notaire.png")}
+            src={cheminPublic("/images/logo-levy-notaires.svg")}
             alt=""
-            width={520}
-            height={661}
+            width={100}
+            height={100}
             priority
-            sizes="44px"
-            className="h-11 w-auto"
+            className="h-11 w-11"
           />
           <span className="text-balance font-serif text-xl font-semibold tracking-tight text-night sm:text-2xl">
             {nomAffiche}

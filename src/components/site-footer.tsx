@@ -30,15 +30,14 @@ export function SiteFooter() {
         <div className="mt-2 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Colonne 1 : identité */}
           <div>
-            {/* Même emblème qu'en en-tête, au double de la hauteur : le pied
-                de page referme la lecture sur le panonceau de l'étude. */}
+            {/* Même marque qu'en en-tête, au double de la hauteur : le pied
+                de page referme la lecture sur le logo de l'étude. */}
             <Image
-              src={cheminPublic("/images/embleme-notaire.png")}
+              src={cheminPublic("/images/logo-levy-notaires.svg")}
               alt=""
-              width={520}
-              height={661}
-              sizes="72px"
-              className="h-[4.5rem] w-auto"
+              width={100}
+              height={100}
+              className="h-[4.5rem] w-[4.5rem]"
             />
             <p className="mt-5 font-serif text-xl tracking-tight">{etude.nom}</p>
             <p className="mt-4 text-[0.95rem] leading-relaxed text-ivory/85">

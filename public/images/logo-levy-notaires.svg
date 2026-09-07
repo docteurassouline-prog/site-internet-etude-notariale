@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Lévy Notaires Paris">
+  <!--
+    Marque de l'étude : cercle et « L » biseauté, redessinés le 7 septembre 2026
+    d'après l'enseigne visible sur la photographie de la salle de réunion
+    (public/images/salle-etude.jpg), faute de fichier source dans le dépôt.
+    C'est une reconstitution, pas l'original : à remplacer par le fichier
+    vectoriel de la charte dès que le notaire le fournit. Les deux tons d'or
+    rendent le biseau des lettres en relief de l'enseigne.
+  -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#A98A4C" stroke-width="1.3"/>
+  <polygon points="51,6 58,7 30,72 25,72" fill="#C4A463"/>
+  <polygon points="46,6 51,6 25,72 20,72" fill="#A2833F"/>
+  <polygon points="30,72 86,72 86,75.5 24,75.5" fill="#C4A463"/>
+  <polygon points="24,75.5 86,75.5 86,79 20,79" fill="#A2833F"/>
+</svg>
