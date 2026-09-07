@@ -31,13 +31,15 @@ const SEQUENCES = [
 const FONDU_MS = 1400;
 
 /**
- * Vitesse de lecture des séquences — décision du notaire du 7 septembre 2026 :
- * la moitié de la vitesse nominale. Les deux plans sont des travellings ; à
- * vitesse réelle le mouvement passe derrière le titre à un rythme qui appelle
- * l'œil et gêne la lecture. À 0,5× le plan devient un fond, ce qu'il doit
- * être. Chaque séquence dure de ce fait seize secondes au lieu de huit.
+ * Vitesse de lecture des séquences — décision du notaire du 7 septembre 2026.
+ * Les deux plans sont des travellings ; à vitesse réelle le mouvement passe
+ * derrière le titre à un rythme qui appelle l'œil et gêne la lecture. Réglée
+ * d'abord à 0,5×, puis à 0,38× le même jour, le notaire jugeant le premier
+ * palier encore trop vif : le déplacement devient à peine perceptible et le
+ * plan cesse d'être une vidéo pour devenir un fond. Chaque séquence de huit
+ * secondes s'étire de ce fait sur vingt et une secondes environ.
  */
-const VITESSE = 0.5;
+const VITESSE = 0.38;
 
 type Connexion = Navigator & { connection?: { saveData?: boolean } };
 

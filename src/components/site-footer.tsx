@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AccessMap } from "@/components/access-map";
 import { etude } from "@/config/etude";
+import { cheminPublic } from "@/lib/chemins";
 
 const liensLegaux = [
   { href: "/mentions-legales", label: "Mentions légales" },
@@ -28,7 +30,17 @@ export function SiteFooter() {
         <div className="mt-2 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Colonne 1 : identité */}
           <div>
-            <p className="font-serif text-xl tracking-tight">{etude.nom}</p>
+            {/* Même emblème qu'en en-tête, au double de la hauteur : le pied
+                de page referme la lecture sur le panonceau de l'étude. */}
+            <Image
+              src={cheminPublic("/images/embleme-notaire.png")}
+              alt=""
+              width={520}
+              height={661}
+              sizes="72px"
+              className="h-[4.5rem] w-auto"
+            />
+            <p className="mt-5 font-serif text-xl tracking-tight">{etude.nom}</p>
             <p className="mt-4 text-[0.95rem] leading-relaxed text-ivory/85">
               {etude.adresse.ligne1}
               <br />
@@ -103,7 +115,7 @@ export function SiteFooter() {
             <div className="mt-4 flex flex-col gap-4">
               <Link
                 href="/contact"
-                className="inline-flex w-fit items-center border border-ivory/50 px-6 py-3 text-[0.82rem] font-medium uppercase tracking-[0.12em] text-ivory no-underline transition-all duration-300 hover:border-ivory hover:bg-ivory hover:text-night"
+                className="inline-flex w-fit items-center rounded-sm bg-gold px-7 py-3.5 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-night no-underline transition-colors duration-300 hover:bg-gold-ink hover:text-ivory"
               >
                 Prendre rendez-vous
               </Link>

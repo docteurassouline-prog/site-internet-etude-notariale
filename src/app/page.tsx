@@ -361,7 +361,7 @@ export default function Accueil() {
             <CtaRendezVous surFondSombre />
             <Link
               href="/expertises"
-              className="inline-block rounded-sm border border-ivory/80 px-6 py-3 text-sm text-ivory transition-colors hover:bg-ivory hover:text-night"
+              className="inline-block rounded-sm border border-ivory/80 px-8 py-4 text-[0.84rem] font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:bg-ivory hover:text-night"
             >
               Nos expertises
             </Link>
@@ -508,6 +508,12 @@ export default function Accueil() {
       <section className="bg-ivory">
         <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Domaines d&rsquo;intervention</Intitule>
+          <h2
+            className={`mt-6 max-w-3xl text-night ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
+          >
+            Ce que recouvre chaque domaine
+          </h2>
           <ul className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {expertises.map(({ slug, frontmatter }) => (
               <li key={slug} className="bg-ivory">
@@ -600,6 +606,12 @@ export default function Accueil() {
       <section className="bg-ivory">
         <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Nos engagements</Intitule>
+          <h2
+            className={`mt-6 max-w-3xl text-night ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
+          >
+            Quatre engagements de fonctionnement
+          </h2>
           <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
             {ENGAGEMENTS.map((engagement) => (
               <div key={engagement.titre} className="border-t-2 border-gold/50 pt-6">
@@ -652,6 +664,12 @@ export default function Accueil() {
       <section className="bg-ivory">
         <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Actualités et publications</Intitule>
+          <h2
+            className={`mt-6 max-w-3xl text-night ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
+          >
+            Les dernières publications de l&rsquo;étude
+          </h2>
           {derniersArticles.length > 0 ? (
             <ul className="mt-12 grid gap-10 md:grid-cols-3">
               {derniersArticles.map(({ frontmatter }) => (

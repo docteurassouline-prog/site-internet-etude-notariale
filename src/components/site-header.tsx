@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
 import { etude } from "@/config/etude";
+import { cheminPublic } from "@/lib/chemins";
 
 const navigation = [
   { href: "/etude", label: "L'étude" },
@@ -97,7 +99,7 @@ export function SiteHeader() {
               rel="noopener noreferrer"
               className="font-medium no-underline transition-colors hover:text-ivory"
             >
-              Data Room
+              Accès Data Room
               <span className="sr-only"> (nouvelle fenêtre)</span>
             </a>
           </div>
@@ -110,13 +112,22 @@ export function SiteHeader() {
           href="/"
           className="group flex items-center gap-3 no-underline"
         >
-          {/* Monogramme TL stylisé */}
-          <span
-            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-gold/50 text-sm font-bold tracking-wide text-gold transition-colors group-hover:border-gold group-hover:bg-gold/5"
-            aria-hidden="true"
-          >
-            TL
-          </span>
+{/* Panonceau — l'emblème fourni par le notaire reprend sa place, le
+              7 septembre 2026. Le monogramme « TL » qui l'avait remplacé était
+              une initiale dessinée en CSS, sans existence hors de ce site ; le
+              panonceau est l'emblème de la profession, celui qui figure sur la
+              façade de l'étude. Il est rendu ici en statique, à hauteur de la
+              barre : la version animée du composant EmblemeNotaire est faite
+              pour un grand format, elle n'a pas de sens à quarante pixels. */}
+          <Image
+            src={cheminPublic("/images/embleme-notaire.png")}
+            alt=""
+            width={520}
+            height={661}
+            priority
+            sizes="44px"
+            className="h-11 w-auto"
+          />
           <span className="text-balance font-serif text-xl font-semibold tracking-tight text-night sm:text-2xl">
             {nomAffiche}
           </span>
@@ -138,7 +149,7 @@ export function SiteHeader() {
             <li>
               <Link
                 href="/contact"
-                className="inline-block whitespace-nowrap border border-night bg-night px-6 py-3 text-[0.82rem] font-medium uppercase tracking-[0.12em] text-ivory no-underline transition-all duration-300 hover:bg-transparent hover:text-night"
+                className="inline-block whitespace-nowrap rounded-sm bg-gold px-7 py-3.5 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-night no-underline shadow-[0_1px_2px_rgba(16,28,44,0.16)] transition-colors duration-300 hover:bg-gold-ink hover:text-ivory"
               >
                 Prendre rendez-vous
               </Link>
