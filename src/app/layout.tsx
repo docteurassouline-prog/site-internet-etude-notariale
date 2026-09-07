@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Libre_Franklin } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -20,8 +20,19 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const inter = Inter({
+/**
+ * Libre Franklin remplace Inter le 7 septembre 2026, sur demande du notaire :
+ * Inter est la grotesque des interfaces logicielles, elle donnait à l'en-tête
+ * et au pied de page l'aspect d'un produit numérique plutôt que d'une étude.
+ * Libre Franklin est une reprise des gothiques de presse américaines : même
+ * neutralité de lecture, mais un dessin daté et éditorial qui tient devant
+ * le Cormorant des titres. Elle sert toute la partie sans empattement du
+ * site — en-tête, pied de page et corps de texte — pour que l'écriture reste
+ * une seule et même voix d'un bloc à l'autre.
+ */
+const libreFranklin = Libre_Franklin({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -58,7 +69,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="fr" className={`${cormorant.variable} ${libreFranklin.variable}`}>
       <body className="flex min-h-screen flex-col font-sans text-base sm:text-lg">
         <a
           href="#contenu"

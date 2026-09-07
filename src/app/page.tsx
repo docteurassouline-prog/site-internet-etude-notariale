@@ -249,7 +249,15 @@ const REPERES: readonly { valeur: string; libelle: string }[] = [
   { valeur: "Paris 16ᵉ", libelle: "Implantation" },
 ];
 
-/** Filet doré et intitulé de section, en petites capitales espacées. */
+/**
+ * Ouverture de section — filet doré puis intitulé en petites capitales.
+ *
+ * Unification du 7 septembre 2026 : c'est le seul motif d'ouverture de
+ * l'accueil, identique dans les onze sections. Le filet manquait alors que
+ * le nom du composant l'annonçait ; il est ici rendu, à la même longueur et
+ * au même écart partout. L'intitulé passe de 0,72 à 0,78 rem et gagne une
+ * graisse moyenne : à 11,5 px en capitales espacées, il n'était pas lu.
+ */
 function Intitule({
   children,
   surFondSombre = false,
@@ -258,15 +266,44 @@ function Intitule({
   surFondSombre?: boolean;
 }) {
   return (
-    <p
-      className={`text-[0.72rem] uppercase tracking-[0.28em] ${
-        surFondSombre ? "text-gold" : "text-gold-ink"
-      }`}
-    >
-      {children}
-    </p>
+    <div className="flex items-center gap-4">
+      <span
+        aria-hidden="true"
+        className={`h-px w-8 ${surFondSombre ? "bg-gold" : "bg-gold-ink/70"}`}
+      />
+      <p
+        className={`text-[0.78rem] font-medium uppercase tracking-[0.24em] ${
+          surFondSombre ? "text-gold" : "text-gold-ink"
+        }`}
+      >
+        {children}
+      </p>
+    </div>
   );
 }
+
+/**
+ * Échelle typographique de l'accueil — une seule, appliquée partout.
+ *
+ * Le reproche du 7 septembre 2026 — « trop fade, pas assez lisible » — tenait
+ * moins aux couleurs qu'aux tailles : le corps des blocs était à 0,875 rem en
+ * slate-soft, soit du texte secondaire employé comme texte principal. Les
+ * descriptions repassent en anthracite à 1 rem ; slate-soft est désormais
+ * réservé à ce qui est réellement secondaire (dates, légendes).
+ */
+const TITRE_SECTION =
+  "font-serif font-normal leading-[1.12] tracking-tight";
+const TAILLE_TITRE_SECTION = "clamp(2.05rem, 3.4vw, 3rem)";
+/** Titre de bloc à l'intérieur d'une section (h3). */
+const TITRE_BLOC = "font-serif text-[1.55rem] leading-snug";
+/** Corps d'un bloc, fond clair. */
+const CORPS_BLOC = "text-[1rem] leading-[1.7] text-anthracite";
+/** Corps d'un bloc, fond nuit. */
+const CORPS_BLOC_SOMBRE = "text-[1rem] leading-[1.7] text-ivory/80";
+/** Chapeau de section, sous le titre. */
+const CHAPEAU = "text-[1.075rem] leading-relaxed";
+/** Rythme vertical commun à toutes les sections. */
+const RYTHME = "px-6 py-24 lg:py-32";
 
 export default function Accueil() {
   const poles = POLES.map((pole) => ({
@@ -316,7 +353,7 @@ export default function Accueil() {
             Le conseil notarial pour les opérations immobilières et
             patrimoniales complexes
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-ivory/85">
+          <p className="mt-8 max-w-xl text-[1.15rem] leading-relaxed text-ivory/90">
             À Paris et à l&apos;international, l&apos;étude accompagne
             particuliers, investisseurs, entreprises et family offices.
           </p>
@@ -346,7 +383,7 @@ export default function Accueil() {
                 <dd className="font-serif text-5xl font-normal leading-none tracking-tight text-ivory lg:text-6xl">
                   {repere.valeur}
                 </dd>
-                <dt className="mt-4 text-[0.72rem] uppercase tracking-[0.24em] text-gold">
+                <dt className="mt-4 text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
                   {repere.libelle}
                 </dt>
               </div>
@@ -358,16 +395,16 @@ export default function Accueil() {
       {/* Le notaire : visage, nom et vision du métier à la première
           personne — un officier public identifié plutôt qu'anonyme. */}
       <section className="bg-ivory">
-        <div className="mx-auto grid w-full max-w-grid gap-14 px-6 py-24 lg:grid-cols-[3fr,2fr] lg:py-32">
+        <div className={`mx-auto grid w-full max-w-grid gap-14 lg:grid-cols-[3fr,2fr] ${RYTHME}`}>
           <div className="flex flex-col justify-center">
             <Intitule>Nous connaître</Intitule>
             <h2
-              className="mt-6 font-serif font-normal leading-[1.12] tracking-tight text-night"
-              style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
+              className={`mt-6 text-night ${TITRE_SECTION}`}
+              style={{ fontSize: TAILLE_TITRE_SECTION }}
             >
               {etude.denominationComplete}
             </h2>
-            <div className="mt-8 max-w-prose space-y-5 text-[1.05rem] leading-relaxed text-anthracite">
+            <div className={`mt-8 max-w-prose space-y-5 text-anthracite ${CHAPEAU}`}>
               <p>
                 Chaque opération immobilière ou patrimoniale est unique. Le
                 rôle du notaire est d&apos;en comprendre les enjeux, d&apos;en
@@ -388,7 +425,7 @@ export default function Accueil() {
                 situation.
               </p>
             </div>
-            <p className="mt-6 max-w-prose border-l-2 border-gold/40 pl-5 text-[0.95rem] leading-relaxed text-anthracite">
+            <p className={`mt-6 max-w-prose border-l-2 border-gold/50 pl-5 ${CORPS_BLOC}`}>
               Notaire à Paris 16, l&apos;étude intervient en droit immobilier,
               en structuration patrimoniale et en conseil aux entreprises. Elle
               accompagne les opérations en SCI, les successions internationales,
@@ -409,7 +446,7 @@ export default function Accueil() {
               sizes="(min-width: 1024px) 24rem, 100vw"
               className="w-full max-w-sm rounded-sm"
             />
-            <p className="mt-4 text-center text-sm text-slate-soft lg:text-right">
+            <p className="mt-4 text-center text-[0.95rem] text-slate-soft lg:text-right">
               {ADRESSE_COURTE} — {etude.adresse.codePostal}{" "}
               {etude.adresse.ville}
             </p>
@@ -422,11 +459,11 @@ export default function Accueil() {
           expertise. Le titre de chaque pôle est un lien vers l'index, les
           trois expertises en dessous ouvrent directement leur page. */}
       <section className="bg-paper">
-        <div className="mx-auto w-full max-w-grid px-6 py-24 lg:py-32">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Notre pratique</Intitule>
           <h2
-            className="mt-6 max-w-3xl font-serif font-normal leading-[1.12] tracking-tight text-night"
-            style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
+            className={`mt-6 max-w-3xl text-night ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
           >
             Quatre pôles, une même exigence de conseil
           </h2>
@@ -436,7 +473,7 @@ export default function Accueil() {
                 key={pole.categorie}
                 className="border-b border-line py-10 lg:border-b-0 lg:border-t lg:pr-8"
               >
-                <h3 className="font-serif text-2xl text-night">
+                <h3 className={`text-night ${TITRE_BLOC}`}>
                   <Link
                     href="/expertises"
                     className="no-underline hover:text-anthracite"
@@ -444,15 +481,13 @@ export default function Accueil() {
                     {CATEGORIE_LABELS[pole.categorie]}
                   </Link>
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-slate-soft">
-                  {pole.texte}
-                </p>
-                <ul className="mt-6 space-y-2">
+                <p className={`mt-4 ${CORPS_BLOC}`}>{pole.texte}</p>
+                <ul className="mt-6 space-y-2.5">
                   {pole.expertises.map((expertise) => (
                     <li key={expertise.slug}>
                       <Link
                         href={`/expertises/${expertise.slug}`}
-                        className="text-sm text-night decoration-gold underline-offset-4 hover:underline"
+                        className="text-[0.975rem] text-night underline decoration-gold decoration-1 underline-offset-4 transition-colors hover:text-gold-ink"
                       >
                         {expertise.titre}
                       </Link>
@@ -471,19 +506,19 @@ export default function Accueil() {
       {/* Grille de huit expertises — chaque entrée porte une accroche
           descriptive : une liste de titres nus ne dit rien de la pratique. */}
       <section className="bg-ivory">
-        <div className="mx-auto w-full max-w-grid px-6 py-24">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Domaines d&rsquo;intervention</Intitule>
-          <ul className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {expertises.map(({ slug, frontmatter }) => (
               <li key={slug} className="bg-ivory">
                 <Link
                   href={`/expertises/${slug}`}
-                  className="block h-full px-6 py-8 no-underline transition-colors hover:bg-paper"
+                  className="group block h-full border-t-2 border-transparent px-6 py-9 no-underline transition-colors hover:border-gold hover:bg-paper"
                 >
-                  <span className="block font-serif text-lg text-night">
+                  <span className={`block text-night ${TITRE_BLOC}`}>
                     {frontmatter.title}
                   </span>
-                  <span className="mt-2 block text-sm text-slate-soft">
+                  <span className={`mt-3 block ${CORPS_BLOC}`}>
                     {ACCROCHES_ACCUEIL[slug]}
                   </span>
                 </Link>
@@ -498,15 +533,15 @@ export default function Accueil() {
           que nos trois temps détaillent. Le chapeau désamorce l'inconnu :
           le premier rendez-vous n'engage à rien. */}
       <section className="bg-night text-ivory">
-        <div className="mx-auto w-full max-w-grid px-6 py-24 lg:py-32">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule surFondSombre>Notre méthode</Intitule>
           <h2
-            className="mt-6 max-w-3xl font-serif font-normal leading-[1.12] tracking-tight text-ivory"
-            style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
+            className={`mt-6 max-w-3xl text-ivory ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
           >
             De l&rsquo;analyse à la signature
           </h2>
-          <p className="mt-6 max-w-2xl text-ivory/80">
+          <p className={`mt-6 max-w-2xl text-ivory/85 ${CHAPEAU}`}>
             Le premier rendez-vous permet de poser le cadre : vos objectifs, les
             contraintes de l&apos;opération, le calendrier souhaité. Il
             n&apos;engage à rien. La suite du dossier suit trois temps, et
@@ -515,19 +550,17 @@ export default function Accueil() {
           </p>
           <ol className="mt-14 grid gap-12 md:grid-cols-3">
             {METHODE.map((etape, index) => (
-              <li key={etape.titre} className="border-t border-gold/40 pt-6">
+              <li key={etape.titre} className="border-t border-gold/60 pt-6">
                 <span
                   aria-hidden="true"
                   className="font-serif text-3xl leading-none text-gold"
                 >
                   {`0${index + 1}`}
                 </span>
-                <h3 className="mt-4 font-serif text-2xl text-ivory">
+                <h3 className={`mt-4 text-ivory ${TITRE_BLOC}`}>
                   {etape.titre}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ivory/75">
-                  {etape.texte}
-                </p>
+                <p className={`mt-3 ${CORPS_BLOC_SOMBRE}`}>{etape.texte}</p>
               </li>
             ))}
           </ol>
@@ -536,11 +569,11 @@ export default function Accueil() {
 
       {/* Démarches à distance — ce qui se fait sans rendez-vous. */}
       <section className="bg-paper">
-        <div className="mx-auto w-full max-w-grid px-6 py-24 lg:py-32">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Services en ligne</Intitule>
           <h2
-            className="mt-6 max-w-3xl font-serif font-normal leading-[1.12] tracking-tight text-night"
-            style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)" }}
+            className={`mt-6 max-w-3xl text-night ${TITRE_SECTION}`}
+            style={{ fontSize: TAILLE_TITRE_SECTION }}
           >
             Vos démarches à distance
           </h2>
@@ -548,14 +581,10 @@ export default function Accueil() {
             {DEMARCHES.map((demarche) => (
               <li
                 key={demarche.titre}
-                className="flex flex-col bg-paper px-8 py-10"
+                className="flex flex-col border-t-2 border-transparent bg-paper px-8 py-10 transition-colors hover:border-gold"
               >
-                <h3 className="font-serif text-2xl text-night">
-                  {demarche.titre}
-                </h3>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-soft">
-                  {demarche.texte}
-                </p>
+                <h3 className={`text-night ${TITRE_BLOC}`}>{demarche.titre}</h3>
+                <p className={`mt-4 flex-1 ${CORPS_BLOC}`}>{demarche.texte}</p>
                 <div className="mt-8">
                   <LienCapitale href={demarche.href} externe={demarche.externe}>
                     {demarche.action}
@@ -569,21 +598,19 @@ export default function Accueil() {
 
       {/* Engagements — quatre énoncés au présent descriptif. */}
       <section className="bg-ivory">
-        <div className="mx-auto w-full max-w-grid px-6 py-24 lg:py-32">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Nos engagements</Intitule>
           <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
             {ENGAGEMENTS.map((engagement) => (
-              <div key={engagement.titre} className="border-t border-line pt-6">
-                <h3 className="font-serif text-2xl text-night">
+              <div key={engagement.titre} className="border-t-2 border-gold/50 pt-6">
+                <h3 className={`text-night ${TITRE_BLOC}`}>
                   {engagement.titre}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-soft">
-                  {engagement.texte}
-                </p>
+                <p className={`mt-3 ${CORPS_BLOC}`}>{engagement.texte}</p>
                 {engagement.lien ? (
                   <Link
                     href={engagement.lien.href}
-                    className="mt-4 inline-block text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
+                    className="mt-4 inline-block text-[0.975rem] text-night underline decoration-gold decoration-1 underline-offset-4 transition-colors hover:text-gold-ink"
                   >
                     {engagement.lien.label}
                   </Link>
@@ -596,22 +623,25 @@ export default function Accueil() {
 
       {/* Bandeau international. */}
       <section className="border-y border-line bg-paper">
-        <div className="mx-auto grid w-full max-w-grid gap-8 px-6 py-16 lg:grid-cols-[2fr,3fr] lg:items-center">
+        <div className="mx-auto grid w-full max-w-grid gap-10 px-6 py-20 lg:grid-cols-[2fr,3fr] lg:items-center">
           <div>
             <Intitule>International</Intitule>
-            <h2 className="mt-4 font-serif text-3xl font-normal tracking-tight text-night">
+            <h2
+              className={`mt-6 text-night ${TITRE_SECTION}`}
+              style={{ fontSize: "clamp(1.85rem, 2.6vw, 2.4rem)" }}
+            >
               Une pratique internationale
             </h2>
           </div>
           <div>
-            <p className="text-anthracite">
+            <p className={`text-anthracite ${CHAPEAU}`}>
               Successions comportant des éléments d&apos;extranéité,
               acquisitions par des non-résidents, expatriation et retour en
               France : l&apos;étude traite les dossiers internationaux en
               coordination avec des correspondants étrangers lorsque la
               situation l&apos;exige.
             </p>
-            <p className="mt-4 text-sm text-slate-soft">
+            <p className="mt-4 text-[0.95rem] text-slate-soft">
               Langues de travail : {etude.langues.join(", ")}.
             </p>
           </div>
@@ -620,19 +650,19 @@ export default function Accueil() {
 
       {/* Derniers articles. */}
       <section className="bg-ivory">
-        <div className="mx-auto w-full max-w-grid px-6 py-24">
+        <div className={`mx-auto w-full max-w-grid ${RYTHME}`}>
           <Intitule>Actualités et publications</Intitule>
           {derniersArticles.length > 0 ? (
-            <ul className="mt-10 grid gap-10 md:grid-cols-3">
+            <ul className="mt-12 grid gap-10 md:grid-cols-3">
               {derniersArticles.map(({ frontmatter }) => (
                 <li
                   key={`${frontmatter.categorie}/${frontmatter.slug}`}
-                  className="border-t border-line pt-6"
+                  className="border-t-2 border-gold/50 pt-6"
                 >
-                  <p className="text-[0.72rem] uppercase tracking-[0.2em] text-slate-soft">
+                  <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold-ink">
                     {CATEGORIE_LABELS[frontmatter.categorie]}
                   </p>
-                  <h3 className="mt-3 font-serif text-2xl text-night">
+                  <h3 className={`mt-3 text-night ${TITRE_BLOC}`}>
                     <Link
                       href={`/blog/${frontmatter.categorie}/${frontmatter.slug}`}
                       className="no-underline decoration-gold underline-offset-4 hover:underline"
@@ -640,14 +670,14 @@ export default function Accueil() {
                       {frontmatter.title}
                     </Link>
                   </h3>
-                  <p className="mt-2 text-sm text-slate-soft">
+                  <p className="mt-3 text-[0.95rem] text-slate-soft">
                     <time dateTime={frontmatter.date}>{frontmatter.date}</time>
                   </p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="mt-6 text-sm text-slate-soft">
+            <p className={`mt-8 ${CORPS_BLOC}`}>
               Les articles du blog seront publiés prochainement.
             </p>
           )}
@@ -660,13 +690,16 @@ export default function Accueil() {
       {/* Bloc contact — téléphone appelable en grand pour le mobile,
           adresse électronique, lien statique vers Google Maps, pas d'iframe. */}
       <section className="bg-paper">
-        <div className="mx-auto grid w-full max-w-grid gap-10 px-6 py-24 md:grid-cols-2 lg:py-32">
+        <div className={`mx-auto grid w-full max-w-grid gap-10 md:grid-cols-2 ${RYTHME}`}>
           <div>
             <Intitule>Contact</Intitule>
-            <h2 className="mt-6 font-serif text-3xl font-normal tracking-tight text-night">
+            <h2
+              className={`mt-6 text-night ${TITRE_SECTION}`}
+              style={{ fontSize: "clamp(1.85rem, 2.6vw, 2.4rem)" }}
+            >
               Nous rencontrer
             </h2>
-            <p className="mt-6 text-sm text-slate-soft">
+            <p className={`mt-6 ${CORPS_BLOC}`}>
               {etude.adresse.ligne1}
               <br />
               {etude.adresse.codePostal} {etude.adresse.ville}
@@ -679,11 +712,13 @@ export default function Accueil() {
                 {etude.telephone}
               </a>
             </p>
-            <p className="mt-1 text-sm text-slate-soft">{etude.horaires}</p>
+            <p className="mt-2 text-[0.95rem] text-slate-soft">
+              {etude.horaires}
+            </p>
             <p className="mt-3">
               <a
                 href={`mailto:${etude.email}`}
-                className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
+                className="text-[0.975rem] text-night underline decoration-gold decoration-1 underline-offset-4 transition-colors hover:text-gold-ink"
               >
                 {etude.email}
               </a>
@@ -693,7 +728,7 @@ export default function Accueil() {
                 href={etude.liens.googleMaps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
+                className="text-[0.975rem] text-night underline decoration-gold decoration-1 underline-offset-4 transition-colors hover:text-gold-ink"
               >
                 Voir le plan d&apos;accès
               </a>

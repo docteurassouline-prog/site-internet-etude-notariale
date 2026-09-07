@@ -37,7 +37,7 @@ const config: Config = {
       },
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Helvetica Neue", "Arial", "sans-serif"],
       },
       maxWidth: {
         grid: "1200px",

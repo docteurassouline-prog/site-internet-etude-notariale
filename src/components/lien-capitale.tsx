@@ -23,7 +23,7 @@ export function LienCapitale({
   externe?: boolean;
 }) {
   const classes = [
-    "inline-block border-b border-gold pb-1 text-[0.72rem] uppercase tracking-[0.2em] no-underline transition-[padding-bottom,border-color] hover:pb-2",
+    "inline-block border-b border-gold pb-1 text-[0.78rem] font-medium uppercase tracking-[0.2em] no-underline transition-[padding-bottom,border-color] hover:pb-2",
     surFondSombre
       ? "text-ivory hover:border-ivory"
       : "text-night hover:border-night",

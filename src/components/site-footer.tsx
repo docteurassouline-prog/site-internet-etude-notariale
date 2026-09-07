@@ -29,7 +29,7 @@ export function SiteFooter() {
           {/* Colonne 1 : identité */}
           <div>
             <p className="font-serif text-xl tracking-tight">{etude.nom}</p>
-            <p className="mt-4 text-sm leading-relaxed text-ivory/80">
+            <p className="mt-4 text-[0.95rem] leading-relaxed text-ivory/85">
               {etude.adresse.ligne1}
               <br />
               {etude.adresse.codePostal} {etude.adresse.ville}
@@ -37,25 +37,25 @@ export function SiteFooter() {
             <div className="mt-5 space-y-2">
               <a
                 href={`tel:${etude.telephoneE164}`}
-                className="block text-sm font-medium text-ivory no-underline transition-colors hover:text-gold"
+                className="block text-[1.05rem] font-medium text-ivory no-underline transition-colors hover:text-gold"
               >
                 {etude.telephone}
               </a>
               <a
                 href={`mailto:${etude.email}`}
-                className="block text-sm text-ivory/80 no-underline transition-colors hover:text-ivory"
+                className="block text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
               >
                 {etude.email}
               </a>
             </div>
-            <p className="mt-5 text-xs leading-relaxed text-ivory/60">
+            <p className="mt-5 text-[0.85rem] leading-relaxed text-ivory/65">
               {etude.horaires}
             </p>
           </div>
 
           {/* Colonne 2 : navigation */}
           <div>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-gold">
+            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
               Navigation
             </p>
             <nav aria-label="Navigation du pied de page" className="mt-4">
@@ -64,7 +64,7 @@ export function SiteFooter() {
                   <li key={lien.href}>
                     <Link
                       href={lien.href}
-                      className="text-sm text-ivory/80 no-underline transition-colors hover:text-ivory"
+                      className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
                     >
                       {lien.label}
                     </Link>
@@ -76,7 +76,7 @@ export function SiteFooter() {
 
           {/* Colonne 3 : liens légaux */}
           <div>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-gold">
+            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
               Informations légales
             </p>
             <nav aria-label="Liens légaux" className="mt-4">
@@ -85,7 +85,7 @@ export function SiteFooter() {
                   <li key={lien.href}>
                     <Link
                       href={lien.href}
-                      className="text-sm text-ivory/80 no-underline transition-colors hover:text-ivory"
+                      className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
                     >
                       {lien.label}
                     </Link>
@@ -97,13 +97,13 @@ export function SiteFooter() {
 
           {/* Colonne 4 : accès rapide */}
           <div>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-gold">
+            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
               Accès rapide
             </p>
             <div className="mt-4 flex flex-col gap-4">
               <Link
                 href="/contact"
-                className="inline-flex w-fit items-center border border-ivory/40 px-5 py-2.5 text-[0.75rem] uppercase tracking-[0.12em] text-ivory no-underline transition-all duration-300 hover:border-ivory hover:bg-ivory hover:text-night"
+                className="inline-flex w-fit items-center border border-ivory/50 px-6 py-3 text-[0.82rem] font-medium uppercase tracking-[0.12em] text-ivory no-underline transition-all duration-300 hover:border-ivory hover:bg-ivory hover:text-night"
               >
                 Prendre rendez-vous
               </Link>
@@ -111,7 +111,7 @@ export function SiteFooter() {
                 href={etude.liens.dataRoom}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-ivory/80 no-underline transition-colors hover:text-ivory"
+                className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
               >
                 Espace documentaire sécurisé
                 <span className="sr-only"> (nouvelle fenêtre)</span>
@@ -120,7 +120,7 @@ export function SiteFooter() {
                 href={etude.liens.googleMaps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-ivory/80 no-underline transition-colors hover:text-ivory"
+                className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
               >
                 Itinéraire Google Maps
                 <span className="sr-only"> (nouvelle fenêtre)</span>
@@ -131,10 +131,10 @@ export function SiteFooter() {
 
         {/* Séparateur et mention légale */}
         <div className="mt-12 border-t border-ivory/15 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs leading-relaxed text-ivory/50">
+          <p className="text-[0.85rem] leading-relaxed text-ivory/60">
             &copy; {new Date().getFullYear()} {etude.nom}
           </p>
-          <p className="text-xs leading-relaxed text-ivory/50">
+          <p className="text-[0.85rem] leading-relaxed text-ivory/60">
             Les informations publiées sur ce site ont un caractère général et ne
             constituent pas une consultation juridique.
           </p>

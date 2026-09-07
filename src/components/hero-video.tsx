@@ -30,6 +30,15 @@ const SEQUENCES = [
  *  sortant à laquelle le plan entrant démarre. */
 const FONDU_MS = 1400;
 
+/**
+ * Vitesse de lecture des séquences — décision du notaire du 7 septembre 2026 :
+ * la moitié de la vitesse nominale. Les deux plans sont des travellings ; à
+ * vitesse réelle le mouvement passe derrière le titre à un rythme qui appelle
+ * l'œil et gêne la lecture. À 0,5× le plan devient un fond, ce qu'il doit
+ * être. Chaque séquence dure de ce fait seize secondes au lieu de huit.
+ */
+const VITESSE = 0.5;
+
 type Connexion = Navigator & { connection?: { saveData?: boolean } };
 
 /**
@@ -69,7 +78,10 @@ export function HeroVideo() {
     // Lecture automatique : autorisée par les navigateurs parce que la vidéo
     // est muette et lue dans la page. Si elle est refusée malgré tout, la
     // photographie reste seule à l'écran — aucun bouton, aucun message.
-    refA.current?.play().catch(() => setLecture(false));
+    const premier = refA.current;
+    if (!premier) return;
+    premier.playbackRate = VITESSE;
+    premier.play().catch(() => setLecture(false));
   }, [lecture]);
 
   /**
@@ -81,11 +93,16 @@ export function HeroVideo() {
     return (evenement: SyntheticEvent<HTMLVideoElement>) => {
       const video = evenement.currentTarget;
       if (index !== actif || !Number.isFinite(video.duration)) return;
-      if (video.duration - video.currentTime > FONDU_MS / 1000) return;
+      // Le seuil se compte en temps de média, pas en temps réel : à 0,5× une
+      // seconde de fondu à l'écran ne consomme qu'une demi-seconde de bande.
+      // Sans ce facteur, le fondu démarrerait deux fois trop tôt.
+      if (video.duration - video.currentTime > (FONDU_MS / 1000) * VITESSE)
+        return;
       const suivant = (index + 1) % SEQUENCES.length;
       const cible = refs[suivant].current;
       if (!cible) return;
       cible.currentTime = 0;
+      cible.playbackRate = VITESSE;
       cible.play().catch(() => {});
       setActif(suivant);
     };
@@ -118,6 +135,11 @@ export function HeroVideo() {
               preload="auto"
               tabIndex={-1}
               disablePictureInPicture
+              onLoadedMetadata={(evenement) => {
+                // Certains navigateurs réinitialisent playbackRate quand les
+                // métadonnées arrivent : on le refixe à ce moment-là.
+                evenement.currentTarget.playbackRate = VITESSE;
+              }}
               onCanPlay={index === 0 ? () => setVisible(true) : undefined}
               onTimeUpdate={surTemps(index)}
               onEnded={surFin}

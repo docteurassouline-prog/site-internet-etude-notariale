@@ -29,7 +29,7 @@ export function CtaRendezVous({
   return (
     <Link
       href={href}
-      className={`inline-block rounded-sm px-6 py-3 text-sm transition-colors ${classes}`}
+      className={`inline-block rounded-sm px-7 py-3.5 text-[0.82rem] font-medium uppercase tracking-[0.12em] transition-colors ${classes}`}
     >
       Prendre rendez-vous
     </Link>
