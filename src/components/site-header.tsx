@@ -21,7 +21,7 @@ const navigationMobile = [
 
 const adresseCourte = etude.adresse.ligne1.split(" — ")[0];
 
-const nomAffiche = etude.nom.replace(/\s(\d+)$/, " $1");
+const nomAffiche = etude.nom.replace(/\s(\d+)$/, " $1");
 
 export function SiteHeader() {
   const [ouvert, setOuvert] = useState(false);
@@ -73,11 +73,12 @@ export function SiteHeader() {
         }`}
       >
         <div className="mx-auto flex max-w-grid items-center justify-between px-6 py-2.5">
+          {/* L'adresse a quitté ce bandeau le 8 septembre 2026 : elle vit
+              désormais sous le nom de l'étude, dans la barre principale, donc
+              visible en permanence — y compris au défilement, quand ce
+              bandeau se replie. La répéter ici l'aurait affichée deux fois
+              en haut de page. */}
           <div className="hidden items-center gap-6 text-[0.8rem] uppercase tracking-[0.12em] text-ivory/90 md:flex">
-            <span>
-              {adresseCourte} — {etude.adresse.codePostal} {etude.adresse.ville}
-            </span>
-            <span className="h-3.5 w-px bg-ivory/25" aria-hidden="true" />
             <a
               href={`tel:${etude.telephoneE164}`}
               className="font-medium text-ivory no-underline transition-colors hover:text-gold"
@@ -110,24 +111,41 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-grid items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="group flex items-center gap-3 no-underline"
+          className="group flex items-center gap-4 no-underline"
         >
-{/* Marque de l'étude — 7 septembre 2026. Le monogramme « TL » qui
-              tenait cette place était une initiale dessinée en CSS, sans
-              existence hors de ce site, quand l'étude a sa propre marque :
-              le cercle et le « L » biseauté de l'enseigne. Le fichier est une
-              reconstitution d'après la photographie de la salle, faute de
-              vectoriel dans le dépôt — voir l'en-tête du SVG. */}
+          {/* Marque de l'étude — le cercle et le « L » biseauté de l'enseigne,
+              relevé sur la photographie de la salle de réunion (voir l'en-tête
+              du SVG). Le monogramme « TL » qui tenait cette place était une
+              initiale dessinée en CSS, sans existence hors de ce site. */}
           <Image
             src={cheminPublic("/images/logo-levy-notaires.svg")}
             alt=""
             width={100}
             height={100}
             priority
-            className="h-11 w-11"
+            className="h-12 w-12 shrink-0"
           />
-          <span className="text-balance font-serif text-xl font-semibold tracking-tight text-night sm:text-2xl">
-            {nomAffiche}
+          {/* Filet doré en dégradé : sépare la marque du nom sans poser un
+              trait sec, et tient lieu de respiration entre deux objets qui
+              n'ont pas la même nature. */}
+          <span
+            className="hidden h-10 w-px bg-gradient-to-b from-transparent via-gold/50 to-transparent sm:block"
+            aria-hidden="true"
+          />
+          <span className="flex flex-col justify-center">
+            <span className="text-balance font-serif text-xl font-semibold leading-[1.15] tracking-tight text-night sm:text-[1.4rem]">
+              {nomAffiche}
+            </span>
+            {/* Adresse remontée du portrait de l'accueil (8 septembre 2026) :
+                en petites capitales espacées, elle se lit comme une ligne de
+                papier à en-tête et non comme une information de service. */}
+            <span className="mt-1.5 hidden text-[0.68rem] font-medium uppercase tracking-[0.22em] text-slate-soft transition-colors group-hover:text-gold-ink sm:block">
+              {adresseCourte}
+              <span className="mx-2 text-gold/70" aria-hidden="true">
+                ·
+              </span>
+              {etude.adresse.codePostal} {etude.adresse.ville}
+            </span>
           </span>
         </Link>
 
