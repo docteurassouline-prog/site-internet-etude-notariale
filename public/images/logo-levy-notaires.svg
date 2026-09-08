@@ -1,19 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Lévy Notaires Paris">
-  <!--
-    Marque de l'étude : cercle bleu marine, liseré et « L » biseauté dorés.
-    Mis à jour le 8 septembre 2026 d'après le logo fourni par le notaire.
-    Les tons d'or rendent le biseau des lettres en relief de l'enseigne.
-  -->
-  <!-- Fond bleu marine -->
-  <circle cx="50" cy="50" r="48" fill="#101C2C"/>
-  <!-- Liseré doré -->
-  <circle cx="50" cy="50" r="46" fill="none" stroke="#A98A4C" stroke-width="1.8"/>
-  <!-- L biseauté — jambe verticale, face claire -->
-  <polygon points="51,14 58,15 32,76 27,76" fill="#C4A463"/>
-  <!-- L biseauté — jambe verticale, face sombre -->
-  <polygon points="46,14 51,14 27,76 22,76" fill="#A2833F"/>
+  <!-- Anneau doré épais -->
+  <circle cx="50" cy="50" r="48" fill="#A98A4C"/>
+  <!-- Disque bleu marine -->
+  <circle cx="50" cy="50" r="44" fill="#101C2C"/>
+  <!-- L biseauté — jambe diagonale, face claire -->
+  <polygon points="53,17 60,19 34,74 29,73" fill="#C4A463"/>
+  <!-- L biseauté — jambe diagonale, face sombre -->
+  <polygon points="48,16 53,17 29,73 24,72" fill="#A2833F"/>
   <!-- L biseauté — pied horizontal, face claire -->
-  <polygon points="32,76 82,76 82,80 26,80" fill="#C4A463"/>
+  <polygon points="29,73 76,73 76,78 24,78" fill="#C4A463"/>
   <!-- L biseauté — pied horizontal, face sombre -->
-  <polygon points="26,80 82,80 82,84 22,84" fill="#A2833F"/>
+  <polygon points="24,78 76,78 76,82 20,82" fill="#A2833F"/>
 </svg>
