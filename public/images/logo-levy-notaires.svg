@@ -1,22 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Lévy Notaires Paris">
   <!--
-    Marque de l'étude : cercle et « L » biseauté. Tracé relevé le 8 septembre
-    2026 sur l'enseigne de la salle de réunion (public/images/salle-etude.jpg)
-    par échantillonnage des pixels dorés, faute de fichier vectoriel dans le
-    dépôt. La version précédente, dessinée à l'œil, penchait moins, posait une
-    barre deux fois trop mince et l'arrêtait au bord du cercle. Quatre traits
-    caractérisent la marque réelle et sont désormais respectés : le fût
-    descend franchement vers la gauche, la barre déborde du cercle à droite,
-    le pied du « L » le déborde à gauche, et une encoche en V sépare le fût de
-    la barre. Le « L » est un ruban unique plié à l'angle et biseauté dans sa
-    longueur : deux facettes, la lumière venant du haut à droite, comme sur
-    les lettres en relief de l'enseigne.
-    Reconstitution, non original : à remplacer par le vectoriel de la charte
-    dès que le notaire le fournit.
+    Marque de l'étude : cercle bleu marine, liseré et « L » biseauté dorés.
+    Mis à jour le 8 septembre 2026 d'après le logo fourni par le notaire.
+    Les tons d'or rendent le biseau des lettres en relief de l'enseigne.
   -->
-  <circle cx="50" cy="50" r="45" fill="none" stroke="#A98A4C" stroke-width="1.7"/>
-  <polygon fill="#A5854A"
-    points="46.5,9 51.6,10.6 19.6,79.9 86.6,81.1 84.6,85 22.5,85 14.2,78.4"/>
-  <polygon fill="#C09F61"
-    points="51.6,10.6 57.6,12.5 26.2,77.6 30.1,75.4 88.3,77.6 86.6,81.1 19.6,79.9"/>
+  <!-- Fond bleu marine -->
+  <circle cx="50" cy="50" r="48" fill="#101C2C"/>
+  <!-- Liseré doré -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#A98A4C" stroke-width="1.8"/>
+  <!-- L biseauté — jambe verticale, face claire -->
+  <polygon points="51,14 58,15 32,76 27,76" fill="#C4A463"/>
+  <!-- L biseauté — jambe verticale, face sombre -->
+  <polygon points="46,14 51,14 27,76 22,76" fill="#A2833F"/>
+  <!-- L biseauté — pied horizontal, face claire -->
+  <polygon points="32,76 82,76 82,80 26,80" fill="#C4A463"/>
+  <!-- L biseauté — pied horizontal, face sombre -->
+  <polygon points="26,80 82,80 82,84 22,84" fill="#A2833F"/>
 </svg>
