@@ -21,7 +21,7 @@ const navigationMobile = [
 
 const adresseCourte = etude.adresse.ligne1.split(" — ")[0];
 
-const nomAffiche = etude.nom.replace(/\s(\d+)$/, " $1");
+const nomAffiche = etude.nom.replace(/\s(\d+)$/, " $1");
 
 export function SiteHeader() {
   const [ouvert, setOuvert] = useState(false);
