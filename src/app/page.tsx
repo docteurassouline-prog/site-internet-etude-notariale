@@ -218,9 +218,6 @@ const DEMARCHES: readonly {
     : []),
 ];
 
-/** Adresse sans la mention d'étage, pour la légende du portrait (§7). */
-const ADRESSE_COURTE = etude.adresse.ligne1.split(" — ")[0];
-
 /**
  * Repères — la preuve arrive tôt, juste après le héros. Transposition d'une
  * mécanique observée sur les sites de banque d'affaires et d'étude : le
@@ -404,52 +401,55 @@ export default function Accueil() {
             >
               {etude.denominationComplete}
             </h2>
-            <div className={`mt-8 max-w-prose space-y-5 text-anthracite ${CHAPEAU}`}>
-              <p>
-                Chaque opération immobilière ou patrimoniale est unique. Le
-                rôle du notaire est d&apos;en comprendre les enjeux, d&apos;en
-                anticiper les risques et de construire une architecture
-                juridique sur mesure qui protège chaque partie.
-              </p>
-              <p>
-                L&apos;étude accompagne particuliers, investisseurs, entreprises
-                et family offices dans leurs projets les plus structurants :
-                acquisitions complexes, montages en SCI, transmissions
-                d&apos;entreprise, successions internationales et
-                restructurations patrimoniales.
-              </p>
-              <p>
-                Un premier rendez-vous permet de poser le cadre de votre
-                opération, d&apos;identifier les points d&apos;attention et de
-                définir ensemble la stratégie notariale adaptée à votre
-                situation.
-              </p>
-            </div>
-            <p className={`mt-6 max-w-prose border-l-2 border-gold/50 pl-5 ${CORPS_BLOC}`}>
-              Notaire à Paris 16, l&apos;étude intervient en droit immobilier,
-              en structuration patrimoniale et en conseil aux entreprises. Elle
-              accompagne les opérations en SCI, les successions internationales,
-              les donations et les transmissions d&apos;entreprise, avec une
-              pratique tournée vers la clientèle privée et les family offices.
+            {/* Présentation ramassée en une seule phrase (8 septembre 2026,
+                décision du notaire) : les trois paragraphes et le bloc au
+                filet doré disaient la même chose trois fois et diluaient
+                l'accroche. Rien n'est écrit de neuf — la phrase est la
+                condensation des formulations déjà validées, et conserve les
+                termes sur lesquels la page est référencée : notaire à
+                Paris 16, droit immobilier, SCI, successions internationales,
+                donations, transmission d'entreprise, family offices. */}
+            <p className="mt-8 max-w-prose text-[1.2rem] leading-[1.65] text-anthracite">
+              Notaire à Paris 16, l&apos;étude construit l&apos;architecture
+              juridique des opérations immobilières et patrimoniales :
+              acquisitions complexes, montages en SCI, successions
+              internationales, donations et transmissions d&apos;entreprise,
+              pour une clientèle privée, des investisseurs et des family
+              offices.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-8">
               <CtaRendezVous />
               <LienCapitale href="/etude">En savoir plus sur l&rsquo;étude</LienCapitale>
             </div>
           </div>
+          {/* Portrait en arche, bords fondus (8 septembre 2026). Le cadre
+              rectangulaire net posait une vignette d'identité au milieu d'une
+              page composée en aplats ; l'arche et le fondu radial le font
+              naître du fond ivoire, comme une photographie encadrée par une
+              menuiserie haussmannienne. Le masque est doublé du préfixe
+              -webkit- : Safari ne lit pas encore mask-image sans lui.
+              La légende d'adresse qui vivait ici est remontée dans
+              l'en-tête, sous le nom de l'étude — elle y est visible sur
+              toutes les pages plutôt que sur ce seul bloc. */}
           <div className="flex flex-col items-center lg:items-end">
-            <Image
-              src={cheminPublic("/images/portrait.jpg")}
-              alt={`${etude.nomNotaire}, notaire à Paris`}
-              width={480}
-              height={721}
-              sizes="(min-width: 1024px) 24rem, 100vw"
-              className="w-full max-w-sm rounded-sm"
-            />
-            <p className="mt-4 text-center text-[0.95rem] text-slate-soft lg:text-right">
-              {ADRESSE_COURTE} — {etude.adresse.codePostal}{" "}
-              {etude.adresse.ville}
-            </p>
+            <div
+              className="w-full max-w-sm overflow-hidden rounded-t-[12rem]"
+              style={{
+                WebkitMaskImage:
+                  "radial-gradient(118% 94% at 50% 6%, #000 52%, rgba(0,0,0,0.55) 79%, transparent 100%)",
+                maskImage:
+                  "radial-gradient(118% 94% at 50% 6%, #000 52%, rgba(0,0,0,0.55) 79%, transparent 100%)",
+              }}
+            >
+              <Image
+                src={cheminPublic("/images/portrait.jpg")}
+                alt={`${etude.nomNotaire}, notaire à Paris`}
+                width={480}
+                height={721}
+                sizes="(min-width: 1024px) 24rem, 100vw"
+                className="w-full"
+              />
+            </div>
           </div>
         </div>
       </section>
