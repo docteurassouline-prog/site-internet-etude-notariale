@@ -80,3 +80,4 @@ septeo/
 *.bak
 *.tmp
 *~
+.env*
