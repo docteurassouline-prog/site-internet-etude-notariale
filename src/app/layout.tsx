@@ -75,7 +75,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr" className={`${cormorant.variable} ${jost.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans text-base sm:text-lg">
+      <body className="flex min-h-screen flex-col font-sans text-base">
         <a
           href="#contenu"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-night focus:px-4 focus:py-2 focus:text-sm focus:text-ivory"
@@ -83,7 +83,7 @@ export default function RootLayout({
           Aller au contenu
         </a>
         <SiteHeader />
-        <div id="contenu" className="flex-1 pt-[6.5rem]">
+        <div id="contenu" className="flex-1" tabIndex={-1}>
           {children}
         </div>
         <SiteFooter />

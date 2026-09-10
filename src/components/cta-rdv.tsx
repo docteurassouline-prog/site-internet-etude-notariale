@@ -34,11 +34,9 @@ export function CtaRendezVous({
         ? "border border-ivory text-ivory hover:bg-ivory hover:text-night"
         : "border border-night text-night hover:bg-night hover:text-ivory";
   return (
-    <Link
-      href={href}
-      className={`inline-block rounded-sm px-8 py-4 text-[0.84rem] font-semibold uppercase tracking-[0.14em] transition-colors ${classes}`}
-    >
-      Prendre rendez-vous
+    <Link href={href} className={`button ${classes}`}>
+      {BOOKING_URL ? "Prendre rendez-vous" : "Demander un rendez-vous"}
+      <span aria-hidden="true">↗</span>
     </Link>
   );
 }

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { FormulaireContact } from "@/components/formulaire-contact";
 import { JsonLd, schemaNotary } from "@/components/json-ld";
+import { PageIntro } from "@/components/page-intro";
+import { AccessMap } from "@/components/access-map";
+import { CtaRendezVous } from "@/components/cta-rdv";
 import { ACCES } from "@/config/acces";
 import { etude } from "@/config/etude";
 
@@ -13,54 +17,85 @@ export const metadata: Metadata = {
 
 export default function PageContact() {
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
+    <main>
       <JsonLd data={schemaNotary()} />
-      <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-        Contact
-      </h1>
-      <div className="mt-14 grid gap-14 lg:grid-cols-2">
+      <PageIntro
+        titre="Entrons en contact"
+        rubrique="Étude Thomas Lévy · Paris XVI"
+        description="Un rendez-vous, une question ou un dossier à nous confier : contactez l'étude par téléphone, par courriel ou à l'aide du formulaire."
+      />
+      <div className="site-container page-body grid items-start gap-12 lg:grid-cols-[.85fr,1.15fr] lg:gap-20">
         <div>
-          <h2 className="font-serif text-2xl text-night">Coordonnées</h2>
-          <p className="mt-4 text-sm text-slate-soft">
+          <h2 className="section-title">L&apos;étude vous reçoit</h2>
+          <address className="mt-7 text-lg not-italic text-slate-soft">
             {etude.adresse.ligne1}
             <br />
             {etude.adresse.codePostal} {etude.adresse.ville}
-          </p>
-          <p className="mt-3 text-sm text-slate-soft">{etude.telephone}</p>
-          <p className="mt-3 text-sm text-slate-soft">{etude.email}</p>
-
-          <h2 className="mt-10 font-serif text-2xl text-night">Horaires</h2>
-          <p className="mt-4 text-sm text-slate-soft">{etude.horaires}</p>
-
-          <h2 className="mt-10 font-serif text-2xl text-night">Accès</h2>
-          <dl className="mt-4 divide-y divide-line border-y border-line">
-            {ACCES.map(({ cle, valeur }) => (
-              <div key={cle} className="py-3">
-                <dt className="text-sm font-medium text-night">{cle}</dt>
-                <dd className="mt-0.5 text-sm text-slate-soft">{valeur}</dd>
-              </div>
-            ))}
-          </dl>
-          {etude.liens.googleMaps ? (
-            <p className="mt-4">
-              <a
-                href={etude.liens.googleMaps}
-                rel="noopener noreferrer"
-                target="_blank"
-                className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-              >
-                Voir le plan d&apos;accès (Google Maps)
-              </a>
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <h2 className="font-serif text-2xl text-night">Écrire à l&apos;étude</h2>
-          <div className="mt-6">
-            <FormulaireContact />
+          </address>
+          <a
+            href={`tel:${etude.telephoneE164}`}
+            className="mt-7 block w-fit font-serif text-3xl text-night hover:underline"
+          >
+            {etude.telephone}
+          </a>
+          <a
+            href={`mailto:${etude.email}`}
+            className="text-link mt-2 break-all"
+          >
+            {etude.email}
+          </a>
+          <div className="mt-7 border-t border-line pt-6">
+            <h3 className="eyebrow">Horaires & langues</h3>
+            <p className="mt-4 text-slate-soft">{etude.horaires}</p>
+            <p className="mt-2 text-slate-soft">Français · English · Deutsch</p>
+            <Link href="/international#languages" className="text-link mt-2">
+              Informations internationales ↗
+            </Link>
+          </div>
+          {process.env.NEXT_PUBLIC_BOOKING_URL && (
+            <div className="mt-6">
+              <CtaRendezVous />
+            </div>
+          )}
+          <div className="mt-7 border-t border-line pt-6">
+            <h3 className="eyebrow">Vous avez déjà un dossier ?</h3>
+            <a
+              href={etude.liens.dataRoom}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link mt-3"
+            >
+              Espace documentaire sécurisé ↗
+              <span className="sr-only"> (nouvelle fenêtre)</span>
+            </a>
           </div>
         </div>
+        <section className="border border-line bg-white p-6 sm:p-9">
+          <h2 className="font-serif text-3xl">Écrire à l&apos;étude</h2>
+          <p className="mb-7 mt-3 text-sm text-slate-soft">
+            Pour demander un rendez-vous, indiquez l&apos;objet de votre projet
+            et vos disponibilités.
+          </p>
+          <FormulaireContact />
+        </section>
       </div>
+      <section id="plan-acces" className="border-t border-line bg-white">
+        <div className="site-container page-body">
+          <p className="eyebrow">Préparer votre venue</p>
+          <h2 className="section-title mt-4">Nous rejoindre</h2>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[.85fr,1.15fr]">
+            <dl className="divide-y divide-line border-y border-line">
+              {ACCES.map(({ cle, valeur }) => (
+                <div key={cle} className="py-4">
+                  <dt className="font-medium text-night">{cle}</dt>
+                  <dd className="mt-1 text-base text-slate-soft">{valeur}</dd>
+                </div>
+              ))}
+            </dl>
+            <AccessMap />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

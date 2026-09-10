@@ -13,6 +13,7 @@ const ROUTES_STATIQUES = [
   "/",
   "/etude",
   "/expertises",
+  "/international",
   "/tarif",
   "/blog",
   "/faq",
