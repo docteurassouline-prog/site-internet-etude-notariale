@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FilAriane } from "@/components/fil-ariane";
+import { PageIntro } from "@/components/page-intro";
 import { JsonLd, schemaFilAriane } from "@/components/json-ld";
 import {
   loadPageLegale,
@@ -44,7 +44,9 @@ function formaterDate(iso: string): string {
 export function metadonneesPageLegale(slug: PageLegaleSlug): Metadata {
   const contenu = loadPageLegale(slug);
   return {
-    title: { absolute: `${contenu.titre} — Étude Thomas Lévy, notaire à Paris` },
+    title: {
+      absolute: `${contenu.titre} — Étude Thomas Lévy, notaire à Paris`,
+    },
     description: contenu.description,
     alternates: { canonical: `/${slug}` },
     ...(pageLegaleIncomplete(slug)
@@ -66,58 +68,73 @@ export function PageLegale({ slug }: { slug: PageLegaleSlug }) {
   const contenu = loadPageLegale(slug);
 
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
+    <main>
       <JsonLd data={schemaFilAriane([{ label: contenu.titre }])} />
-      <FilAriane maillons={[{ label: contenu.titre }]} />
+      <PageIntro
+        titre={contenu.titre}
+        rubrique="Informations légales"
+        description={contenu.description}
+      >
+        <p className="mt-6 text-sm text-slate-soft">
+          Dernière mise à jour : {formaterDate(contenu.miseAJour)}
+        </p>
+      </PageIntro>
+      <div className="site-container page-body reading-grid">
+        <div className="reading-sections">
+          {contenu.sections.map((section, indexSection) => (
+            <section key={section.titre} id={`section-${indexSection + 1}`}>
+              <h2 className="font-serif text-2xl text-night">
+                {section.titre}
+              </h2>
 
-      <h1 className="mt-8 font-serif text-4xl font-medium tracking-tight text-night">
-        {contenu.titre}
-      </h1>
-      <p className="mt-4 text-sm text-slate-soft">
-        Dernière mise à jour : {formaterDate(contenu.miseAJour)}
-      </p>
+              {section.paragraphes?.map((paragraphe, index) => (
+                <p key={index} className="mt-4 text-slate-soft">
+                  {paragraphe}
+                </p>
+              ))}
 
-      <div className="mt-14 max-w-3xl">
-        {contenu.sections.map((section) => (
-          <section key={section.titre} className="mb-12">
-            <h2 className="font-serif text-2xl text-night">{section.titre}</h2>
+              {section.liste ? (
+                <ul className="mt-4 space-y-3">
+                  {section.liste.map((item, index) => (
+                    <li key={index} className="flex gap-3">
+                      <span
+                        aria-hidden="true"
+                        className="mt-3 h-px w-4 shrink-0 bg-gold"
+                      />
+                      <span className="text-slate-soft">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
 
-            {section.paragraphes?.map((paragraphe, index) => (
-              <p key={index} className="mt-4 text-slate-soft">
-                {paragraphe}
-              </p>
-            ))}
-
-            {section.liste ? (
-              <ul className="mt-4 space-y-3">
-                {section.liste.map((item, index) => (
-                  <li key={index} className="flex gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="mt-3 h-px w-4 shrink-0 bg-gold"
-                    />
-                    <span className="text-slate-soft">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-
-            {section.definitions ? (
-              <dl className="mt-6 space-y-4">
-                {section.definitions.map((entree) => (
-                  <div key={entree.terme}>
-                    <dt className="text-sm font-medium text-night">
-                      {entree.terme}
-                    </dt>
-                    <dd className="mt-1 text-slate-soft">
-                      <Valeur texte={entree.valeur} />
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
-          </section>
-        ))}
+              {section.definitions ? (
+                <dl className="mt-6 space-y-4">
+                  {section.definitions.map((entree) => (
+                    <div key={entree.terme}>
+                      <dt className="text-sm font-medium text-night">
+                        {entree.terme}
+                      </dt>
+                      <dd className="mt-1 text-slate-soft">
+                        <Valeur texte={entree.valeur} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
+            </section>
+          ))}
+        </div>
+        <nav
+          className="page-toc lg:sticky lg:top-44"
+          aria-label="Sommaire de la page légale"
+        >
+          <p className="eyebrow mb-3">Dans cette page</p>
+          {contenu.sections.map((section, i) => (
+            <a key={section.titre} href={`#section-${i + 1}`}>
+              {section.titre}
+            </a>
+          ))}
+        </nav>
       </div>
     </main>
   );

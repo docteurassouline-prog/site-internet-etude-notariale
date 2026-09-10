@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { loadExpertise, type ExpertiseSlug } from "@/lib/content";
+import { loadExpertise } from "@/lib/content";
+import { FAMILLES } from "@/config/navigation";
+import { PageIntro } from "@/components/page-intro";
+import { ContactBand } from "@/components/contact-band";
 
 export const metadata: Metadata = {
   title: { absolute: "Nos expertises — Étude notariale Thomas Lévy, Paris 16" },
@@ -9,68 +12,50 @@ export const metadata: Metadata = {
   alternates: { canonical: "/expertises" },
 };
 
-/** Regroupement éditorial des 18 expertises par familles. */
-const FAMILLES: { titre: string; slugs: ExpertiseSlug[] }[] = [
-  {
-    titre: "Immobilier",
-    slugs: [
-      "immobilier-residentiel",
-      "immobilier-commercial",
-      "vefa",
-      "promotion-immobiliere",
-      "marchands-de-biens",
-      "fiscalite-immobiliere",
-    ],
-  },
-  {
-    titre: "Patrimoine et famille",
-    slugs: [
-      "successions",
-      "donations",
-      "partage",
-      "divorce",
-      "structuration-patrimoniale",
-      "sci",
-    ],
-  },
-  {
-    titre: "Entreprise",
-    slugs: ["transmission-entreprise", "baux-commerciaux"],
-  },
-  {
-    titre: "International",
-    slugs: [
-      "successions-internationales",
-      "expatries",
-      "investisseurs-etrangers",
-      "family-office",
-    ],
-  },
-];
-
 export default function IndexExpertises() {
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
-      <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-        Nos expertises
-      </h1>
-      <div className="mt-14 space-y-16">
-        {FAMILLES.map((famille) => (
-          <section key={famille.titre}>
-            <h2 className="border-b border-line pb-3 font-serif text-2xl text-night">
-              {famille.titre}
-            </h2>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <main>
+      <PageIntro
+        titre="Nos expertises"
+        rubrique="Quatre domaines · Dix-huit expertises"
+        description="Immobilier, patrimoine et famille, entreprise, international : trouvez le domaine qui correspond à votre projet."
+      >
+        <nav aria-label="Domaines d'intervention" className="topic-nav mt-8">
+          {FAMILLES.map((f) => (
+            <a key={f.id} href={`#${f.id}`}>
+              {f.titre}
+            </a>
+          ))}
+        </nav>
+      </PageIntro>
+      <div className="site-container page-body space-y-16">
+        {FAMILLES.map((famille, index) => (
+          <section
+            id={famille.id}
+            key={famille.id}
+            className="grid gap-8 lg:grid-cols-[280px,1fr]"
+          >
+            <div>
+              <p className="eyebrow">Domaine 0{index + 1}</p>
+              <h2 className="section-title mt-3">{famille.titre}</h2>
+              <p className="mt-5 text-base text-slate-soft">
+                {famille.description}
+              </p>
+            </div>
+            <ul className="expertise-grid">
               {famille.slugs.map((slug) => {
                 const { frontmatter } = loadExpertise(slug);
                 return (
                   <li key={slug}>
                     <Link
                       href={`/expertises/${slug}`}
-                      className="block rounded-sm border border-line bg-paper px-5 py-4 transition-colors hover:bg-ivory"
+                      className="expertise-card"
                     >
-                      <span className="font-serif text-lg text-night">
-                        {frontmatter.title}
+                      <h3>{frontmatter.title}</h3>
+                      <p>{frontmatter.description}</p>
+                      <span>
+                        Découvrir cette expertise{" "}
+                        <span aria-hidden="true">↗</span>
                       </span>
                     </Link>
                   </li>
@@ -80,6 +65,7 @@ export default function IndexExpertises() {
           </section>
         ))}
       </div>
+      <ContactBand />
     </main>
   );
 }

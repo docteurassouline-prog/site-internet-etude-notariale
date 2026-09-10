@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FilAriane } from "@/components/fil-ariane";
-import {
-  JsonLd,
-  schemaArticle,
-  schemaFilAriane,
-} from "@/components/json-ld";
+import { PageIntro } from "@/components/page-intro";
+import { MarkdownContent } from "@/components/markdown-content";
+import { ContactAside } from "@/components/contact-band";
+import { ArticleList } from "@/components/article-list";
+import { dateFr } from "@/lib/dates";
+import { JsonLd, schemaArticle, schemaFilAriane } from "@/components/json-ld";
 import {
   CATEGORIE_LABELS,
   CATEGORIES,
@@ -52,95 +52,75 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function PageArticle({ params }: Params) {
   const { categorie, slug } = await params;
   if (!estCategorieValide(categorie)) notFound();
-
   const articles = loadAllArticles();
   const article = articles.find(
     (a) => a.frontmatter.categorie === categorie && a.frontmatter.slug === slug,
   );
   if (!article) notFound();
-
-  const { frontmatter, body } = article;
-  const pilier = loadExpertise(frontmatter.pillar);
+  const { frontmatter: fm, body } = article;
+  const pilier = loadExpertise(fm.pillar);
   const connexes = articles.filter(
-    (a) =>
-      a.frontmatter.categorie === categorie && a.frontmatter.slug !== slug,
+    (a) => a.frontmatter.categorie === categorie && a.frontmatter.slug !== slug,
   );
-  const paragraphes = body
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-16">
-      <JsonLd data={schemaArticle(frontmatter)} />
+    <main>
+      <JsonLd data={schemaArticle(fm)} />
       <JsonLd
         data={schemaFilAriane([
-          { href: "/blog", label: "Blog" },
+          { href: "/blog", label: "Publications" },
           { href: `/blog/${categorie}`, label: CATEGORIE_LABELS[categorie] },
-          { label: frontmatter.title },
+          { label: fm.title },
         ])}
       />
-
-      <FilAriane
-        maillons={[
-          { href: "/blog", label: "Blog" },
-          { href: `/blog/${categorie}`, label: CATEGORIE_LABELS[categorie] },
-          { label: frontmatter.title },
-        ]}
-      />
-
-      <article className="mt-8 max-w-3xl">
-        <p className="text-sm uppercase tracking-wide text-slate-soft">
-          {CATEGORIE_LABELS[categorie]}
-        </p>
-        <h1 className="mt-2 font-serif text-4xl font-medium tracking-tight text-night">
-          {frontmatter.title}
-        </h1>
-        <p className="mt-4 text-sm text-slate-soft">
-          <time dateTime={frontmatter.date}>{frontmatter.date}</time>
-          {" — "}
-          {frontmatter.author}
-        </p>
-        <div className="mt-8 space-y-4">
-          {paragraphes.map((paragraphe, index) => (
-            <p key={index} className="text-slate-soft">
-              {paragraphe}
-            </p>
-          ))}
+      <article>
+        <PageIntro
+          titre={fm.title}
+          rubrique={CATEGORIE_LABELS[categorie]}
+          maillons={[
+            { href: "/blog", label: "Publications" },
+            { href: `/blog/${categorie}`, label: CATEGORIE_LABELS[categorie] },
+            { label: fm.title },
+          ]}
+        >
+          <p className="mt-6 text-sm text-slate-soft">
+            <time dateTime={fm.date}>{dateFr(fm.date)}</time> · {fm.author}
+          </p>
+        </PageIntro>
+        <div className="site-container page-body reading-grid">
+          <div>
+            <MarkdownContent contenu={body} />
+            <section className="mt-12 border-t border-line pt-8">
+              <p className="text-sm text-slate-soft">
+                Les informations publiées sur ce site ont un caractère général
+                et ne constituent pas une consultation juridique.
+              </p>
+              <Link href={`/blog/${categorie}`} className="text-link mt-5">
+                ← Retour à la rubrique
+              </Link>
+            </section>
+          </div>
+          <div className="page-aside">
+            <div className="border-l border-gold pl-6">
+              <p className="eyebrow">Expertise associée</p>
+              <h2 className="mt-4 font-serif text-2xl">
+                <Link
+                  href={`/expertises/${fm.pillar}`}
+                  className="underline decoration-gold underline-offset-4"
+                >
+                  {pilier.frontmatter.title}
+                </Link>
+              </h2>
+            </div>
+            <ContactAside />
+          </div>
         </div>
       </article>
-
-      <section className="mt-16 max-w-3xl border-t border-line pt-10">
-        <h2 className="font-serif text-xl text-night">Expertise associée</h2>
-        <p className="mt-4">
-          <Link
-            href={`/expertises/${frontmatter.pillar}`}
-            className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-          >
-            {pilier.frontmatter.title}
-          </Link>
-        </p>
-      </section>
-
-      {connexes.length > 0 ? (
-        <section className="mt-12 max-w-3xl">
-          <h2 className="font-serif text-xl text-night">
-            Dans la même catégorie
-          </h2>
-          <ul className="mt-4 space-y-2">
-            {connexes.map((connexe) => (
-              <li key={connexe.frontmatter.slug}>
-                <Link
-                  href={`/blog/${connexe.frontmatter.categorie}/${connexe.frontmatter.slug}`}
-                  className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-                >
-                  {connexe.frontmatter.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {connexes.length > 0 && (
+        <section className="site-container pb-16">
+          <h2 className="section-title mb-8">Dans la même rubrique</h2>
+          <ArticleList articles={connexes} titreNiveau={3} />
         </section>
-      ) : null}
+      )}
     </main>
   );
 }

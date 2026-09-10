@@ -47,30 +47,41 @@ const SECTIONS: { titre: string; contenu: string[] }[] = [
   },
 ];
 
+import { PageIntro } from "@/components/page-intro";
+import { ContactAside } from "@/components/contact-band";
+
 export default function PageTarif() {
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
-      {/* Le titre reprend le libellé de navigation et celui de l'URL. Il
-          s'intitulait « Honoraires », ce qui désignait la seule composante
-          non tarifée du coût et contredisait à la fois le menu et l'adresse. */}
-      <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-        Tarif
-      </h1>
-      <p className="mt-6 max-w-3xl text-slate-soft">
-        Le coût d&apos;un acte notarié obéit à des règles précises. Il se
-        compose de quatre éléments de nature différente, présentés ci-dessous,
-        dont un seul constitue la rémunération de l&apos;étude.
-      </p>
-      {SECTIONS.map((section) => (
-        <section key={section.titre} className="mt-14 max-w-3xl">
-          <h2 className="font-serif text-2xl text-night">{section.titre}</h2>
-          {section.contenu.map((paragraphe, index) => (
-            <p key={index} className="mt-4 text-slate-soft">
-              {paragraphe}
-            </p>
+    <main>
+      <PageIntro
+        titre="Comprendre le tarif notarial"
+        rubrique="Une information avant tout engagement"
+        description="Émoluments réglementés, débours, droits et taxes, honoraires libres : retrouvez les quatre composantes présentées par l'étude."
+      />
+      <div className="site-container page-body reading-grid">
+        <div className="reading-sections">
+          {SECTIONS.map((section, i) => (
+            <section id={`tarif-${i + 1}`} key={section.titre}>
+              <p className="eyebrow mb-3">0{i + 1}</p>
+              <h2>{section.titre}</h2>
+              {section.contenu.map((paragraphe, index) => (
+                <p key={index}>{paragraphe}</p>
+              ))}
+            </section>
           ))}
-        </section>
-      ))}
+        </div>
+        <div className="page-aside">
+          <nav aria-label="Composantes du tarif" className="page-toc">
+            <p className="eyebrow mb-3">Dans cette page</p>
+            {SECTIONS.map((s, i) => (
+              <a href={`#tarif-${i + 1}`} key={s.titre}>
+                {s.titre}
+              </a>
+            ))}
+          </nav>
+          <ContactAside />
+        </div>
+      </div>
     </main>
   );
 }

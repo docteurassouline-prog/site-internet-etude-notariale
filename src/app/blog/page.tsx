@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  CATEGORIE_LABELS,
-  CATEGORIES,
-  loadAllArticles,
-} from "@/lib/content";
+import { CATEGORIE_LABELS, CATEGORIES, loadAllArticles } from "@/lib/content";
+import { PageIntro } from "@/components/page-intro";
+import { ArticleList } from "@/components/article-list";
+import { ContactBand } from "@/components/contact-band";
 
 export const metadata: Metadata = {
   title: { absolute: "Blog juridique — Étude notariale Thomas Lévy, Paris 16" },
@@ -15,63 +14,35 @@ export const metadata: Metadata = {
 
 export default function IndexBlog() {
   const articles = loadAllArticles();
-
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
-      <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-        Blog
-      </h1>
-
-      {/* Les rubriques étaient rendues en span : elles avaient toutes les
-          apparences d'un filtre sans en être un. Elles pointent désormais
-          vers leur page de catégorie. */}
-      <nav aria-label="Rubriques" className="mt-8">
-        <ul className="flex flex-wrap gap-3">
+    <main>
+      <PageIntro
+        titre="Les publications de l'étude"
+        rubrique="Analyses & repères"
+        description="Droit immobilier, patrimoine, famille, entreprise et international : les éclairages de l'étude, réunis par domaine."
+      >
+        <nav aria-label="Rubriques des publications" className="topic-nav mt-8">
+          <Link href="/blog" aria-current="page">
+            Toutes les publications
+          </Link>
           {CATEGORIES.map((categorie) => (
-            <li key={categorie}>
-              <Link
-                href={`/blog/${categorie}`}
-                className="inline-block rounded-sm border border-line bg-paper px-4 py-2 text-sm text-night transition-colors hover:bg-ivory"
-              >
-                {CATEGORIE_LABELS[categorie]}
-              </Link>
-            </li>
+            <Link href={`/blog/${categorie}`} key={categorie}>
+              {CATEGORIE_LABELS[categorie]}
+            </Link>
           ))}
-        </ul>
-      </nav>
-
-      {articles.length === 0 ? (
-        <p className="mt-14 max-w-3xl text-slate-soft">
-          Les publications de l&apos;étude seront mises en ligne
-          prochainement. Les rubriques ci-dessus en présentent le champ.
-        </p>
-      ) : null}
-
-      <ul className="mt-14 space-y-8">
-        {articles.map(({ frontmatter }) => (
-          <li
-            key={`${frontmatter.categorie}/${frontmatter.slug}`}
-            className="border-b border-line pb-8"
-          >
-            <p className="text-sm uppercase tracking-wide text-slate-soft">
-              {CATEGORIE_LABELS[frontmatter.categorie]}
-            </p>
-            <h2 className="mt-2 font-serif text-2xl text-night">
-              <Link
-                href={`/blog/${frontmatter.categorie}/${frontmatter.slug}`}
-                className="decoration-gold underline-offset-4 hover:underline"
-              >
-                {frontmatter.title}
-              </Link>
-            </h2>
-            <p className="mt-2 text-sm text-slate-soft">
-              <time dateTime={frontmatter.date}>{frontmatter.date}</time>
-              {" — "}
-              {frontmatter.author}
-            </p>
-          </li>
-        ))}
-      </ul>
+        </nav>
+      </PageIntro>
+      <div className="site-container page-body">
+        {articles.length ? (
+          <ArticleList articles={articles} />
+        ) : (
+          <p>
+            Les publications de l&apos;étude seront mises en ligne
+            prochainement.
+          </p>
+        )}
+      </div>
+      <ContactBand />
     </main>
   );
 }

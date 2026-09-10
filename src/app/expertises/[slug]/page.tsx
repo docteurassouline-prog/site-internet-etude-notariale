@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CtaRendezVous } from "@/components/cta-rdv";
-import { FilAriane } from "@/components/fil-ariane";
 import { JsonLd, schemaFaq, schemaFilAriane } from "@/components/json-ld";
 import { SEO_TITLES } from "@/config/seo";
 import {
@@ -41,145 +39,141 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
  * → approche → déroulement → FAQ → expertises connexes → CTA.
  * Les contenus proviennent exclusivement des MDX (§9).
  */
+
+import { PageIntro } from "@/components/page-intro";
+import { ContactAside, ContactBand } from "@/components/contact-band";
+import { MarkdownContent } from "@/components/markdown-content";
+import { AccordeonFaq } from "@/components/accordeon-faq";
+import { FAMILLES } from "@/config/navigation";
+
 export default async function PageExpertise({ params }: Params) {
   const { slug } = await params;
   if (!estSlugValide(slug)) notFound();
-
-  const { frontmatter, body } = loadExpertise(slug);
-  const paragraphes = body
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-  const etapes = frontmatter.etapes ?? [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER];
-
+  const { frontmatter: fm, body } = loadExpertise(slug);
+  const famille = FAMILLES.find((f) =>
+    (f.slugs as readonly string[]).includes(slug),
+  );
+  const etapes = fm.etapes ?? [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER];
+  const sommaire = [
+    { id: "enjeux", titre: "Les enjeux" },
+    { id: "approche", titre: "Notre approche" },
+    { id: "deroulement", titre: "Les étapes" },
+    ...(fm.faq.length
+      ? [{ id: "questions", titre: "Questions fréquentes" }]
+      : []),
+  ];
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-16">
+    <main>
       <JsonLd
         data={schemaFilAriane([
           { href: "/expertises", label: "Expertises" },
-          { label: frontmatter.title },
+          { label: fm.title },
         ])}
       />
-      {frontmatter.faq.length > 0 ? (
-        <JsonLd data={schemaFaq(frontmatter.faq)} />
-      ) : null}
-
-      <FilAriane
+      {fm.faq.length > 0 && <JsonLd data={schemaFaq(fm.faq)} />}
+      <PageIntro
+        titre={fm.title}
+        rubrique={famille?.titre}
         maillons={[
           { href: "/expertises", label: "Expertises" },
-          { label: frontmatter.title },
+          { label: fm.title },
         ]}
       />
-
-      <h1 className="mt-8 font-serif text-4xl font-medium tracking-tight text-night">
-        {frontmatter.title}
-      </h1>
-
-      <section className="mt-8 max-w-3xl space-y-4">
-        {paragraphes.map((paragraphe, index) => (
-          <p key={index} className="text-slate-soft">
-            {paragraphe}
-          </p>
-        ))}
-      </section>
-
-      <section className="mt-16 max-w-3xl">
-        <h2 className="font-serif text-2xl text-night">
-          Problématiques rencontrées
-        </h2>
-        {frontmatter.problematiques ? (
-          <ul className="mt-4 space-y-3">
-            {frontmatter.problematiques.map((probleme, index) => (
-              <li key={index} className="flex gap-3">
-                <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-gold" />
-                <span className="text-slate-soft">{probleme}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-4 text-slate-soft">{PLACEHOLDER}</p>
-        )}
-      </section>
-
-      <section className="mt-16 max-w-3xl">
-        <h2 className="font-serif text-2xl text-night">
-          L&apos;approche de l&apos;étude
-        </h2>
-        <p className="mt-4 text-slate-soft">
-          {frontmatter.approche ?? PLACEHOLDER}
-        </p>
-      </section>
-
-      <section className="mt-16 max-w-3xl">
-        <h2 className="font-serif text-2xl text-night">
-          Déroulement d&apos;un dossier
-        </h2>
-        <ol className="mt-6 space-y-4">
-          {etapes.map((etape, index) => (
-            <li key={index} className="flex items-start gap-4">
-              <span
-                aria-hidden="true"
-                className="font-serif text-2xl leading-none text-gold"
-              >
-                {`0${index + 1}`}
-              </span>
-              <p className="text-sm text-slate-soft">{etape}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {frontmatter.faq.length > 0 ? (
-        <section className="mt-16 max-w-3xl">
-          <h2 className="font-serif text-2xl text-night">Questions fréquentes</h2>
-          <dl className="mt-6 space-y-6">
-            {frontmatter.faq.map((entree) => (
-              <div key={entree.question}>
-                <dt className="font-medium text-night">{entree.question}</dt>
-                <dd className="mt-2 text-sm text-slate-soft">{entree.reponse}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : null}
-
-      <section className="mt-16">
-        <h2 className="font-serif text-2xl text-night">Expertises connexes</h2>
-        <ul className="mt-6 flex flex-wrap gap-3">
-          {frontmatter.related.map((connexe) => {
-            const { frontmatter: fmConnexe } = loadExpertise(connexe);
-            return (
-              <li key={connexe}>
-                <Link
-                  href={`/expertises/${connexe}`}
-                  className="inline-block rounded-sm border border-line bg-paper px-4 py-2 text-sm text-night transition-colors hover:bg-ivory"
-                >
-                  {fmConnexe.title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <section className="mt-16 border-t border-line pt-10">
-        <p className="text-sm text-slate-soft">
-          Un rendez-vous permet d&apos;examiner votre situation.
-        </p>
-        <div className="mt-4">
-          <CtaRendezVous />
+      <div className="site-container page-body reading-grid">
+        <div className="reading-sections">
+          <section aria-label="Présentation">
+            <MarkdownContent contenu={body} />
+          </section>
+          <section id="enjeux">
+            <p className="eyebrow mb-3">01 · Comprendre</p>
+            <h2>Problématiques rencontrées</h2>
+            {fm.problematiques ? (
+              <ul className="space-y-4">
+                {fm.problematiques.map((texte, i) => (
+                  <li
+                    key={i}
+                    className="border-l-2 border-gold pl-5 text-slate-soft"
+                  >
+                    {texte}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{PLACEHOLDER}</p>
+            )}
+          </section>
+          <section id="approche">
+            <p className="eyebrow mb-3">02 · Structurer</p>
+            <h2>L&apos;approche de l&apos;étude</h2>
+            <p>{fm.approche ?? PLACEHOLDER}</p>
+          </section>
+          <section id="deroulement">
+            <p className="eyebrow mb-3">03 · Accompagner</p>
+            <h2>Déroulement d&apos;un dossier</h2>
+            <ol className="space-y-6">
+              {etapes.map((etape, i) => (
+                <li key={i} className="flex gap-5">
+                  <span
+                    className="font-serif text-3xl text-gold-ink"
+                    aria-hidden="true"
+                  >
+                    0{i + 1}
+                  </span>
+                  <p>{etape}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+          {fm.faq.length > 0 && (
+            <section id="questions">
+              <h2>Questions fréquentes</h2>
+              <AccordeonFaq
+                entrees={fm.faq.map((q, i) => ({
+                  ...q,
+                  id: `question-${i + 1}`,
+                }))}
+              />
+            </section>
+          )}
         </div>
-        {/* La question du coût se pose sur chaque dossier : /tarif ne
-            recevait pourtant de lien que depuis l'accueil. */}
-        <p className="mt-6">
-          <Link
-            href="/tarif"
-            className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-          >
-            Comprendre le tarif notarial
-          </Link>
-        </p>
+        <div className="page-aside">
+          <nav aria-label="Dans cette page" className="page-toc">
+            <p className="eyebrow mb-3">Dans cette page</p>
+            {sommaire.map((item) => (
+              <a href={`#${item.id}`} key={item.id}>
+                {item.titre}
+              </a>
+            ))}
+          </nav>
+          <ContactAside />
+        </div>
+      </div>
+      <section className="border-t border-line">
+        <div className="site-container page-body">
+          <p className="eyebrow">Poursuivre votre lecture</p>
+          <h2 className="section-title mt-3">Expertises connexes</h2>
+          <ul className="mt-8 grid gap-x-10 sm:grid-cols-2">
+            {fm.related.map((connexe) => {
+              const related = loadExpertise(connexe).frontmatter;
+              return (
+                <li key={connexe}>
+                  <Link
+                    href={`/expertises/${connexe}`}
+                    className="expertise-card"
+                  >
+                    <h3>{related.title}</h3>
+                    <p>{related.description}</p>
+                    <span>
+                      Découvrir <span aria-hidden="true">↗</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
+      <ContactBand />
     </main>
   );
 }

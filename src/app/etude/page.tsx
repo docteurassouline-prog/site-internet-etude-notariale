@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { EtudeSection } from "@/components/etude-section";
+import { PageIntro } from "@/components/page-intro";
+import { ContactBand } from "@/components/contact-band";
 import { etude } from "@/config/etude";
 import { cheminPublic } from "@/lib/chemins";
 
@@ -85,87 +86,73 @@ const FORMATION: readonly {
 export default function PageEtude() {
   return (
     <main>
-      {/* Ouverture pleine hauteur — sans son titre, que le h1 ci-dessous porte. */}
-      <EtudeSection avecTitre={false} />
-      <div className="mx-auto w-full max-w-grid px-6 py-24">
-        <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-          L&apos;étude
-        </h1>
-        <div className="mt-14 grid gap-14 lg:grid-cols-[2fr,1fr]">
-          <div>
-            {SECTIONS.map((section) => (
-              <section key={section.titre} className="mb-14 max-w-3xl">
-                <h2 className="font-serif text-2xl text-night">
-                  {section.titre}
-                </h2>
-                {section.contenu.map((paragraphe, index) => (
-                  <p key={index} className="mt-4 text-slate-soft">
-                    {paragraphe}
-                  </p>
-                ))}
-              </section>
-            ))}
-            <section className="mb-14 max-w-3xl">
-              <h2 className="font-serif text-2xl text-night">Formation</h2>
-              <dl className="mt-4">
-                {FORMATION.map((etape) => (
-                  <div
-                    key={etape.etablissement}
-                    className="border-b border-line py-4"
-                  >
-                    <dt className="font-serif text-lg text-night">
-                      {etape.etablissement}
-                    </dt>
-                    {etape.titres.map((titre) => (
-                      <dd key={titre} className="mt-1 text-sm text-slate-soft">
-                        {titre}
-                      </dd>
-                    ))}
-                    {etape.memoire ? (
-                      <dd className="mt-1 text-sm text-slate-soft">
-                        Mémoire : <em>{etape.memoire}</em>
-                      </dd>
-                    ) : null}
-                  </div>
-                ))}
-              </dl>
+      <PageIntro
+        titre="L'étude Thomas Lévy"
+        rubrique="Notaire à Paris XVI"
+        description="Une pratique dédiée à l'immobilier et au patrimoine, en français, anglais et allemand."
+      />
+      <div className="site-container page-body grid items-start gap-12 lg:grid-cols-[1.5fr,1fr] lg:gap-20">
+        <div className="reading-sections">
+          {SECTIONS.map((section, index) => (
+            <section key={section.titre} id={`etude-${index}`}>
+              <h2>{section.titre}</h2>
+              {section.contenu.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
             </section>
-            <section className="max-w-3xl">
-              <h2 className="font-serif text-2xl text-night">Langues</h2>
-              <p className="mt-4 text-slate-soft">
-                L&apos;étude reçoit en{" "}
-                {etude.langues.slice(0, -1).join(", en ")} et en{" "}
-                {etude.langues[etude.langues.length - 1]}.
-              </p>
-            </section>
-          </div>
-          <div className="flex flex-col gap-8">
-            <figure>
-              {/* Plus de priority : la photographie de la salle, désormais en
-                  ouverture de page, est l'image de plus grand rendu (§10). */}
-              <Image
-                src={cheminPublic("/images/portrait.jpg")}
-                alt="Maître Thomas Lévy, notaire à Paris"
-                width={880}
-                height={1322}
-                sizes="(min-width: 1024px) 22rem, 100vw"
-                className="w-full rounded-sm"
-              />
-              <figcaption className="mt-3 text-sm text-slate-soft">
-                Maître Thomas Lévy, notaire
-              </figcaption>
-            </figure>
-            <Image
-              src={cheminPublic("/images/panonceau.jpg")}
-              alt="Panonceau de notaire à l'effigie de la République française"
-              width={680}
-              height={1025}
-              sizes="(min-width: 1024px) 22rem, 100vw"
-              className="w-full rounded-sm"
-            />
-          </div>
+          ))}
+          <section>
+            <h2>Formation</h2>
+            <dl>
+              {FORMATION.map((etape) => (
+                <div
+                  key={etape.etablissement}
+                  className="border-b border-line py-5"
+                >
+                  <dt className="font-serif text-2xl">{etape.etablissement}</dt>
+                  {etape.titres.map((titre) => (
+                    <dd className="mt-2 text-slate-soft" key={titre}>
+                      {titre}
+                    </dd>
+                  ))}
+                  {etape.memoire && (
+                    <dd className="mt-3 text-sm text-slate-soft">
+                      Mémoire : <em>{etape.memoire}</em>
+                    </dd>
+                  )}
+                </div>
+              ))}
+            </dl>
+          </section>
+          <section>
+            <h2>Langues</h2>
+            <p>
+              L&apos;étude reçoit en {etude.langues.slice(0, -1).join(", en ")}{" "}
+              et en {etude.langues[etude.langues.length - 1]}.
+            </p>
+          </section>
         </div>
+        <aside className="order-first lg:order-none lg:sticky lg:top-44">
+          <figure>
+            <Image
+              src={cheminPublic("/images/portrait.jpg")}
+              alt="Maître Thomas Lévy, notaire à Paris"
+              width={1023}
+              height={1537}
+              priority
+              sizes="(min-width: 1024px) 450px, 100vw"
+              className="max-h-[620px] w-full object-cover object-top"
+            />
+            <figcaption className="border-b border-line py-5">
+              <p className="font-serif text-3xl">Maître Thomas Lévy</p>
+              <p className="mt-1 text-sm text-slate-soft">
+                Notaire à Paris · Nommé le 27 décembre 2005
+              </p>
+            </figcaption>
+          </figure>
+        </aside>
       </div>
+      <ContactBand />
     </main>
   );
 }

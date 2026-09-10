@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageIntro } from "@/components/page-intro";
 import { etude } from "@/config/etude";
 
 export const metadata: Metadata = {
@@ -23,41 +24,40 @@ const PISTES = [
  */
 export default function PageIntrouvable() {
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-24">
-      <div aria-hidden="true" className="mb-5 h-px w-10 bg-gold" />
-      <h1 className="font-serif text-4xl font-medium tracking-tight text-night">
-        Cette page n&apos;existe pas
-      </h1>
-      <p className="mt-6 max-w-2xl text-slate-soft">
-        L&apos;adresse demandée ne correspond à aucune page du site. Elle a pu
-        être modifiée, ou le lien qui vous a conduit ici comporte une erreur.
-      </p>
+    <main>
+      <PageIntro titre="Cette page n'existe pas" rubrique="Page introuvable" />
+      <div className="site-container page-body">
+        <p className="mt-6 max-w-2xl text-slate-soft">
+          L&apos;adresse demandée ne correspond à aucune page du site. Elle a pu
+          être modifiée, ou le lien qui vous a conduit ici comporte une erreur.
+        </p>
 
-      <nav aria-label="Pages principales" className="mt-10">
-        <ul className="flex flex-wrap gap-3">
-          {PISTES.map((piste) => (
-            <li key={piste.href}>
-              <Link
-                href={piste.href}
-                className="inline-block rounded-sm border border-line bg-paper px-4 py-2 text-sm text-night transition-colors hover:bg-ivory"
-              >
-                {piste.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        <nav aria-label="Pages principales" className="mt-10">
+          <ul className="flex flex-wrap gap-3">
+            {PISTES.map((piste) => (
+              <li key={piste.href}>
+                <Link
+                  href={piste.href}
+                  className="inline-block rounded-sm border border-line bg-paper px-4 py-2 text-sm text-night transition-colors hover:bg-ivory"
+                >
+                  {piste.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-      <p className="mt-10 text-sm text-slate-soft">
-        L&apos;étude peut également être jointe au{" "}
-        <a
-          href={`tel:${etude.telephoneE164}`}
-          className="text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-        >
-          {etude.telephone}
-        </a>
-        .
-      </p>
+        <p className="mt-10 text-sm text-slate-soft">
+          L&apos;étude peut également être jointe au{" "}
+          <a
+            href={`tel:${etude.telephoneE164}`}
+            className="text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
+          >
+            {etude.telephone}
+          </a>
+          .
+        </p>
+      </div>
     </main>
   );
 }

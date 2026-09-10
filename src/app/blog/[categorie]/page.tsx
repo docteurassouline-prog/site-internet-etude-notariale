@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FilAriane } from "@/components/fil-ariane";
+import { PageIntro } from "@/components/page-intro";
+import { ArticleList } from "@/components/article-list";
 import { JsonLd, schemaFilAriane } from "@/components/json-ld";
 import {
   CATEGORIE_LABELS,
@@ -58,62 +59,48 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function PageCategorie({ params }: Params) {
   const { categorie } = await params;
   if (!estCategorieValide(categorie)) notFound();
-
   const articles = loadArticlesParCategorie(categorie);
   const libelle = CATEGORIE_LABELS[categorie];
-
   return (
-    <main className="mx-auto w-full max-w-grid px-6 py-16">
+    <main>
       <JsonLd
         data={schemaFilAriane([
-          { href: "/blog", label: "Blog" },
+          { href: "/blog", label: "Publications" },
           { label: libelle },
         ])}
       />
-      <FilAriane
-        maillons={[{ href: "/blog", label: "Blog" }, { label: libelle }]}
-      />
-
-      <h1 className="mt-8 font-serif text-4xl font-medium tracking-tight text-night">
-        {libelle}
-      </h1>
-      <p className="mt-6 max-w-3xl text-slate-soft">{CHAPEAUX[categorie]}</p>
-
-      {articles.length > 0 ? (
-        <ul className="mt-14 space-y-8">
-          {articles.map(({ frontmatter }) => (
-            <li key={frontmatter.slug} className="border-b border-line pb-8">
-              <h2 className="font-serif text-2xl text-night">
-                <Link
-                  href={`/blog/${categorie}/${frontmatter.slug}`}
-                  className="decoration-gold underline-offset-4 hover:underline"
-                >
-                  {frontmatter.title}
-                </Link>
-              </h2>
-              <p className="mt-2 text-sm text-slate-soft">
-                <time dateTime={frontmatter.date}>{frontmatter.date}</time>
-                {" — "}
-                {frontmatter.author}
-              </p>
-            </li>
+      <PageIntro
+        titre={libelle}
+        rubrique="Publications de l'étude"
+        description={CHAPEAUX[categorie]}
+        maillons={[
+          { href: "/blog", label: "Publications" },
+          { label: libelle },
+        ]}
+      >
+        <nav aria-label="Rubriques des publications" className="topic-nav mt-8">
+          <Link href="/blog">Toutes les publications</Link>
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c}
+              href={`/blog/${c}`}
+              aria-current={c === categorie ? "page" : undefined}
+            >
+              {CATEGORIE_LABELS[c]}
+            </Link>
           ))}
-        </ul>
-      ) : (
-        <p className="mt-14 text-slate-soft">
-          Les publications de cette rubrique seront mises en ligne
-          prochainement.
-        </p>
-      )}
-
-      <p className="mt-14">
-        <Link
-          href="/blog"
-          className="text-sm text-night decoration-gold underline underline-offset-4 hover:text-anthracite"
-        >
-          Toutes les rubriques
-        </Link>
-      </p>
+        </nav>
+      </PageIntro>
+      <div className="site-container page-body">
+        {articles.length ? (
+          <ArticleList articles={articles} />
+        ) : (
+          <p>
+            Les publications de cette rubrique seront mises en ligne
+            prochainement.
+          </p>
+        )}
+      </div>
     </main>
   );
 }

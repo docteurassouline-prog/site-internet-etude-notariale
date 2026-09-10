@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { etude } from "@/config/etude";
 import { useEffect, useRef, useState } from "react";
 
 interface Champs {
@@ -58,8 +59,12 @@ const DELAI_MINIMAL_MS = 3000;
  */
 export function FormulaireContact() {
   const [champs, setChamps] = useState<Champs>(CHAMPS_INITIAUX);
-  const [erreurs, setErreurs] = useState<Partial<Record<keyof Champs, string>>>({});
-  const [etat, setEtat] = useState<"repos" | "envoi" | "succes" | "echec">("repos");
+  const [erreurs, setErreurs] = useState<Partial<Record<keyof Champs, string>>>(
+    {},
+  );
+  const [etat, setEtat] = useState<"repos" | "envoi" | "succes" | "echec">(
+    "repos",
+  );
   const [leurre, setLeurre] = useState("");
 
   const affichageLe = useRef<number>(Date.now());
@@ -76,9 +81,7 @@ export function FormulaireContact() {
     const champ = focusAPorter.current;
     focusAPorter.current = null;
     if (!champ) return;
-    formulaire.current
-      ?.querySelector<HTMLElement>(`#${champ}`)
-      ?.focus();
+    formulaire.current?.querySelector<HTMLElement>(`#${champ}`)?.focus();
   });
 
   function valider(): boolean {
@@ -86,10 +89,13 @@ export function FormulaireContact() {
     if (!champs.nom.trim()) nouvelles.nom = "Veuillez indiquer votre nom.";
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(champs.email))
       nouvelles.email = "Veuillez indiquer une adresse électronique valide.";
-    if (!champs.objet.trim()) nouvelles.objet = "Veuillez indiquer l'objet de votre demande.";
-    if (!champs.message.trim()) nouvelles.message = "Veuillez saisir votre message.";
+    if (!champs.objet.trim())
+      nouvelles.objet = "Veuillez indiquer l'objet de votre demande.";
+    if (!champs.message.trim())
+      nouvelles.message = "Veuillez saisir votre message.";
     if (!champs.consentement)
-      nouvelles.consentement = "Le consentement est nécessaire pour traiter votre demande.";
+      nouvelles.consentement =
+        "Le consentement est nécessaire pour traiter votre demande.";
     setErreurs(nouvelles);
     const premier = ORDRE_CHAMPS.find((champ) => nouvelles[champ]);
     if (premier) focusAPorter.current = premier;
@@ -132,6 +138,25 @@ export function FormulaireContact() {
     }
   }
 
+  // Ne pas laisser remplir un formulaire dont le transport est absent.
+  if (!ENDPOINT) {
+    return (
+      <div className="border-l-2 border-gold pl-5">
+        <p>
+          Pour écrire à l&apos;étude, utilisez notre adresse électronique ou
+          appelez-nous.
+        </p>
+        <a href={`mailto:${etude.email}`} className="text-link mt-4 break-all">
+          {etude.email}
+        </a>
+        <br />
+        <a href={`tel:${etude.telephoneE164}`} className="text-link">
+          {etude.telephone}
+        </a>
+      </div>
+    );
+  }
+
   if (etat === "succes") {
     return (
       <p
@@ -147,12 +172,15 @@ export function FormulaireContact() {
   }
 
   const classeChamp =
-    "mt-2 w-full rounded-sm border border-line-strong bg-paper px-4 py-3 text-sm text-anthracite focus:border-night";
+    "mt-2 w-full rounded-sm border border-line-strong bg-paper px-4 py-3 text-base text-anthracite focus:border-night";
 
   const nombreErreurs = Object.keys(erreurs).length;
 
   return (
     <form ref={formulaire} onSubmit={soumettre} noValidate>
+      <p className="mb-6 text-sm text-slate-soft">
+        Les champs marqués d’un astérisque (*) sont obligatoires.
+      </p>
       {/* Récapitulatif annoncé : sans lui, la soumission d'un formulaire
           invalide ne produit aucun retour audible. */}
       <div aria-live="assertive" className="sr-only">
@@ -163,7 +191,10 @@ export function FormulaireContact() {
 
       {/* Champ leurre : hors flux visuel, hors ordre de tabulation, hors
           restitution vocale. Un visiteur ne le voit ni ne l'atteint. */}
-      <div aria-hidden="true" className="absolute h-px w-px overflow-hidden opacity-0">
+      <div
+        aria-hidden="true"
+        className="absolute h-px w-px overflow-hidden opacity-0"
+      >
         <label htmlFor="societe-reference">Ne pas remplir</label>
         <input
           id="societe-reference"
@@ -216,7 +247,10 @@ export function FormulaireContact() {
             aria-invalid={Boolean(erreurs.email)}
           />
           {erreurs.email ? (
-            <p id="erreur-email" className="mt-1 text-sm font-medium text-night">
+            <p
+              id="erreur-email"
+              className="mt-1 text-sm font-medium text-night"
+            >
               {erreurs.email}
             </p>
           ) : null}
@@ -232,7 +266,9 @@ export function FormulaireContact() {
             autoComplete="tel"
             className={classeChamp}
             value={champs.telephone}
-            onChange={(e) => setChamps({ ...champs, telephone: e.target.value })}
+            onChange={(e) =>
+              setChamps({ ...champs, telephone: e.target.value })
+            }
           />
         </div>
         <div>
@@ -251,7 +287,10 @@ export function FormulaireContact() {
             aria-invalid={Boolean(erreurs.objet)}
           />
           {erreurs.objet ? (
-            <p id="erreur-objet" className="mt-1 text-sm font-medium text-night">
+            <p
+              id="erreur-objet"
+              className="mt-1 text-sm font-medium text-night"
+            >
               {erreurs.objet}
             </p>
           ) : null}
@@ -270,7 +309,9 @@ export function FormulaireContact() {
           value={champs.message}
           onChange={(e) => setChamps({ ...champs, message: e.target.value })}
           aria-describedby={
-            erreurs.message ? "erreur-message secret-professionnel" : "secret-professionnel"
+            erreurs.message
+              ? "erreur-message secret-professionnel"
+              : "secret-professionnel"
           }
           aria-invalid={Boolean(erreurs.message)}
         />
@@ -280,7 +321,10 @@ export function FormulaireContact() {
           les voies convenues lors du premier rendez-vous.
         </p>
         {erreurs.message ? (
-          <p id="erreur-message" className="mt-1 text-sm font-medium text-night">
+          <p
+            id="erreur-message"
+            className="mt-1 text-sm font-medium text-night"
+          >
             {erreurs.message}
           </p>
         ) : null}
@@ -292,7 +336,7 @@ export function FormulaireContact() {
             name="consentement"
             type="checkbox"
             required
-            className="mt-1"
+            className="mt-1 h-5 w-5 shrink-0 accent-night"
             checked={champs.consentement}
             onChange={(e) =>
               setChamps({ ...champs, consentement: e.target.checked })
@@ -315,7 +359,10 @@ export function FormulaireContact() {
           </label>
         </div>
         {erreurs.consentement ? (
-          <p id="erreur-consentement" className="mt-1 text-sm font-medium text-night">
+          <p
+            id="erreur-consentement"
+            className="mt-1 text-sm font-medium text-night"
+          >
             {erreurs.consentement}
           </p>
         ) : null}
@@ -324,14 +371,22 @@ export function FormulaireContact() {
         <button
           type="submit"
           disabled={etat === "envoi"}
-          className="inline-block rounded-sm bg-night px-6 py-3 text-sm text-ivory transition-colors hover:bg-anthracite disabled:opacity-60"
+          className="button button-primary disabled:opacity-60"
         >
-          {etat === "envoi" ? "Envoi en cours…" : "Envoyer"}
+          {etat === "envoi" ? "Envoi en cours…" : "Envoyer ma demande"}
         </button>
         {etat === "echec" ? (
           <p role="alert" className="mt-4 text-sm text-anthracite">
             L&apos;envoi n&apos;a pas abouti. Vous pouvez joindre l&apos;étude
-            directement par téléphone ou par courriel.
+            directement au{" "}
+            <a className="underline" href={`tel:${etude.telephoneE164}`}>
+              {etude.telephone}
+            </a>{" "}
+            ou à{" "}
+            <a className="underline" href={`mailto:${etude.email}`}>
+              {etude.email}
+            </a>
+            .
           </p>
         ) : null}
       </div>

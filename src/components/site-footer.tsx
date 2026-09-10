@@ -1,153 +1,91 @@
-import Image from "next/image";
 import Link from "next/link";
-import { AccessMap } from "@/components/access-map";
+import { Marque } from "@/components/marque";
 import { etude } from "@/config/etude";
-import { cheminPublic } from "@/lib/chemins";
+import { NAVIGATION } from "@/config/navigation";
 
 const liensLegaux = [
   { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/politique-de-confidentialite", label: "Politique de confidentialité" },
-  { href: "/cookies", label: "Gestion des cookies" },
-  { href: "/accessibilite", label: "Déclaration d'accessibilité" },
-] as const;
+  { href: "/politique-de-confidentialite", label: "Confidentialité" },
+  { href: "/cookies", label: "Cookies" },
+  { href: "/accessibilite", label: "Accessibilité" },
+];
 
-const navigation = [
-  { href: "/etude", label: "L'étude" },
-  { href: "/expertises", label: "Nos expertises" },
-  { href: "/tarif", label: "Tarif" },
-  { href: "/blog", label: "Blog" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-] as const;
-
+/** Le plan est désormais sur Contact : le pied de page reste un repère court. */
 export function SiteFooter() {
   return (
-    <footer className="bg-night text-ivory">
-      <div className="mx-auto w-full max-w-grid px-6 pt-16 pb-10">
-        <AccessMap />
-
-        {/* Grille principale du footer */}
-        <div className="mt-2 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Colonne 1 : identité */}
+    <footer className="site-footer">
+      <div className="site-container">
+        <div className="grid gap-12 md:grid-cols-[1.3fr,1fr,1fr]">
           <div>
-            {/* Même marque qu'en en-tête, au double de la hauteur : le pied
-                de page referme la lecture sur le logo de l'étude. */}
-            <Image
-              src={cheminPublic("/images/logo-levy-notaires.svg")}
-              alt=""
-              width={100}
-              height={100}
-              className="h-[4.5rem] w-[4.5rem]"
-            />
-            <p className="mt-5 font-serif text-xl tracking-tight">{etude.nom}</p>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-ivory/85">
+            <Link href="/" aria-label="Thomas Lévy, notaire — accueil">
+              <Marque sombre />
+            </Link>
+            <address className="mt-6 not-italic">
               {etude.adresse.ligne1}
               <br />
               {etude.adresse.codePostal} {etude.adresse.ville}
-            </p>
-            <div className="mt-5 space-y-2">
-              <a
-                href={`tel:${etude.telephoneE164}`}
-                className="block text-[1.05rem] font-medium text-ivory no-underline transition-colors hover:text-gold"
-              >
-                {etude.telephone}
-              </a>
-              <a
-                href={`mailto:${etude.email}`}
-                className="block text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
-              >
-                {etude.email}
-              </a>
-            </div>
-            <p className="mt-5 text-[0.85rem] leading-relaxed text-ivory/65">
-              {etude.horaires}
-            </p>
+            </address>
+            <a className="mt-5 block" href={`tel:${etude.telephoneE164}`}>
+              {etude.telephone}
+            </a>
+            <a
+              className="mt-1 block break-words"
+              href={`mailto:${etude.email}`}
+            >
+              {etude.email}
+            </a>
           </div>
-
-          {/* Colonne 2 : navigation */}
+          <nav aria-label="Navigation du pied de page">
+            <p className="eyebrow">L&apos;étude</p>
+            <ul className="footer-links">
+              {[
+                ...NAVIGATION,
+                { href: "/faq", label: "Questions fréquentes" },
+                { href: "/contact", label: "Contact & accès" },
+              ].map((lien) => (
+                <li key={lien.href}>
+                  <Link href={lien.href}>{lien.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           <div>
-            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
-              Navigation
-            </p>
-            <nav aria-label="Navigation du pied de page" className="mt-4">
-              <ul className="flex flex-col gap-3">
-                {navigation.map((lien) => (
-                  <li key={lien.href}>
-                    <Link
-                      href={lien.href}
-                      className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
-                    >
-                      {lien.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-
-          {/* Colonne 3 : liens légaux */}
-          <div>
-            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
-              Informations légales
-            </p>
-            <nav aria-label="Liens légaux" className="mt-4">
-              <ul className="flex flex-col gap-3">
-                {liensLegaux.map((lien) => (
-                  <li key={lien.href}>
-                    <Link
-                      href={lien.href}
-                      className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
-                    >
-                      {lien.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-
-          {/* Colonne 4 : accès rapide */}
-          <div>
-            <p className="text-[0.78rem] font-medium uppercase tracking-[0.24em] text-gold">
-              Accès rapide
-            </p>
-            <div className="mt-4 flex flex-col gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex w-fit items-center rounded-sm bg-gold px-7 py-3.5 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-night no-underline transition-colors duration-300 hover:bg-gold-ink hover:text-ivory"
-              >
-                Prendre rendez-vous
-              </Link>
-              <a
-                href={etude.liens.dataRoom}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
-              >
-                Espace documentaire sécurisé
-                <span className="sr-only"> (nouvelle fenêtre)</span>
-              </a>
-              <a
-                href={etude.liens.googleMaps}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[0.95rem] text-ivory/85 no-underline transition-colors hover:text-ivory"
-              >
-                Itinéraire Google Maps
-                <span className="sr-only"> (nouvelle fenêtre)</span>
-              </a>
-            </div>
+            <p className="eyebrow">Informations pratiques</p>
+            <p className="mt-5">{etude.horaires}</p>
+            <p className="mt-3">Français · English · Deutsch</p>
+            <a
+              href={etude.liens.dataRoom}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 block underline underline-offset-4"
+            >
+              Espace documentaire sécurisé <span aria-hidden="true">↗</span>
+              <span className="sr-only"> (nouvelle fenêtre)</span>
+            </a>
+            <Link
+              href="/contact#plan-acces"
+              className="mt-3 block underline underline-offset-4"
+            >
+              Préparer votre venue
+            </Link>
           </div>
         </div>
-
-        {/* Séparateur et mention légale */}
-        <div className="mt-12 border-t border-ivory/15 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[0.85rem] leading-relaxed text-ivory/60">
-            &copy; {new Date().getFullYear()} {etude.nom}
-          </p>
-          <p className="text-[0.85rem] leading-relaxed text-ivory/60">
+        <div className="footer-bottom">
+          <nav aria-label="Informations légales">
+            <ul className="flex flex-wrap gap-x-6 gap-y-3">
+              {liensLegaux.map((lien) => (
+                <li key={lien.href}>
+                  <Link href={lien.href}>{lien.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <p className="mt-6 max-w-3xl">
             Les informations publiées sur ce site ont un caractère général et ne
             constituent pas une consultation juridique.
+          </p>
+          <p className="mt-3">
+            © {new Date().getFullYear()} {etude.nom}
           </p>
         </div>
       </div>
