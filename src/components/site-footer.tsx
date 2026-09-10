@@ -15,6 +15,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-container">
+        <div className="footer-signature" aria-hidden="true">LÉVY<span>NOTAIRES · PARIS</span></div>
         <div className="grid gap-12 md:grid-cols-[1.3fr,1fr,1fr]">
           <div>
             <Link href="/" aria-label="Thomas Lévy, notaire — accueil">

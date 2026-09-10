@@ -28,14 +28,14 @@ export default function IndexExpertises() {
           ))}
         </nav>
       </PageIntro>
-      <div className="site-container page-body space-y-16">
+      <div className="site-container page-body expertise-directory">
         {FAMILLES.map((famille, index) => (
           <section
             id={famille.id}
             key={famille.id}
-            className="grid gap-8 lg:grid-cols-[280px,1fr]"
+            className="directory-section"
           >
-            <div>
+            <div className="directory-heading">
               <p className="eyebrow">Domaine 0{index + 1}</p>
               <h2 className="section-title mt-3">{famille.titre}</h2>
               <p className="mt-5 text-base text-slate-soft">

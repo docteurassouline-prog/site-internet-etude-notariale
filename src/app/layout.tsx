@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE_URL } from "@/config/site";
 import "./globals.css";
+import "./editorial.css";
 
 /**
  * Polices auto-hébergées via next/font (téléchargées au build, servies depuis

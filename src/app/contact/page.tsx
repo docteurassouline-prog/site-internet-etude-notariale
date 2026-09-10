@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function PageContact() {
   return (
-    <main>
+    <main className="contact-page">
       <JsonLd data={schemaNotary()} />
       <PageIntro
         titre="Entrons en contact"
@@ -70,7 +70,7 @@ export default function PageContact() {
             </a>
           </div>
         </div>
-        <section className="border border-line bg-white p-6 sm:p-9">
+        <section className="contact-form-surface">
           <h2 className="font-serif text-3xl">Écrire à l&apos;étude</h2>
           <p className="mb-7 mt-3 text-sm text-slate-soft">
             Pour demander un rendez-vous, indiquez l&apos;objet de votre projet
