@@ -32,9 +32,9 @@ export default function IndexBlog() {
           ))}
         </nav>
       </PageIntro>
-      <div className="site-container page-body">
+      <div className="site-container page-body journal-archive">
         {articles.length ? (
-          <ArticleList articles={articles} />
+          <ArticleList articles={articles} format="grille" />
         ) : (
           <p>
             Les publications de l&apos;étude seront mises en ligne

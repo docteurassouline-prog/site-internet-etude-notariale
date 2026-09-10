@@ -18,12 +18,14 @@ export function PageIntro({
     <header className="page-intro">
       <div className="site-container">
         <FilAriane maillons={maillons ?? [{ label: titre }]} />
-        {rubrique && <p className="eyebrow mt-10">{rubrique}</p>}
-        <h1 className={`display-title ${rubrique ? "mt-4" : "mt-9"}`}>
-          {titre}
-        </h1>
-        {description && <p className="intro-copy">{description}</p>}
-        {children}
+        <div className="page-intro-composition">
+          <div>
+            <p className="eyebrow">{rubrique ?? "Lévy Notaires · Paris"}</p>
+            <h1 className="display-title">{titre}</h1>
+          </div>
+          {description && <p className="intro-copy">{description}</p>}
+        </div>
+        {children && <div className="page-intro-details">{children}</div>}
       </div>
     </header>
   );
