@@ -74,6 +74,7 @@ export default async function PageExpertise({ params }: Params) {
       <PageIntro
         titre={fm.title}
         rubrique={famille?.titre}
+        description={fm.description}
         maillons={[
           { href: "/expertises", label: "Expertises" },
           { label: fm.title },
@@ -145,7 +146,7 @@ export default async function PageExpertise({ params }: Params) {
               </a>
             ))}
           </nav>
-          <ContactAside />
+          <ContactAside sujet={fm.title} />
         </div>
       </div>
       <section className="border-t border-line">
@@ -173,7 +174,7 @@ export default async function PageExpertise({ params }: Params) {
           </ul>
         </div>
       </section>
-      <ContactBand />
+      <ContactBand sujet={fm.title} />
     </main>
   );
 }

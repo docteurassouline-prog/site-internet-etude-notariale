@@ -15,9 +15,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function PageContact() {
+export default async function PageContact({ searchParams }: { searchParams: Promise<{ sujet?: string | string[] }> }) {
+  const params = await searchParams;
+  // Le sujet n'est ni un destinataire ni du HTML : seulement une valeur éditable.
+  const sujet = typeof params.sujet === "string" ? params.sujet.replace(/[\r\n]/g, " ").slice(0, 160) : "";
+  const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT?.trim() || "/api/contact";
+  const envoiDisponible = endpoint !== "/api/contact" || Boolean(process.env.RESEND_API_KEY?.trim());
   return (
-    <main>
+    <main className="contact-page">
       <JsonLd data={schemaNotary()} />
       <PageIntro
         titre="Entrons en contact"
@@ -70,13 +75,13 @@ export default function PageContact() {
             </a>
           </div>
         </div>
-        <section className="border border-line bg-white p-6 sm:p-9">
+        <section id="ecrire" className="contact-form-surface">
           <h2 className="font-serif text-3xl">Écrire à l&apos;étude</h2>
           <p className="mb-7 mt-3 text-sm text-slate-soft">
             Pour demander un rendez-vous, indiquez l&apos;objet de votre projet
             et vos disponibilités.
           </p>
-          <FormulaireContact />
+          <FormulaireContact key={sujet} sujetInitial={sujet} endpoint={envoiDisponible ? endpoint : undefined} />
         </section>
       </div>
       <section id="plan-acces" className="border-t border-line bg-white">

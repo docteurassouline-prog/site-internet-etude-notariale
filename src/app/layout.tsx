@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE_URL } from "@/config/site";
 import "./globals.css";
+import "./editorial.css";
 
 /**
  * Polices auto-hébergées via next/font (téléchargées au build, servies depuis
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
   },
   description:
     "Étude notariale à Paris 16ᵉ. Immobilier, successions, structuration patrimoniale, entreprise et clientèle internationale. Consultations sur rendez-vous.",
-  // Le site n'est pas publié : aucune indexation avant validation.
+  // Le site est public, mais reste désindexé jusqu’à la validation notariale.
   robots: { index: false, follow: false },
   alternates: {
     types: { "application/rss+xml": "/rss.xml" },

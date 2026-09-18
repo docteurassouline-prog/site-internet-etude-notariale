@@ -20,11 +20,13 @@ const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL;
 export function CtaRendezVous({
   variante = "primaire",
   surFondSombre = false,
+  sujet,
 }: {
   variante?: "primaire" | "secondaire";
   surFondSombre?: boolean;
+  sujet?: string;
 }) {
-  const href = BOOKING_URL && BOOKING_URL.length > 0 ? BOOKING_URL : "/contact";
+  const href = BOOKING_URL?.trim() || (sujet ? `/contact?sujet=${encodeURIComponent(sujet)}#ecrire` : "/contact#ecrire");
   // L'or plein ne dépend pas du fond : c'est ce qui rend le bouton
   // reconnaissable d'une section à l'autre, sur ivoire comme sur night.
   const classes =

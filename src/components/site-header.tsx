@@ -30,7 +30,7 @@ export function SiteHeader() {
     if (!ouvert) return;
     const avant = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const grandEcran = window.matchMedia("(min-width: 1100px)");
+    const grandEcran = window.matchMedia("(min-width: 1200px)");
     const replier = () => {
       if (grandEcran.matches) dialogue.current?.close();
     };
@@ -45,32 +45,6 @@ export function SiteHeader() {
     pathname === href || pathname.startsWith(`${href}/`);
   return (
     <header className="site-header">
-      <div className="header-utility">
-        <div className="site-container flex items-center justify-between gap-4">
-          <span className="hidden sm:inline">
-            11 boulevard Flandrin · Paris 16<sup>e</sup>
-          </span>
-          <div className="flex items-center gap-6">
-            <a href={`tel:${etude.telephoneE164}`}>{etude.telephone}</a>
-            <a
-              className="hidden sm:inline"
-              href={etude.liens.dataRoom}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Espace documentaire <span aria-hidden="true">↗</span>
-              <span className="sr-only"> (nouvelle fenêtre)</span>
-            </a>
-            <Link
-              href="/international#languages"
-              lang="en"
-              aria-label="Information in English and German"
-            >
-              EN / DE
-            </Link>
-          </div>
-        </div>
-      </div>
       <div className="site-container header-main">
         <Link href="/" aria-label="Thomas Lévy, notaire — accueil">
           <Marque />
@@ -89,6 +63,7 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
+        <Link href="/international#english" className="header-language" lang="en" aria-label="Read practical information in English">EN <span aria-hidden="true">↗</span></Link>
         <Link href={rdvHref} className="button button-primary header-rdv">
           {rdvLabel}
           <span aria-hidden="true">↗</span>
@@ -105,7 +80,7 @@ export function SiteHeader() {
             setOuvert(true);
           }}
         >
-          Menu <span aria-hidden="true">☰</span>
+          Menu <span className="menu-lines" aria-hidden="true"><span /><span /></span>
         </button>
       </div>
       <dialog
@@ -163,6 +138,7 @@ export function SiteHeader() {
           >
             {rdvLabel}
           </Link>
+          <p className="mobile-location">{etude.adresse.ligne1}<br />{etude.adresse.codePostal} {etude.adresse.ville} · Français, English, Deutsch</p>
           <a className="mt-6 block" href={`tel:${etude.telephoneE164}`}>
             {etude.telephone}
           </a>

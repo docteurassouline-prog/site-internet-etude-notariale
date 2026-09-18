@@ -31,7 +31,7 @@ const ORDRE_CHAMPS: (keyof Champs)[] = [
   "consentement",
 ];
 
-const ENDPOINT = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT;
+// Le serveur détermine la disponibilité ; aucune clé privée n’est transmise au navigateur.
 
 /**
  * Délai minimal, en millisecondes, entre l'affichage du formulaire et son
@@ -57,8 +57,8 @@ const DELAI_MINIMAL_MS = 3000;
  * service qui reçoit les envois. Elles servent à *marquer* une soumission,
  * jamais à la retenir : voir soumettre().
  */
-export function FormulaireContact() {
-  const [champs, setChamps] = useState<Champs>(CHAMPS_INITIAUX);
+export function FormulaireContact({ sujetInitial = "", endpoint }: { sujetInitial?: string; endpoint?: string }) {
+  const [champs, setChamps] = useState<Champs>({ ...CHAMPS_INITIAUX, objet: sujetInitial });
   const [erreurs, setErreurs] = useState<Partial<Record<keyof Champs, string>>>(
     {},
   );
@@ -104,11 +104,11 @@ export function FormulaireContact() {
 
   async function soumettre(evenement: React.FormEvent<HTMLFormElement>) {
     evenement.preventDefault();
-    if (!valider()) return;
+    if (etat === "envoi" || !valider()) return;
     // Le contrôle de l'endpoint passe en premier : sans lui, le sort d'une
     // soumission dépendait de la vitesse de frappe du visiteur — rapide,
     // elle annonçait un succès ; lente, un échec.
-    if (!ENDPOINT) {
+    if (!endpoint) {
       setEtat("echec");
       return;
     }
@@ -127,7 +127,8 @@ export function FormulaireContact() {
       leurre !== "" || Date.now() - affichageLe.current < DELAI_MINIMAL_MS;
     setEtat("envoi");
     try {
-      const reponse = await fetch(ENDPOINT, {
+      const reponse = await fetch(endpoint!, {
+        signal: AbortSignal.timeout(15000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...champs, suspect }),
@@ -139,14 +140,15 @@ export function FormulaireContact() {
   }
 
   // Ne pas laisser remplir un formulaire dont le transport est absent.
-  if (!ENDPOINT) {
+  if (!endpoint) {
     return (
       <div className="border-l-2 border-gold pl-5">
+        {sujetInitial && <p className="mb-4 font-medium">Votre demande : {sujetInitial}</p>}
         <p>
           Pour écrire à l&apos;étude, utilisez notre adresse électronique ou
           appelez-nous.
         </p>
-        <a href={`mailto:${etude.email}`} className="text-link mt-4 break-all">
+        <a href={`mailto:${etude.email}${sujetInitial ? `?subject=${encodeURIComponent(sujetInitial)}` : ""}`} className="text-link mt-4 break-all">
           {etude.email}
         </a>
         <br />
@@ -215,6 +217,7 @@ export function FormulaireContact() {
           <input
             id="nom"
             name="nom"
+            maxLength={120}
             type="text"
             autoComplete="name"
             required
@@ -237,6 +240,7 @@ export function FormulaireContact() {
           <input
             id="email"
             name="email"
+            maxLength={254}
             type="email"
             autoComplete="email"
             required
@@ -262,6 +266,7 @@ export function FormulaireContact() {
           <input
             id="telephone"
             name="telephone"
+            maxLength={40}
             type="tel"
             autoComplete="tel"
             className={classeChamp}
@@ -278,6 +283,7 @@ export function FormulaireContact() {
           <input
             id="objet"
             name="objet"
+            maxLength={160}
             type="text"
             required
             className={classeChamp}
@@ -303,6 +309,7 @@ export function FormulaireContact() {
         <textarea
           id="message"
           name="message"
+            maxLength={6000}
           rows={6}
           required
           className={classeChamp}

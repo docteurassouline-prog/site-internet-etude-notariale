@@ -5,6 +5,7 @@ import { PageIntro } from "@/components/page-intro";
 import { MarkdownContent } from "@/components/markdown-content";
 import { ContactAside } from "@/components/contact-band";
 import { ArticleList } from "@/components/article-list";
+import { markdownHeadings } from "@/lib/markdown-headings";
 import { dateFr } from "@/lib/dates";
 import { JsonLd, schemaArticle, schemaFilAriane } from "@/components/json-ld";
 import {
@@ -59,6 +60,8 @@ export default async function PageArticle({ params }: Params) {
   if (!article) notFound();
   const { frontmatter: fm, body } = article;
   const pilier = loadExpertise(fm.pillar);
+  const sommaire = markdownHeadings(body);
+  const minutes = Math.max(1, Math.ceil(body.split(/\s+/).length / 200));
   const connexes = articles.filter(
     (a) => a.frontmatter.categorie === categorie && a.frontmatter.slug !== slug,
   );
@@ -83,7 +86,7 @@ export default async function PageArticle({ params }: Params) {
           ]}
         >
           <p className="mt-6 text-sm text-slate-soft">
-            <time dateTime={fm.date}>{dateFr(fm.date)}</time> · {fm.author}
+            <time dateTime={fm.date}>{dateFr(fm.date)}</time> · {fm.author} · Lecture : environ {minutes} min
           </p>
         </PageIntro>
         <div className="site-container page-body reading-grid">
@@ -100,6 +103,10 @@ export default async function PageArticle({ params }: Params) {
             </section>
           </div>
           <div className="page-aside">
+            {sommaire.length > 0 && <nav className="page-toc mb-8" aria-label="Sommaire de l'article">
+              <p className="eyebrow mb-3">Dans cet article</p>
+              {sommaire.map((item) => <a href={`#${item.id}`} key={item.id}>{item.titre}</a>)}
+            </nav>}
             <div className="border-l border-gold pl-6">
               <p className="eyebrow">Expertise associée</p>
               <h2 className="mt-4 font-serif text-2xl">
@@ -111,7 +118,7 @@ export default async function PageArticle({ params }: Params) {
                 </Link>
               </h2>
             </div>
-            <ContactAside />
+            <ContactAside sujet={pilier.frontmatter.title} />
           </div>
         </div>
       </article>

@@ -85,16 +85,17 @@ const FORMATION: readonly {
 
 export default function PageEtude() {
   return (
-    <main>
+    <main className="etude-page">
       <PageIntro
         titre="L'étude Thomas Lévy"
         rubrique="Notaire à Paris XVI"
         description="Une pratique dédiée à l'immobilier et au patrimoine, en français, anglais et allemand."
       />
-      <div className="site-container page-body grid items-start gap-12 lg:grid-cols-[1.5fr,1fr] lg:gap-20">
+      <div className="site-container page-body profile-layout">
         <div className="reading-sections">
           {SECTIONS.map((section, index) => (
             <section key={section.titre} id={`etude-${index}`}>
+              <p className="profile-section-number" aria-hidden="true">0{index + 1}</p>
               <h2>{section.titre}</h2>
               {section.contenu.map((p, i) => (
                 <p key={i}>{p}</p>
