@@ -44,6 +44,7 @@ import { PageIntro } from "@/components/page-intro";
 import { ContactAside, ContactBand } from "@/components/contact-band";
 import { MarkdownContent } from "@/components/markdown-content";
 import { AccordeonFaq } from "@/components/accordeon-faq";
+import { FriseEtapes } from "@/components/frise-etapes";
 import { FAMILLES } from "@/config/navigation";
 
 export default async function PageExpertise({ params }: Params) {
@@ -111,19 +112,7 @@ export default async function PageExpertise({ params }: Params) {
           <section id="deroulement">
             <p className="eyebrow mb-3">03 · Accompagner</p>
             <h2>Déroulement d&apos;un dossier</h2>
-            <ol className="space-y-6">
-              {etapes.map((etape, i) => (
-                <li key={i} className="flex gap-5">
-                  <span
-                    className="font-serif text-3xl text-gold-ink"
-                    aria-hidden="true"
-                  >
-                    0{i + 1}
-                  </span>
-                  <p>{etape}</p>
-                </li>
-              ))}
-            </ol>
+            <FriseEtapes etapes={etapes} />
           </section>
           {fm.faq.length > 0 && (
             <section id="questions">
