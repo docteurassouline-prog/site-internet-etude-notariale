@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { etude } from "@/config/etude";
 import { affecterAutomatiquement, classerProfessionnels } from "../affectation";
 import { construireIcs, lienGoogleAgenda, lienOutlook } from "../calendrier";
-import { genererCreneaux, grouperParJour, heureLocale, jourLocal } from "../creneaux";
+import { genererCreneaux, heureLocale, jourLocal } from "../creneaux";
 import { documentsRequis, EXTENSIONS_ACCEPTEES, TAILLE_MAXIMALE_OCTETS } from "../documents";
 import { MOTIFS, motifParId } from "../motifs";
 import { professionnelParId } from "../professionnels";
@@ -20,6 +20,7 @@ import type {
   ReponseValeur,
 } from "../types";
 import { ChampQuestion } from "./champ-question";
+import { SelecteurCreneau } from "./selecteur-creneau";
 
 /** Étapes du parcours, dans l'ordre. La barre de progression s'en déduit. */
 const ETAPES = [
@@ -531,11 +532,18 @@ export function Parcours() {
             Rendez-vous de {evaluation.dureeMinutes} minutes
             {professionnelRetenu ? ` avec ${professionnelRetenu.nom}` : ""}. Heures de Paris.
           </p>
-          <EtapeCreneaux
-            creneaux={creneaux}
-            choisi={creneauDebut}
-            onChoisir={(debut) => setCreneauDebut(debut)}
-          />
+          {creneaux.length > 0 ? (
+            <SelecteurCreneau
+              creneaux={creneaux}
+              choisi={creneauDebut}
+              onChoisir={(debut) => setCreneauDebut(debut)}
+            />
+          ) : (
+            <p className="mt-6 rounded-sm border border-line bg-paper p-5 text-sm text-slate-soft">
+              Aucun créneau n&apos;est disponible sur la période. Contactez l&apos;étude au{" "}
+              {etude.telephone}.
+            </p>
+          )}
           <Navigation
             surPrecedent={precedent}
             surSuivant={() => {
@@ -1049,62 +1057,6 @@ function EtapeDocuments({
         votre appareil : seuls leurs noms figurent au récapitulatif, pour mémoire.
       </p>
     </>
-  );
-}
-
-function EtapeCreneaux({
-  creneaux,
-  choisi,
-  onChoisir,
-}: {
-  creneaux: readonly Creneau[];
-  choisi: string | null;
-  onChoisir: (debut: string) => void;
-}) {
-  const jours = useMemo(() => grouperParJour(creneaux).slice(0, 7), [creneaux]);
-
-  if (jours.length === 0) {
-    return (
-      <p className="mt-6 rounded-sm border border-line bg-paper p-5 text-sm text-slate-soft">
-        Aucun créneau n&apos;est disponible sur la période. Contactez l&apos;étude au{" "}
-        {etude.telephone}.
-      </p>
-    );
-  }
-
-  return (
-    <div className="mt-6 space-y-6">
-      {jours.map(({ jour, creneaux: liste }) => (
-        <div key={jour}>
-          <h3 className="font-serif text-lg capitalize text-night">
-            {jourLocal(liste[0].debut)}
-          </h3>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {liste.map((creneau) => {
-              const actif = choisi === creneau.debut;
-              return (
-                <li key={creneau.debut}>
-                  <button
-                    type="button"
-                    onClick={() => onChoisir(creneau.debut)}
-                    aria-pressed={actif}
-                    className={[
-                      "rounded-sm border px-4 py-2 text-sm transition-colors",
-                      "focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-ivory",
-                      actif
-                        ? "border-night bg-night text-ivory"
-                        : "border-line bg-paper text-anthracite hover:border-gold",
-                    ].join(" ")}
-                  >
-                    {heureLocale(creneau.debut)}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
-    </div>
   );
 }
 
