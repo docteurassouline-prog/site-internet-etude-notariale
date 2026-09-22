@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE_URL } from "@/config/site";
+import { construireIndexRecherche } from "@/lib/recherche";
 import "./globals.css";
 import "./editorial.css";
 
@@ -83,7 +84,7 @@ export default function RootLayout({
         >
           Aller au contenu
         </a>
-        <SiteHeader />
+        <SiteHeader indexRecherche={construireIndexRecherche()} />
         <div id="contenu" className="flex-1" tabIndex={-1}>
           {children}
         </div>

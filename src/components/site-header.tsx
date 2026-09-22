@@ -6,10 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import { Marque } from "@/components/marque";
 import { etude } from "@/config/etude";
 import { NAVIGATION } from "@/config/navigation";
+import { RechercheGlobale } from "@/components/recherche-globale";
+import type { EntreeRecherche } from "@/lib/recherche";
 
 /** Le dialogue natif isole le menu, retient le focus et gère Échap.
  *  L'en-tête reste dans le flux : aucune hauteur à deviner dans les pages. */
-export function SiteHeader() {
+export interface SiteHeaderProps {
+  /** Index de la recherche globale, construit par le layout côté serveur :
+   *  l'en-tête est un composant client et ne lit pas le disque. */
+  indexRecherche: EntreeRecherche[];
+}
+
+export function SiteHeader({ indexRecherche }: SiteHeaderProps) {
   const pathname = usePathname();
   const dialogue = useRef<HTMLDialogElement>(null);
   const bouton = useRef<HTMLButtonElement>(null);
@@ -63,6 +71,7 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
+        <RechercheGlobale index={indexRecherche} />
         <Link href="/international#english" className="header-language" lang="en" aria-label="Read practical information in English">EN <span aria-hidden="true">↗</span></Link>
         <Link href={rdvHref} className="button button-primary header-rdv">
           {rdvLabel}
